@@ -1,0 +1,33 @@
+name: Python Tox
+
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10.5]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        python -m pip install --upgrade pip
+        pip install tox tox-gh-actions
+        sudo apt-get install python3-sphinx
+        pip install sphinx_rtd_theme
+    - name: Test with tox
+      run: tox
+
+    - name: "Upload coverage to Codecov"
+      uses: codecov/codecov-action@v3.1.0
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
