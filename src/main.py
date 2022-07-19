@@ -1,8 +1,5 @@
 
 
-def Hello():
-    print("Hello world!")
 
-
-
-Hello()
+if __name__ == '__main__':
+    print("Hola")
