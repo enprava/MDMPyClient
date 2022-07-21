@@ -1,4 +1,4 @@
-from src.mdm.test import Hello
+from src.mdmpyclient.test import Hello
 
 def test_primero():
     Hello()
