@@ -36,12 +36,12 @@ class MDM:
         else:
             self.logger.warning('Acceso denegado')
 
-        # self.logger.info('Solicitando información de las codelists')
-        # self.codelists = self.get_all_codelist()
-        # if self.codelists:
-        #     self.logger.info('Codelist extraídas correctamente')
-        # else:
-        #     self.logger.warning('No se han extraído las codelist debido a un error inesperado')
+        self.logger.info('Solicitando información de las codelists')
+        self.codelists = self.get_all_codelist()
+        if self.codelists:
+            self.logger.info('Codelist extraídas correctamente')
+        else:
+            self.logger.warning('No se han extraído las codelist debido a un error inesperado')
 
         # self.logger.info('Solicitando información de los esquemas de concepto')
         # self.concept_schemes = self.get_all_concept_scheme()
@@ -50,7 +50,7 @@ class MDM:
         # else:
         #     self.logger.warning('No se han extraído los esquemas de concepto debido a un error inesperado')
 
-        self.category_scheme = self.get_all_category_scheme()
+        # self.category_scheme = self.get_all_category_scheme()
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['language']}
@@ -82,7 +82,7 @@ class MDM:
             if codelist_id not in codelists[agency].keys():
                 codelists[agency][codelist_id] = {}
             codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, version,
-                                                               agency)
+                                                               agency, True)
         return codelists
 
     def get_all_concept_scheme(self):
@@ -101,7 +101,6 @@ class MDM:
                 concept_schemes[agency][cs_id] = {}
             concept_schemes[agency][cs_id][version] = ConceptScheme(self.session, self.configuracion, cs_id, agency,
                                                                     version)
-
         return concept_schemes
 
     def get_all_category_scheme(self):
@@ -119,6 +118,5 @@ class MDM:
             if category_scheme_id not in category_schemes[agency].keys():
                 category_schemes[agency][category_scheme_id] = {}
             category_schemes[agency][category_scheme_id][version] = CategoryScheme(self.session, self.configuracion,
-                                                                                   category_scheme_id, agency, version,
-                                                                                   True)
+                                                                                   category_scheme_id, agency, version)
         return category_schemes

@@ -1,5 +1,4 @@
 import pandas
-from py._path.svnwc import cache
 
 
 class CategoryScheme:
@@ -19,7 +18,6 @@ class CategoryScheme:
             , 'parent': []}
         self.extract_categories(response, None, categories)
         res = pandas.DataFrame(categories)
-        print(res.to_string())
         return res
 
     def extract_categories(self, response, parent, categories):
@@ -35,12 +33,12 @@ class CategoryScheme:
             if 'descriptions' in categorie.keys():
                 category_des_es = categorie['descriptions']['es'] if 'es' in categorie['descriptions'].keys() else None
                 category_des_en = categorie['descriptions']['en'] if 'en' in categorie['descriptions'].keys() else None
-
-                categories['des_es'].append(category_des_es)
-                categories['des_en'].append(category_des_en)
             else:
-                categories['des_es'].append(None)
-                categories['des_en'].append(None)
+                category_des_es = None
+                category_des_en = None
+
+            categories['des_es'].append(category_des_es)
+            categories['des_en'].append(category_des_en)
 
             if 'categories' in categorie.keys():
                 self.extract_categories(categorie['categories'], category_id, categories)

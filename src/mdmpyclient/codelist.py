@@ -36,19 +36,28 @@ class Codelist:
                                            "lang": "es",
                                            "pageNum": 1, "pageSize": 5000000, "rebuildDb": False}).json()['data'][
             'codelists'][0]['codes']
-        codes = {'code_id': [], 'code_name': [], 'code_order': [], 'code_parent': []}
+        codes = {'id': [], 'name_es': [], 'name_en': [], 'parent': [], 'des_es': [], 'des_en': []}
 
         for code in response:
             code_id = code['id']
-            code_name = code['name']
-            code_order = code['annotations'][0]['text']
+            name_es = code['names']['es'] if 'es' in code['names'].keys() else None
+            name_en = code['names']['en'] if 'en' in code['names'].keys() else None
             code_parent = code['parent'] if 'parent' in code.keys() else None
 
-            codes['code_id'].append(code_id)
-            codes['code_name'].append(code_name)
-            codes['code_order'].append(code_order)
-            codes['code_parent'].append(code_parent)
+            codes['id'].append(code_id)
+            codes['name_es'].append(name_es)
+            codes['name_en'].append(name_en)
+            codes['parent'].append(code_parent)
 
+            if 'descriptions' in code.keys():
+                des_es = code['descriptions']['es'] if 'es' in code['descriptions'].keys() else None
+                des_en = code['descriptions']['en'] if 'en' in code['descriptions'].keys() else None
+            else:
+                des_es = None
+                des_en = None
+
+            codes['des_es'].append(des_es)
+            codes['des_en'].append(des_en)
         return pandas.DataFrame(data=codes)
 
     def __repr__(self):
