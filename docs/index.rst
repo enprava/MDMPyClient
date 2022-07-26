@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Bienvenido a la documentación de IECA2SDMX!
+Bienvenido a la documentación de MDMPyClient!
 ==========================================================
 
 .. toctree::
@@ -13,8 +13,15 @@ Bienvenido a la documentación de IECA2SDMX!
 
 Modulos
 =======
-.. automodule:: src.consulta
+.. automodule:: src.mdmpyclient.mdm
    :members:
+.. automodule:: src.mdmpyclient.codelist
+   :members:
+.. automodule:: src.mdmpyclient.conceptscheme
+   :members:
+.. automodule:: src.mdmpyclient.categoryscheme
+   :members:
+
 
 
 

@@ -1,22 +1,50 @@
 import pandas
+import logging
+import sys
+
+fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
+logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class ConceptScheme:
+    """ Clase que representa un esquema de conceptos del M&D Manager.
+
+    Args:
+        session (:class:`requests.session.Session`): Sesión autenticada en la API.
+        configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
+         parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+         fichero de configuración configuracion/configuracion.yaml.
+        cs_id (class: 'String'): Identificador del esquema de conceptos.
+        agency_id (class: `String`): Identificador de la agencia vinculada
+        version (class: `String`): Version del esquema de conceptos
+        init_data (class: `Boolean`): True para traer todos los datos del esquema de
+         conceptos, False para traer solo id, agencia y versión. Por defecto toma el valor False.
+
+    Attributes:
+
+
+    """
 
     def __init__(self, session, configuracion, cs_id, agency_id, version, init_data=False):
+        self.logger = logging.getLogger(f'{self.__class__.__name__}')
+
         self.session = session
         self.configuracion = configuracion
-        self.cs_id = cs_id
+        self.id = cs_id
         self.agency_id = agency_id
         self.version = version
         self.data = self.get_data() if init_data else None
 
     def get_data(self):
-        response = self.session.get(
-            f'{self.configuracion["url_base"]}conceptScheme/{self.cs_id}/{self.agency_id}/{self.version}').json()[
-            'data']['conceptSchemes'][0]['concepts']
-
         concepts = {'id': [], 'name_es': [], 'name_en': [], 'des_es': [], 'des_en': []}
+        try:
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}conceptScheme/{self.id}/{self.agency_id}/{self.version}').json()[
+                'data']['conceptSchemes'][0]['concepts']
+        except KeyError:
+            self.logger.warning(
+                f'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de conceptos con id: {self.id}')
+            return concepts
 
         for concept in response:
             concept_id = concept['id']
@@ -38,4 +66,4 @@ class ConceptScheme:
         return pandas.DataFrame(data=concepts)
 
     def __repr__(self):
-        return f'{self.cs_id} {self.version}'
+        return f'{self.id} {self.version}'
