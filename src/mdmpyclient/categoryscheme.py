@@ -24,7 +24,7 @@ class CategoryScheme:
 
     """
 
-    def __init__(self, session, configuracion, category_scheme_id, agency_id, version, init_data=False):
+    def __init__(self, session, configuracion, category_scheme_id, agency_id, version, names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
@@ -32,6 +32,8 @@ class CategoryScheme:
         self.id = category_scheme_id
         self.agency_id = agency_id
         self.version = version
+        self.names = names
+        self.des = des
         self.data = self.get_data() if init_data else None
 
     def get_data(self):
@@ -44,17 +46,19 @@ class CategoryScheme:
             response = self.session.get(
                 f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}').json()[
                 'data']['categorySchemes'][0]['categories']
+            response_data = response.json()['data']['categorySchemes'][0]['categories']
             response_dcs = self.session.get(f'{self.configuracion["url_base"]}dcs').json()
 
         except KeyError:
             self.logger.warning(
-                'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de categorías con id: %s',
-                self.id)
+                'Ha ocurrido un error mientras se cargaban los datos del esquema de categorías con id: %s', self.id)
+            self.logger.error(response.text)
             return categories
+        except Exception as e:
+            raise e
 
         dcs = self.__dcs_to_dict(response_dcs)
-        categories = self.__merge_categories(response, None, dcs, categories)
-        print(pandas.DataFrame(data=categories).to_string())
+        categories = self.__merge_categories(response_data, None, dcs, categories)
         return pandas.DataFrame(data=categories, dtype='string')
 
     def __merge_categories(self, response, parent, dcs, categories):
@@ -65,7 +69,7 @@ class CategoryScheme:
             categories['parent'].append(parent)
 
             for language in self.configuracion['languages']:
-                if language in categorie['names']:
+                if language in categorie['names'].keys():
                     categories[f'name_{language}'].append(categorie['names'][language])
                 else:
                     categories[f'name_{language}'].append(None)

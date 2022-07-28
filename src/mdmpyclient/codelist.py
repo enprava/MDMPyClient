@@ -27,7 +27,7 @@ class Codelist:
 
     """
 
-    def __init__(self, session, configuracion, codelist_id, agency_id, version, init_data=False):
+    def __init__(self, session, configuracion, codelist_id, agency_id, version, names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
@@ -35,42 +35,47 @@ class Codelist:
         self.id = codelist_id
         self.version = version
         self.agency_id = agency_id
-        self.data = self.get_data() if init_data else None
+        self.names = names
+        self.des = des
+        self.data = self.get_data if init_data else None
 
     def get_data(self):
-        codes = {'id': [], 'name_es': [], 'name_en': [], 'parent': [], 'des_es': [], 'des_en': []}
+        codes = {'id': [], 'parent': []}
+        for language in self.configuracion['languages']:
+            codes[f'name_{language}'] = []
+            codes[f'des_{language}'] = []
+
         try:
             response = self.session.post(f'{self.configuracion["url_base"]}NOSQL/codelist/',
-                                         json={"id": self.id, "agencyId": self.agency_id,
-                                               "version": self.version,
-                                               "lang": "es",
-                                               "pageNum": 1, "pageSize": 2147483647, "rebuildDb": False}).json()['data'][
-                'codelists'][0]['codes']
+                                         json={"id": self.id, "agencyId": self.agency_id, "version": self.version,
+                                               "lang": "es", "pageNum": 1, "pageSize": 2147483647, "rebuildDb": False})
+
+            response_data = response.json()['data']['codelists'][0]['codes']
+
         except KeyError:
-            self.logger.warning(
-                'Ha ocurrido un error inesperado mientras se cargaban los datos de la codelist con id: %s', self.id)
+            self.logger.error(
+                'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
+            self.logger.error(response.text)
             return codes
 
-        for code in response:
+        except Exception as e:
+            raise e
+        for code in response_data:
             code_id = code['id']
-            name_es = code['names']['es'] if 'es' in code['names'].keys() else None
-            name_en = code['names']['en'] if 'en' in code['names'].keys() else None
             code_parent = code['parent'] if 'parent' in code.keys() else None
 
             codes['id'].append(code_id)
-            codes['name_es'].append(name_es)
-            codes['name_en'].append(name_en)
             codes['parent'].append(code_parent)
 
-            if 'descriptions' in code.keys():
-                des_es = code['descriptions']['es'] if 'es' in code['descriptions'].keys() else None
-                des_en = code['descriptions']['en'] if 'en' in code['descriptions'].keys() else None
-            else:
-                des_es = None
-                des_en = None
-
-            codes['des_es'].append(des_es)
-            codes['des_en'].append(des_en)
+            for language in self.configuracion['languages']:
+                if language in code['names'].keys():
+                    codes[f'name_{language}'].append(code['names'][language])
+                else:
+                    codes[f'name_{language}'].append(None)
+                if 'descriptions' in code.keys() and language in code['descriptions'].keys():
+                    codes[f'des_{language}'].append(code['descriptions'][language])
+                else:
+                    codes[f'des_{language}'].append(None)
         return pandas.DataFrame(data=codes, dtype='string')
 
     def __repr__(self):
