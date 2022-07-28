@@ -38,9 +38,7 @@ class MDM:
 
         self.session = self.authenticate()
 
-        self.codelists = self.get_all_codelist()
-
-        self.concept_schemes = self.get_all_concept_scheme()
+        self.codelists = Codelists(self.session,self.configuracion,init_data=False)
 
         self.category_schemes = self.get_all_category_scheme()
 
