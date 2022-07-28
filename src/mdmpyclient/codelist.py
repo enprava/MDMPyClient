@@ -1,6 +1,7 @@
-import pandas
 import logging
 import sys
+
+import pandas
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -43,11 +44,11 @@ class Codelist:
                                          json={"id": self.id, "agencyId": self.agency_id,
                                                "version": self.version,
                                                "lang": "es",
-                                               "pageNum": 1, "pageSize": 5000000, "rebuildDb": False}).json()['data'][
+                                               "pageNum": 1, "pageSize": 2147483647, "rebuildDb": False}).json()['data'][
                 'codelists'][0]['codes']
         except KeyError:
             self.logger.warning(
-                f'Ha ocurrido un error inesperado mientras se cargaban los datos de la codelist con id: {self.id}')
+                'Ha ocurrido un error inesperado mientras se cargaban los datos de la codelist con id: %s', self.id)
             return codes
 
         for code in response:
@@ -70,7 +71,7 @@ class Codelist:
 
             codes['des_es'].append(des_es)
             codes['des_en'].append(des_en)
-        return pandas.DataFrame(data=codes)
+        return pandas.DataFrame(data=codes, dtype='string')
 
     def __repr__(self):
         return f'{self.id} {self.version}'

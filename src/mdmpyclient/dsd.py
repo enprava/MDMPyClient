@@ -1,4 +1,3 @@
-import pandas
 import logging
 import sys
 
@@ -24,6 +23,8 @@ class DSD:
                     f'{self.configuracion["url_base"]}dsd/{self.id}/{self.agency_id}/{self.version}').json()['data'][
                     'dataStructures'][0]['dataStructureComponents']
         except KeyError:
+            self.logger.warning('Ha ocurrido un error inesperado mientras se cargaban los datos del DSD con id: %s',
+                                self.id)
             return {}
         return response
 

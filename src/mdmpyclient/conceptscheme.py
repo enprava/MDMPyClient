@@ -1,6 +1,7 @@
-import pandas
 import logging
 import sys
+
+import pandas
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -43,7 +44,8 @@ class ConceptScheme:
                 'data']['conceptSchemes'][0]['concepts']
         except KeyError:
             self.logger.warning(
-                f'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de conceptos con id: {self.id}')
+                'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de conceptos con id: %s',
+                self.id)
             return concepts
 
         for concept in response:
@@ -63,7 +65,7 @@ class ConceptScheme:
                 des_en = None
             concepts['des_es'].append(des_es)
             concepts['des_en'].append(des_en)
-        return pandas.DataFrame(data=concepts)
+        return pandas.DataFrame(data=concepts, dtype='string')
 
     def __repr__(self):
         return f'{self.id} {self.version}'

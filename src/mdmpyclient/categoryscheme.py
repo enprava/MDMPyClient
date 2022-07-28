@@ -1,6 +1,7 @@
-import pandas
 import logging
 import sys
+
+import pandas
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -34,47 +35,56 @@ class CategoryScheme:
         self.data = self.get_data() if init_data else None
 
     def get_data(self):
-        categories = {'id': [], 'name_es': [], 'name_en': [], 'des_es': [], 'des_en': [],
-                      'parent': [], 'id_cube_cat': []}
+        categories = {'id': [], 'parent': [], 'id_cube_cat': []}
+        for language in self.configuracion['languages']:
+            categories[f'name_{language}'] = []
+            categories[f'des_{language}'] = []
+
         try:
             response = self.session.get(
                 f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}').json()[
                 'data']['categorySchemes'][0]['categories']
             response_dcs = self.session.get(f'{self.configuracion["url_base"]}dcs').json()
+
         except KeyError:
             self.logger.warning(
-                f'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de categorías con id: {self.id}')
+                'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de categorías con id: %s',
+                self.id)
             return categories
-        dcs = self.__dcs_to_dict(response_dcs)
-        self.__extract_categories(response, None, dcs, categories)
-        return pandas.DataFrame(data=categories)
 
-    def __extract_categories(self, response, parent, dcs, categories):
+        dcs = self.__dcs_to_dict(response_dcs)
+        categories = self.__merge_categories(response, None, dcs, categories)
+        print(pandas.DataFrame(data=categories).to_string())
+        return pandas.DataFrame(data=categories, dtype='string')
+
+    def __merge_categories(self, response, parent, dcs, categories):
         for categorie in response:
             category_id = categorie['id']
-            category_name_es = categorie['names']['es'] if 'es' in categorie['names'].keys() else None
-            category_name_en = categorie['names']['en'] if 'en' in categorie['names'].keys() else None
 
             categories['id'].append(category_id)
-            categories['name_es'].append(category_name_es)
-            categories['name_en'].append(category_name_en)
             categories['parent'].append(parent)
-            if 'descriptions' in categorie.keys():
-                category_des_es = categorie['descriptions']['es'] if 'es' in categorie['descriptions'].keys() else None
-                category_des_en = categorie['descriptions']['en'] if 'en' in categorie['descriptions'].keys() else None
-            else:
-                category_des_es = None
-                category_des_en = None
 
-            categories['des_es'].append(category_des_es)
-            categories['des_en'].append(category_des_en)
+            for language in self.configuracion['languages']:
+                if language in categorie['names']:
+                    categories[f'name_{language}'].append(categorie['names'][language])
+                else:
+                    categories[f'name_{language}'].append(None)
+
+                if 'descriptions' in categorie.keys() and language in categorie['descriptions']:
+                    categories[f'des_{language}'].append(categorie['description'][language])
+                else:
+                    categories[f'des_{language}'].append(None)
 
             if category_id in dcs.keys():
-                categories['id_cube_cat'] = dcs[category_id]
+                categories['id_cube_cat'].append(dcs[category_id])
+            else:
+                categories['id_cube_cat'].append(None)
 
             if 'categories' in categorie.keys():
-                self.__extract_categories(categorie['categories'], category_id, categories)
+                self.__merge_categories(categorie['categories'], category_id, dcs, categories)
+        return categories
 
+    # TODO
     def __dcs_to_dict(self, response_dcs):
         dcs = {}
         for dc in response_dcs:
