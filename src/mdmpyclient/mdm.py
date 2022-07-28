@@ -62,7 +62,7 @@ class MDM:
         # else:
         #     self.logger.info('No se han extraído los esquemas de categoría debido a un error inesperado')
 
-        self.dsds = self.get_all_dsd()
+        # self.dsds = self.get_all_dsd()
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['language']}
@@ -98,7 +98,7 @@ class MDM:
             if codelist_id not in codelists[agency].keys():
                 codelists[agency][codelist_id] = {}
             codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
-                                                               version, True)
+                                                               version)
         return codelists
 
     def get_all_concept_scheme(self):
@@ -140,7 +140,8 @@ class MDM:
             if category_scheme_id not in category_schemes[agency].keys():
                 category_schemes[agency][category_scheme_id] = {}
             category_schemes[agency][category_scheme_id][version] = CategoryScheme(self.session, self.configuracion,
-                                                                                   category_scheme_id, agency, version)
+                                                                                   category_scheme_id, agency, version,
+                                                                                   True)
         return category_schemes
 
     def get_all_dsd(self):
@@ -161,3 +162,12 @@ class MDM:
                 dsd[agency][dsd_id] = {}
             dsd[agency][dsd_id][version] = DSD(self.session, self.configuracion, dsd_id, agency, version, True)
         return dsd
+
+    def get_all_cube(self):
+        cubes = {}
+        try:
+            response_cubes = self.session.get(f'{self.configuracion["url_base"]}cubesNoFilter')
+        except KeyError:
+            return cubes
+
+        return cubes

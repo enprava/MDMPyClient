@@ -24,7 +24,7 @@ class DSD:
                     f'{self.configuracion["url_base"]}dsd/{self.id}/{self.agency_id}/{self.version}').json()['data'][
                     'dataStructures'][0]['dataStructureComponents']
         except KeyError:
-            return None
+            return {}
         return response
 
     def __repr__(self):

@@ -35,20 +35,21 @@ class CategoryScheme:
 
     def get_data(self):
         categories = {'id': [], 'name_es': [], 'name_en': [], 'des_es': [], 'des_en': [],
-                      'parent': []}
+                      'parent': [], 'id_cube_cat': []}
         try:
             response = self.session.get(
                 f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}').json()[
                 'data']['categorySchemes'][0]['categories']
+            response_dcs = self.session.get(f'{self.configuracion["url_base"]}dcs').json()
         except KeyError:
             self.logger.warning(
                 f'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de categorías con id: {self.id}')
             return categories
-
-        self.__extract_categories(response, None, categories)
+        dcs = self.__dcs_to_dict(response_dcs)
+        self.__extract_categories(response, None, dcs, categories)
         return pandas.DataFrame(data=categories)
 
-    def __extract_categories(self, response, parent, categories):
+    def __extract_categories(self, response, parent, dcs, categories):
         for categorie in response:
             category_id = categorie['id']
             category_name_es = categorie['names']['es'] if 'es' in categorie['names'].keys() else None
@@ -68,8 +69,17 @@ class CategoryScheme:
             categories['des_es'].append(category_des_es)
             categories['des_en'].append(category_des_en)
 
+            if category_id in dcs.keys():
+                categories['id_cube_cat'] = dcs[category_id]
+
             if 'categories' in categorie.keys():
-                self.extract_categories(categorie['categories'], category_id, categories)
+                self.__extract_categories(categorie['categories'], category_id, categories)
+
+    def __dcs_to_dict(self, response_dcs):
+        dcs = {}
+        for dc in response_dcs:
+            dcs[dc['CatCode']] = dc['IDCat']
+        return dcs
 
     def __repr__(self):
         return f'{self.id} {self.version}'
