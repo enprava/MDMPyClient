@@ -6,6 +6,25 @@ logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class DSD:
+    """ Clase que representa un DSD del M&D Manager.
+
+        Args:
+            session (:class:`requests.session.Session`): Sesión autenticada en la API.
+            configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
+             parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+             fichero de configuración configuracion/configuracion.yaml.
+            dsd_id (class: 'String'): Identificador del DSD.
+            agency_id (class: `String`): Identificador de la agencia vinculada.
+            version (class: `String`): Version del DSD.
+            names (class: `Diccionario`): Diccionario con los nombres del DSD en varios idiomas.
+            des (class: `String`): Diccionario con las descripciones del DSD en varios idiomas.
+            init_data (class: `Boolean`): True para traer todos los datos del DSD,
+             False para traer solo id, agencia y versión. Por defecto toma el valor False.
+
+        Attributes:
+
+
+        """
     def __init__(self, session, configuracion, dsd_id, agency_id, version, names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 

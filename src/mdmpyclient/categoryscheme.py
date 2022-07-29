@@ -16,8 +16,12 @@ class CategoryScheme:
          parámetros necesarios como la url de la API. Debe ser inicializado a partir del
          fichero de configuración configuracion/configuracion.yaml.
         category_scheme_id (class: `String`): Identificador del esquema de categorías.
-        agency_id (class: `String`): Identificador de la agencia vinculada
-        version (class: `String`): Versión del esquema de categorías
+        agency_id (class: `String`): Identificador de la agencia vinculada.
+        version (class: `String`): Versión del esquema de categorías.
+        names (class: `Diccionario`): Diccionario con los nombres del esquema de categorías
+         en varios idiomas.
+        des (class: `String`): Diccionario con las descripciones del esquema de categorías
+         en varios idiomas.
         init_data (class: `Boolean`): True para traer todos los datos del esquema de
          categorías, False para traer solo id, agencia y versión. Por defecto toma el valor False.
     Attributes:

@@ -18,6 +18,8 @@ class Codelist:
         codelist_id (:class:`String`): Identificador de la codelist.
         version (:class:`String`): Versión de la codelist.
         agency_id (:class:`String`): Agencia vinculada a la codelist.
+        names (class: `Diccionario`): Diccionario con los nombres de la codelist en varios idiomas.
+        des (class: `String`): Diccionario con las descripciones de la codelist en varios idiomas.
         init_data (:class:`Boolean`): True para traer todos los datos de la codelist,
          False para traer solo id, agencia y versión. Por defecto toma el valor False.
 
