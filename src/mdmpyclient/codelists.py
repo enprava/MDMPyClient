@@ -32,9 +32,9 @@ class Codelists:
         self.session = session
         self.configuracion = configuracion
 
-        self.data = self.get_all(init_data)
+        self.data = self.get(init_data)
 
-    def get_all(self, init_data):
+    def get(self, init_data=True):
         codelists = {}
         self.logger.info('Solicitando información de las codelists')
 
@@ -58,23 +58,33 @@ class Codelists:
                                                                version, init_data)
         return codelists
 
-    def save(self, agencia, id, version, names, descriptions):
-        self.logger.info("Guardando la CL: %s %s %s", agencia, id, version)
-
+    def create(self, agencia, id, version, descripciones, nombres):
         json = {'data': {'codelists': [
-            {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': names, 'descriptions': descriptions,
+            {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': str(version)}]},
             'meta': {}}
-        try:
-            response = \
-                self.session.post(
-                    f'{self.configuracion["url_base"]}NOSQL/save/{id}/{agencia}/{version}/es',
-                    json=json)
-            response.raise_for_status()
 
-        except requests.exceptions.HTTPError as e:
-            if e.response.json()['errorCode'] == 'SQLLITE_NODATA_TOSAVE':
-                self.logger.warning('La CL: %s-%s-%s no contiene cambios que guardar', agencia, id, version)
+        try:
+
+            response = \
+                self.session.post(f'{self.configuracion["url_base"]}createArtefacts',
+                                  json=json)
+
+            response.raise_for_status()
         except Exception as e:
             raise e
 
+    def put(self, agencia, id, version, descripciones, nombres):
+        json = {'data': {'codelists': [
+            {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
+             'version': str(version)}]},
+            'meta': {}}
+
+        try:
+            response = \
+                self.session.put(f'{self.configuracion["url_base"]}updateArtefacts',
+                                 json=json)
+
+            response.raise_for_status()
+        except Exception as e:
+            raise e
