@@ -8,6 +8,28 @@ logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class Cube:
+    """ Clase que representa un Cubo del M&D Manager.
+
+           Args:
+               session (:class:`requests.session.Session`): Sesión autenticada en la API.
+               configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
+                parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+                fichero de configuración configuracion/configuracion.yaml.
+               cube_id (class: 'Integer'): Identificador del cubo.
+               cube_code (class: `String`): Código del cubo. Coincide con el ID que se le da cuando
+                se crea desde el cliente
+               cat_id (class: `Integer`): ID de la categoría a la que pertenece el cubo. La categoría
+                perteneciente al esquema de categorías de los cubos en la api se refieren a estas como
+                como 'dcs'.
+               names (class: `Diccionario`): Diccionario con los nombres del cubo en varios idiomas.
+               init_data (class: `Boolean`): True para traer todos los datos del cubo,
+                False para traer solo id, agencia y versión. Por defecto toma el valor False.
+
+           Attributes:
+
+
+           """
+
     def __init__(self, session, configuracion, cube_id, cube_code, cat_id, dsd_code, names, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 

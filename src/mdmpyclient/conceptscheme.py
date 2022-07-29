@@ -16,8 +16,12 @@ class ConceptScheme:
          parámetros necesarios como la url de la API. Debe ser inicializado a partir del
          fichero de configuración configuracion/configuracion.yaml.
         cs_id (class: 'String'): Identificador del esquema de conceptos.
-        agency_id (class: `String`): Identificador de la agencia vinculada
-        version (class: `String`): Version del esquema de conceptos
+        agency_id (class: `String`): Identificador de la agencia vinculada.
+        version (class: `String`): Version del esquema de conceptos.
+        names (class: `Diccionario`): Diccionario con los nombres del esquema de conceptos
+         en varios idiomas.
+        des (class: `String`): Diccionario con las descripciones del esquema de conceptos
+         en varios idiomas.
         init_data (class: `Boolean`): True para traer todos los datos del esquema de
          conceptos, False para traer solo id, agencia y versión. Por defecto toma el valor False.
 
