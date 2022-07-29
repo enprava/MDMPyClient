@@ -33,7 +33,7 @@ class MDM:
     """
 
     def __init__(self, configuracion):
-        self.logger = logging.getlogger(f'{self.__class__.__name__}')
+        self.logger = logging.getLogger(f'{self.__class__.__name__}')
         self.configuracion = configuracion
 
         self.session = self.authenticate()
@@ -107,7 +107,7 @@ class MDM:
             if codelist_id not in codelists[agency].keys():
                 codelists[agency][codelist_id] = {}
             codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
-                                                               version, names, des, True)
+                                                               version, names, des, init_data=True)
         return codelists
 
     def get_all_concept_scheme(self):

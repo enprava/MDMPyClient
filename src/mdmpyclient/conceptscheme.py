@@ -49,8 +49,7 @@ class ConceptScheme:
             concepts[f'des_{language}'] = []
         try:
             response = self.session.get(
-                f'{self.configuracion["url_base"]}conceptScheme/{self.id}/{self.agency_id}/{self.version}').json()[
-                'data']['conceptSchemes'][0]['concepts']
+                f'{self.configuracion["url_base"]}conceptScheme/{self.id}/{self.agency_id}/{self.version}')
             response_data = response.json()['data']['conceptSchemes'][0]['concepts']
         except KeyError:
             self.logger.error(

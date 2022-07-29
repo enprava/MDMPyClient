@@ -39,7 +39,7 @@ class Codelist:
         self.agency_id = agency_id
         self.names = names
         self.des = des
-        self.data = self.get_data if init_data else None
+        self.data = self.get_data() if init_data else None
 
     def get_data(self):
         codes = {'id': [], 'parent': []}
@@ -78,6 +78,7 @@ class Codelist:
                     codes[f'des_{language}'].append(code['descriptions'][language])
                 else:
                     codes[f'des_{language}'].append(None)
+        print(pandas.DataFrame(data=codes, dtype='string').to_string())
         return pandas.DataFrame(data=codes, dtype='string')
 
     def __repr__(self):

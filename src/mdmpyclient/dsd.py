@@ -41,8 +41,7 @@ class DSD:
         try:
             response = \
                 self.session.get(
-                    f'{self.configuracion["url_base"]}dsd/{self.id}/{self.agency_id}/{self.version}').json()['data'][
-                    'dataStructures'][0]['dataStructureComponents']
+                    f'{self.configuracion["url_base"]}dsd/{self.id}/{self.agency_id}/{self.version}')
             response_data = response.json()['data'][
                 'dataStructures'][0]['dataStructureComponents']
         except KeyError:

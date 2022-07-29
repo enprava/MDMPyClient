@@ -48,8 +48,7 @@ class CategoryScheme:
 
         try:
             response = self.session.get(
-                f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}').json()[
-                'data']['categorySchemes'][0]['categories']
+                f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}')
             response_data = response.json()['data']['categorySchemes'][0]['categories']
             response_dcs = self.session.get(f'{self.configuracion["url_base"]}dcs').json()
 
