@@ -6,6 +6,7 @@ import requests
 from src.mdmpyclient.categoryscheme import CategoryScheme
 from src.mdmpyclient.codelists import Codelists
 from src.mdmpyclient.conceptscheme import ConceptScheme
+from src.mdmpyclient.conceptschemes import ConceptSchemes
 from src.mdmpyclient.cube import Cube
 from src.mdmpyclient.dsd import DSD
 
@@ -39,6 +40,8 @@ class MDM:
         self.session = self.authenticate()
 
         self.codelists = Codelists(self.session,self.configuracion,init_data=False)
+
+        self.concept_schemes = ConceptSchemes(self.session, self.configuracion, init_data=False)
 
 
         # self.concept_schemes = self.get_all_concept_scheme()
@@ -79,39 +82,6 @@ class MDM:
     def logout(self):
         self.logger.info('Finalizando conexión con la API')
         self.session.post(f'{self.configuracion["url_base"]}api/Security/Logout')
-
-
-    def get_all_concept_scheme(self):
-        concept_schemes = {}
-        self.logger.info('Solicitando información de los esquemas de concepto')
-
-        try:
-            response = self.session.get(f'{self.configuracion["url_base"]}conceptScheme')
-            response_data = response.json()['data'][
-                'conceptSchemes']
-        except KeyError:
-            self.logger.error(
-                'No se han extraído los esquemas de concepto debido a un error de conexión con el servidor: %s',
-                response.text)
-            return concept_schemes
-        except Exception as e:
-            raise e
-        self.logger.info('Esquemas de concepto extraídos correctamente')
-
-        for cs in response_data:
-            agency = cs['agencyID']
-            cs_id = cs['id']
-            version = cs['version']
-            names = cs['names']
-            des = cs['descriptions'] if 'descriptions' in cs.keys() else None
-
-            if agency not in concept_schemes:
-                concept_schemes[agency] = {}
-            if cs_id not in concept_schemes[agency].keys():
-                concept_schemes[agency][cs_id] = {}
-            concept_schemes[agency][cs_id][version] = ConceptScheme(self.session, self.configuracion, cs_id, agency,
-                                                                    version, names, des, True)
-        return concept_schemes
 
     def get_all_category_scheme(self):
         category_schemes = {}

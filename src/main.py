@@ -28,8 +28,9 @@ if __name__ == '__main__':
         controller.codelists.data = controller.codelists.get()
         codelist2 = controller.codelists.data['ESC01']['CL_UNIT']['1.0']
         codelist2.init_codes()
-
         codelist2.translate(traductor,traducciones)
-
+        # controller.concept_schemes.data = controller.concept_schemes.get()
+        # conceptscheme = controller.concept_schemes.data['ESC01']['ASDF']['1.0']
+        # controller.concept_schemes.put('ESC01','POTATO','1.0', {'es':'pepe'},{'es':'ramon'})
+        # conceptscheme.put('tests/test_cs.csv')
         controller.logout()
-

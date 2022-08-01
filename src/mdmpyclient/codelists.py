@@ -1,8 +1,6 @@
 import logging
 import sys
 
-import requests
-
 from src.mdmpyclient.codelist import Codelist
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
@@ -17,14 +15,12 @@ class Codelists:
         configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
          parámetros necesarios como la url de la API. Debe ser inicializado a partir del
          fichero de configuración configuracion/configuracion.yaml.
-        codelist_id (:class:`String`): Identificador de la codelist.
-        version (:class:`String`): Versión de la codelist.
-        agency_id (:class:`String`): Agencia vinculada a la codelist.
-        init_data (:class:`Boolean`): True para traer todos los datos de la codelist,
-         False para traer solo id, agencia y versión. Por defecto toma el valor False.
+        init_data (:class:`Boolean`): True para traer todas las  codelists, False para no
+         traerlas. Por defecto toma el valor False.
 
     Attributes:
-        data
+        data (:obj:`Dicconario`) Diccionario con todas las codelists
+
     """
 
     def __init__(self, session, configuracion, init_data=False):
@@ -41,24 +37,29 @@ class Codelists:
         try:
             response = self.session.get(f'{self.configuracion["url_base"]}codelist').json()['data']['codelists']
         except KeyError:
-            self.logger.warning('No se han extraído las codelist debido a un error inesperado')
+            self.logger.error(
+                'No se han extraído los esquemas de concepto debido a un error de conexión con el servidor: %s',
+                response.text)
             return codelists
+        except Exception as e:
+            raise e
         self.logger.info('Codelist extraídas correctamente')
 
         for codelist in response:
             agency = codelist['agencyID']
             codelist_id = codelist['id']
             version = codelist['version']
-
+            names = codelist['names']
+            des = codelist['descriptions'] if 'descriptions' in codelists.keys() else None
             if agency not in codelists:
                 codelists[agency] = {}
             if codelist_id not in codelists[agency].keys():
                 codelists[agency][codelist_id] = {}
             codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
-                                                               version, init_data)
+                                                               version, names, des, init_data=init_data)
         return codelists
 
-    def create(self, agencia, id, version, descripciones, nombres):
+    def create(self, agencia, id, version, nombres,descripciones):
         json = {'data': {'codelists': [
             {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': str(version)}]},
