@@ -16,8 +16,12 @@ class ConceptScheme:
          parámetros necesarios como la url de la API. Debe ser inicializado a partir del
          fichero de configuración configuracion/configuracion.yaml.
         cs_id (class: 'String'): Identificador del esquema de conceptos.
-        agency_id (class: `String`): Identificador de la agencia vinculada
-        version (class: `String`): Version del esquema de conceptos
+        agency_id (class: `String`): Identificador de la agencia vinculada.
+        version (class: `String`): Version del esquema de conceptos.
+        names (class: `Diccionario`): Diccionario con los nombres del esquema de conceptos
+         en varios idiomas.
+        des (class: `String`): Diccionario con las descripciones del esquema de conceptos
+         en varios idiomas.
         init_data (class: `Boolean`): True para traer todos los datos del esquema de
          conceptos, False para traer solo id, agencia y versión. Por defecto toma el valor False.
 
@@ -26,7 +30,7 @@ class ConceptScheme:
 
     """
 
-    def __init__(self, session, configuracion, cs_id, agency_id, version, init_data=False):
+    def __init__(self, session, configuracion, cs_id, agency_id, version, names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
@@ -34,37 +38,39 @@ class ConceptScheme:
         self.id = cs_id
         self.agency_id = agency_id
         self.version = version
+        self.names = names
+        self.des = des
         self.data = self.get_data() if init_data else None
 
     def get_data(self):
-        concepts = {'id': [], 'name_es': [], 'name_en': [], 'des_es': [], 'des_en': []}
+        concepts = {'id': []}
+        for language in self.configuracion['languages']:
+            concepts[f'name_{language}'] = []
+            concepts[f'des_{language}'] = []
         try:
             response = self.session.get(
-                f'{self.configuracion["url_base"]}conceptScheme/{self.id}/{self.agency_id}/{self.version}').json()[
-                'data']['conceptSchemes'][0]['concepts']
+                f'{self.configuracion["url_base"]}conceptScheme/{self.id}/{self.agency_id}/{self.version}')
+            response_data = response.json()['data']['conceptSchemes'][0]['concepts']
         except KeyError:
-            self.logger.warning(
-                'Ha ocurrido un error inesperado mientras se cargaban los datos del esquema de conceptos con id: %s',
-                self.id)
+            self.logger.error(
+                'Ha ocurrido un error mientras se cargaban los datos del esquema de conceptos con id: %s', self.id)
+            self.logger.error(response.text)
             return concepts
-
-        for concept in response:
+        except Exception as e:
+            raise e
+        for concept in response_data:
             concept_id = concept['id']
-            name_es = concept['names']['es'] if 'es' in concept['names'].keys() else None
-            name_en = concept['names']['en'] if 'en' in concept['names'].keys() else None
-
             concepts['id'].append(concept_id)
-            concepts['name_es'].append(name_es)
-            concepts['name_en'].append(name_en)
-            if 'descriptions' in concept.keys():
-                des_es = concept['descriptions']['es'] if 'es' in concept['descriptions'].keys() else None
-                des_en = concept['descriptions']['en'] if 'en' in concept['descriptions'].keys() else None
 
-            else:
-                des_es = None
-                des_en = None
-            concepts['des_es'].append(des_es)
-            concepts['des_en'].append(des_en)
+            for language in self.configuracion['languages']:
+                if language in concept['names'].keys():
+                    concepts[f'name_{language}'].append(concept['names'][language])
+                else:
+                    concepts[f'name_{language}'].append(None)
+                if 'descriptions' in concept.keys() and language in concept['descriptions'].keys():
+                    concepts[f'des_{language}'].append(concept['descriptions'][language])
+                else:
+                    concepts[f'des_{language}'].append(None)
         return pandas.DataFrame(data=concepts, dtype='string')
 
     def __repr__(self):

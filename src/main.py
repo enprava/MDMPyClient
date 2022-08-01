@@ -1,10 +1,35 @@
+import logging
+import sys
+
+import deepl as deepl
 import yaml
 
 from src.mdmpyclient.mdm import MDM
 
-if __name__ == '__main__':
-    configuracion = open('configuracion/configuracion.yaml', 'r', encoding='utf-8')
-    configuracion = yaml.safe_load(configuracion)
+fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
+logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
+logger = logging.getLogger('MDM')
 
-    controller = MDM(configuracion)
-    controller.logout()
+if __name__ == '__main__':
+    traductor = deepl.Translator('92766a66-fa2a-b1c6-d7dd-ec0750322229:fx')
+
+    with open("configuracion/configuracion.yaml", 'r', encoding='utf-8') as configuracion, \
+            open("configuracion/traducciones.yaml", 'r', encoding='utf-8') as traducciones:
+        configuracion = yaml.safe_load(configuracion)
+        traducciones = yaml.safe_load(traducciones)
+
+        controller = MDM(configuracion)
+        controller.codelists.put('ESC01', 'TEST', '1.0',
+                                 {language: 'dsfsd' if language == 'es' else 'ingles' for language in
+                                  configuracion['languages']},
+                                 {language: 'dsfsd' if language == 'es' else 'ingles' for language in
+                                  configuracion['languages']})
+
+        controller.codelists.data = controller.codelists.get()
+        codelist2 = controller.codelists.data['ESC01']['CL_UNIT']['1.0']
+        codelist2.init_codes()
+
+        codelist2.translate(traductor,traducciones)
+
+        controller.logout()
+
