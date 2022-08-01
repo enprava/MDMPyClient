@@ -1,4 +1,4 @@
-url_base: http://192.168.1.123/sdmx_172/ws/NODE_API/
+url_base: http://localhost/sdmx_172/ws/NODE_API/
 nodeId: 'ESC01'
 languages:
   - es

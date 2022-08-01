@@ -4,7 +4,7 @@ import sys
 import requests
 
 from src.mdmpyclient.categoryscheme import CategoryScheme
-from src.mdmpyclient.codelist import Codelist
+from src.mdmpyclient.codelists import Codelists
 from src.mdmpyclient.conceptscheme import ConceptScheme
 from src.mdmpyclient.cube import Cube
 from src.mdmpyclient.dsd import DSD
@@ -38,15 +38,16 @@ class MDM:
 
         self.session = self.authenticate()
 
-        self.codelists = self.get_all_codelist()
+        self.codelists = Codelists(self.session,self.configuracion,init_data=False)
 
-        self.concept_schemes = self.get_all_concept_scheme()
 
-        self.category_schemes = self.get_all_category_scheme()
+        # self.concept_schemes = self.get_all_concept_scheme()
+        #
+        # self.category_schemes = self.get_all_category_scheme()
+        #
+        # self.dsds = self.get_all_dsd()
 
-        self.dsds = self.get_all_dsd()
-
-        self.cubes = self.get_all_cube()
+        # self.cubes = self.get_all_cube()
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['languages'][0],
@@ -79,36 +80,6 @@ class MDM:
         self.logger.info('Finalizando conexión con la API')
         self.session.post(f'{self.configuracion["url_base"]}api/Security/Logout')
 
-    def get_all_codelist(self):
-        codelists = {}
-        self.logger.info('Solicitando información de las codelists')
-
-        try:
-            response = self.session.get(f'{self.configuracion["url_base"]}codelist')
-            response_data = response.json()['data']['codelists']
-
-        except KeyError:
-            self.logger.error('No se han extraído las codelist debido a un error de conexión con el servidor: %s',
-                              response.text)
-            return codelists
-        except Exception as e:
-            raise e
-        self.logger.info('Codelist extraídas correctamente')
-
-        for codelist in response_data:
-            agency = codelist['agencyID']
-            codelist_id = codelist['id']
-            version = codelist['version']
-            names = codelist['names']
-            des = codelist['descriptions'] if 'descriptions' in codelist.keys() else None
-
-            if agency not in codelists:
-                codelists[agency] = {}
-            if codelist_id not in codelists[agency].keys():
-                codelists[agency][codelist_id] = {}
-            codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
-                                                               version, names, des, init_data=True)
-        return codelists
 
     def get_all_concept_scheme(self):
         concept_schemes = {}

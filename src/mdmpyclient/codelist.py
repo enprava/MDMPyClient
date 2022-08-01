@@ -2,6 +2,8 @@ import logging
 import sys
 
 import pandas
+import numpy as np
+import pandas as pd
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -39,14 +41,13 @@ class Codelist:
         self.agency_id = agency_id
         self.names = names
         self.des = des
-        self.data = self.get_data() if init_data else None
+        self.codes = self.init_codes() if init_data else None
 
-    def get_data(self):
+    def get(self):
         codes = {'id': [], 'parent': []}
         for language in self.configuracion['languages']:
             codes[f'name_{language}'] = []
             codes[f'des_{language}'] = []
-
         try:
             response = self.session.post(f'{self.configuracion["url_base"]}NOSQL/codelist/',
                                          json={"id": self.id, "agencyId": self.agency_id, "version": self.version,
@@ -62,24 +63,91 @@ class Codelist:
 
         except Exception as e:
             raise e
+            
         for code in response_data:
-            code_id = code['id']
-            code_parent = code['parent'] if 'parent' in code.keys() else None
+            for key in codes:
+                try:
+                    if key == 'id' or key == 'parent':
+                        codes[key].append(code[key])
+                    else:
+                        language = key[-2:]
+                        if 'name' in key:
+                            codes[key].append(code['names'][language])
+                        if 'des' in key:
+                            codes[key].append(code['descriptions'][language])
 
-            codes['id'].append(code_id)
-            codes['parent'].append(code_parent)
-
-            for language in self.configuracion['languages']:
-                if language in code['names'].keys():
-                    codes[f'name_{language}'].append(code['names'][language])
-                else:
-                    codes[f'name_{language}'].append(None)
-                if 'descriptions' in code.keys() and language in code['descriptions'].keys():
-                    codes[f'des_{language}'].append(code['descriptions'][language])
-                else:
-                    codes[f'des_{language}'].append(None)
-        print(pandas.DataFrame(data=codes, dtype='string').to_string())
+                except Exception as e:
+                    codes[key].append(None)
         return pandas.DataFrame(data=codes, dtype='string')
 
+    def put(self):
+        headers = self.session.headers
+        upload_headers = self.session.headers
+        del upload_headers['Content-Type']
+        for language in self.configuracion['languages']:
+            self.logger.info('Actualizando códigos en: %s', language)
+            # Name and Description selection for each language.
+            selection = self.codes[['id', 'name_' + language, 'des_' + language, 'parent']]
+            selection.columns = ['Id', 'Name', 'Description', 'ParentCode']
+
+            csv = selection.to_csv(index=False, sep=';')
+            custom_data = str(
+                {"type": "codelist", "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
+                 "lang": 'es',
+                 "firstRowHeader": 'true',
+                 "columns": {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
+                             "isDefault": -1}, "textSeparator": ";", "textDelimiter": 'null'}
+            )
+            files = {'file': (
+                'USELESSss.csv', csv, 'application/vnd.ms-excel', {}),
+                'CustomData': (None, custom_data)}
+            try:
+                response = self.session.post(
+                    f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
+                    files=files)
+
+                response.raise_for_status()
+
+            except Exception as e:
+                raise e
+
+            response = response.json()
+            response['identity']['ID'] = self.id
+            response['identity']['Agency'] = self.agency_id
+            response['identity']['Version'] = self.version
+
+            try:
+                response = self.session.post(
+                    f'{self.configuracion["url_base"]}importFileCsvItem',
+                    json=response)
+
+                self.logger.info('Codigos Actualizados correctamente en: %s', language)
+
+            except Exception as e:
+                raise e
+
+        ## Utilizar decoradores correctamente para los getters y setters sería clave.
+        # la sintaxis tb se puede mejorar seguro.
+
+    def init_codes(self):
+        self.codes = self.get()
+
     def __repr__(self):
-        return f'{self.id} {self.version}'
+        return f'{self.agency_id} {self.id} {self.version}'
+
+    def translate(self, traductor, translations_cache):
+        columns = self.codes.columns[2:]
+        to_be_translated = self.codes[columns]  # Discarding ID and PARENTCODE
+
+        for column in columns:
+            target_language = column[-2:]
+            source_languages = self.configuracion['languages'].copy()
+            source_languages.remove(target_language)
+            source_language = source_languages[-1]
+            source_column = column[:-2] + source_language
+
+            to_be_translated_indices = self.codes[self.codes[column].isnull()][column].index
+            self.codes[column][to_be_translated_indices] = self.codes[source_column][to_be_translated_indices].map(
+                lambda value: translations_cache[value][
+                    target_language] if value in translations_cache.keys() else traductor.translate_text(value,
+                                                                                                         target_lang=target_language))
