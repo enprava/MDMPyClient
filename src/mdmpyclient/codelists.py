@@ -15,8 +15,8 @@ class Codelists:
         configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
          parámetros necesarios como la url de la API. Debe ser inicializado a partir del
          fichero de configuración configuracion/configuracion.yaml.
-        init_data (:class:`Boolean`): True para traer todas las  codelists, False para no
-         traerlas. Por defecto toma el valor False.
+        init_data (:class:`Boolean`): True para traer todos los códigos de las listas,
+         False para no traerlos. Por defecto toma el valor False.
 
     Attributes:
         data (:obj:`Dicconario`) Diccionario con todas las codelists
@@ -59,7 +59,7 @@ class Codelists:
                                                                version, names, des, init_data=init_data)
         return codelists
 
-    def create(self, agencia, id, version, nombres,descripciones):
+    def create(self, agencia, id, version, nombres, descripciones):
         json = {'data': {'codelists': [
             {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': str(version)}]},
@@ -78,14 +78,13 @@ class Codelists:
     def put(self, agencia, id, version, descripciones, nombres):
         json = {'data': {'codelists': [
             {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
-             'version': str(version)}]},
+             'version': version}]},
             'meta': {}}
 
+        self.logger.info('Creando o actualizando codelist con id: %s', id)
         try:
-            response = \
-                self.session.put(f'{self.configuracion["url_base"]}updateArtefacts',
-                                 json=json)
-
+            response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:
             raise e
+        self.logger.info('Codelist creada o actualizada correctamente')

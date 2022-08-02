@@ -85,21 +85,15 @@ class Codelist:
 
     def put(self, csv_file_route=None):
         upload_headers = self.session.headers.copy()
-        # if csv_file_route:
-        #     for language in self.configuracion['languages']:
-        #         self.logger.info('Actualizando códigos en: %s', language)
-        #         # Name and Description selection for each language.
-        #         selection = self.codes[['id', 'name_' + language, 'des_' + language, 'parent']]
-        #         selection.columns = ['Id', 'Name', 'Description', 'ParentCode']
-        # else:
+        custom_data = str(
+            {"type": "codelist", "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
+             "lang": 'es',  # HE DADO POR HECHO QUE SE VA A SUBIR EN ESPANYOL, CUIDAO
+             "firstRowHeader": 'true',
+             "columns": {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
+                         "isDefault": -1}, "textSeparator": ";", "textDelimiter": 'null'}
+        )
+
         with open(csv_file_route, 'r', encoding='utf-8') as csv:
-            custom_data = str(
-                {"type": "codelist", "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
-                 "lang": 'es',  # HE DADO POR HECHO QUE SE VA A SUBIR EN ESPANYOL, CUIDAO
-                 "firstRowHeader": 'true',
-                 "columns": {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
-                             "isDefault": -1}, "textSeparator": ";", "textDelimiter": 'null'}
-            )
             files = {'file': (
                 csv_file_route, csv, 'application/vnd.ms-excel', {}),
                 'CustomData': (None, custom_data)}
@@ -142,20 +136,24 @@ class Codelist:
     def __repr__(self):
         return f'{self.agency_id} {self.id} {self.version}'
 
-    def translate(self, traductor, translations_cache):
+    def translate(self, translator, translations_cache):
         columns = self.codes.columns[2:]
-        to_be_translated = self.codes[columns]  # Discarding ID and PARENTCODE
+        codes = self.codes.copy()
         for column in columns:
             target_language = column[-2:]
             source_languages = self.configuracion['languages'].copy()
             source_languages.remove(target_language)
+            if target_language == 'en':
+                target_language = 'EN-GB'
             source_language = source_languages[-1]
             source_column = column[:-2] + source_language
 
-            to_be_translated_indices = self.codes[self.codes[column].isnull()][column].index
-            print(self.codes[source_column][to_be_translated_indices])
-            self.codes[column][to_be_translated_indices] = self.codes[source_column][to_be_translated_indices].map(
-                lambda value: translations_cache[value][
-                    target_language] if value in translations_cache.keys() else traductor.translate_text(value,
-                                                                                                         target_lang=target_language))
-        print(self.codes.to_string())
+            to_be_translated_indexes = codes[codes[column].isnull()][column].index
+            fake_indexes = codes[codes[source_column].isnull()][source_column].index
+            to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
+            codes[column][to_be_translated_indexes] = codes[source_column][to_be_translated_indexes].map(
+                lambda value: self.__get_translate(translator, value, target_language, translations_cache))
+        return codes
+
+    def __get_translate(self, translator, value, target_language, translations_cache):
+        return str(translator.translate_text(value, target_lang=target_language))

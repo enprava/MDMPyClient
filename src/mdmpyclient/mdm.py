@@ -4,6 +4,7 @@ import sys
 import requests
 
 from src.mdmpyclient.categoryscheme import CategoryScheme
+from src.mdmpyclient.categoryschemes import CategorySchemes
 from src.mdmpyclient.codelists import Codelists
 from src.mdmpyclient.conceptscheme import ConceptScheme
 from src.mdmpyclient.conceptschemes import ConceptSchemes
@@ -43,11 +44,8 @@ class MDM:
 
         self.concept_schemes = ConceptSchemes(self.session, self.configuracion, init_data=False)
 
+        self.category_schemes = CategorySchemes(self.session, self.configuracion, init_data=False)
 
-        # self.concept_schemes = self.get_all_concept_scheme()
-        #
-        # self.category_schemes = self.get_all_category_scheme()
-        #
         # self.dsds = self.get_all_dsd()
 
         # self.cubes = self.get_all_cube()
@@ -82,39 +80,6 @@ class MDM:
     def logout(self):
         self.logger.info('Finalizando conexión con la API')
         self.session.post(f'{self.configuracion["url_base"]}api/Security/Logout')
-
-    def get_all_category_scheme(self):
-        category_schemes = {}
-        self.logger.info('Solicitando información de los esquemas de categorías')
-
-        try:
-            response = self.session.get(f'{self.configuracion["url_base"]}categoryScheme')
-            response_data = response.json()['data'][
-                'categorySchemes']
-        except KeyError:
-            self.logger.error(
-                'No se han extraído los esquemas de categoría debido a un error de conexión con el servidor %s',
-                response.text)
-            return category_schemes
-        except Exception as e:
-            raise e
-        self.logger.info('Esquemas de categoría extraídos correctamente')
-
-        for category_scheme in response_data:
-            category_scheme_id = category_scheme['id']
-            agency = category_scheme['agencyID']
-            version = category_scheme['version']
-            names = category_scheme['names']
-            des = category_scheme['descriptions'] if 'descriptions' in category_scheme.keys() else None
-
-            if agency not in category_schemes:
-                category_schemes[agency] = {}
-            if category_scheme_id not in category_schemes[agency].keys():
-                category_schemes[agency][category_scheme_id] = {}
-            category_schemes[agency][category_scheme_id][version] = CategoryScheme(self.session, self.configuracion,
-                                                                                   category_scheme_id, agency, version,
-                                                                                   names, des, True)
-            return category_schemes
 
     def get_all_dsd(self):
         dsd = {}

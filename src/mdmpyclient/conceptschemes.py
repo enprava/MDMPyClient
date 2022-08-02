@@ -15,8 +15,8 @@ class ConceptSchemes:
          configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
           parámetros necesarios como la url de la API. Debe ser inicializado a partir del
           fichero de configuración configuracion/configuracion.yaml.
-         init_data (:class:`Boolean`): True para traer todos los esquemas de conceptos, False para no
-          traerlos. Por defecto toma el valor False.
+         init_data (:class:`Boolean`): True para traer todos los conceptos de los esquemas,
+          False para no traerlos. Por defecto toma el valor False.
 
      Attributes:
          data (:obj:`Dicconario`) Diccionario con todos los esquemas de conceptos
@@ -65,9 +65,12 @@ class ConceptSchemes:
             {'agencyID': agency, 'id': id, 'isFinal': 'true', 'names': names, 'descriptions': des,
              'version': str(version)}]},
             'meta': {}}
+
+        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
 
             response.raise_for_status()
         except Exception as e:
             raise e
+        self.logger.info('Esquema de conceptos creado o actualizado correctamente')
