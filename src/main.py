@@ -1,7 +1,6 @@
 import logging
 import sys
-
-import deepl as deepl
+import deepl
 import yaml
 
 from src.mdmpyclient.mdm import MDM
@@ -24,23 +23,34 @@ if __name__ == '__main__':
         #                           configuracion['languages']},
         #                          {language: 'dsfsd' if language == 'es' else 'ingles' for language in
         #                           configuracion['languages']})
-        #
-        # controller.codelists.data = controller.codelists.get()
-        # codelist2 = controller.codelists.data['ESC01']['CL_UNIT']['1.0']
-        # codelist2.init_codes()
-        # codelist2.codes = codelist2.translate(traductor, traducciones)
 
-        controller.concept_schemes.data = controller.concept_schemes.get(True)
-        conceptscheme = controller.concept_schemes.data['ESC01']['ASDF']['1.0']
-        # controller.concept_schemes.put('ESC01','POTATO','1.0', {'es':'pepe'},{'es':'ramon'})
-        conceptscheme.put(csv_file_path='tests/test_cs.csv')
-        conceptscheme.init_concepts()
-        conceptscheme.translate(traductor, traducciones)
-        conceptscheme.put()
-        #
-        # # controller.category_schemes.data = controller.category_schemes.get()
-        # # cs = controller.category_schemes.data['ESC01']['POTATO']['1.0']
-        # # cs.init_data()
-        # # cs.put('tests/test_cat.csv')
+        # controller.codelists.data = controller.codelists.get(False)
+        # codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
+        # codelist2.put('csv/TEST.csv')
+        # # codelist2.init_codes() Hay un bug aqui??? No entiendo
+        # codelist2.codes = codelist2.get()
+        # codelist2.codes = codelist2.translate(traductor, traducciones)
+        # codelist2.put()
+
+        # controller.concept_schemes.put('ESC01', 'ASDF', '1.0', {'es': 'pepe'}, {'es': 'ramon'})
+        # controller.concept_schemes.data = controller.concept_schemes.get(False)
+        # conceptscheme = controller.concept_schemes.data['ESC01']['ASDF']['1.0']
+        # conceptscheme.put(csv_file_path='csv/ASDF.csv')
+        # conceptscheme.init_concepts()
+        # conceptscheme.concepts = conceptscheme.translate(traductor, traducciones)
+        # conceptscheme.put()
+
+        # controller.category_schemes.put('ESC01', 'POTATO', '1.0', {'en': 'wow im british'},
+        #                                 {'en': 'amazing categories'})
+        # controller.category_schemes.data = controller.category_schemes.get(False)
+        # cs = controller.category_schemes.data['ESC01']['POTATO']['1.0']
+        # cs.put(csv_file_path='csv/POTATO.csv', lang='en')
+        # cs.init_data()
+        # cs.categories = cs.translate(traductor, traducciones)
+        # cs.put()
+
+        dsd = controller.dsds.data['ESC01']['DSD_APARTAMENTOS_TURISTICOS']['1.0']
+        dsd.init_data()
+        print(dsd.data)
 
         controller.logout()

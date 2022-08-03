@@ -1,6 +1,5 @@
 import logging
 import sys
-import io
 
 import pandas
 import requests
@@ -67,19 +66,19 @@ class ConceptScheme:
             raise e
 
         for concept in response_data:
-            for key in concepts:
+            for key, column in concepts.items():
                 try:
-                    if key == 'id' or key == 'parent':
-                        concepts[key].append(concept[key])
+                    if 'id' in key or 'parent' in key:
+                        column.append(concept[key])
                     else:
                         language = key[-2:]
                         if 'name' in key:
-                            concepts[key].append(concept['names'][language])
+                            column.append(concept['names'][language])
                         if 'des' in key:
-                            concepts[key].append(concept['descriptions'][language])
+                            column.append(concept['descriptions'][language])
 
                 except Exception:
-                    concepts[key].append(None)
+                    column.append(None)
         return pandas.DataFrame(data=concepts, dtype='string')
 
     def put(self, csv_file_path=None, lang='es'):
@@ -90,23 +89,25 @@ class ConceptScheme:
                 response = self.__upload_csv(csv, columns, csv_file_path=csv_file_path, lang=lang)
                 self.__export_csv(response)
         else:
-            for lang in self.configuracion['languages']:
+            for language in self.configuracion['languages']:
                 csv = self.concepts.copy()
                 for column_name in csv.columns[2:]:
-                    if not column_name[-2:].__contains__(lang):
+                    if language not in column_name[-2:]:
                         del csv[column_name]
+                csv.columns = ['Id', 'ParentCode', 'Name', 'Description']
+                path = f'traduccion_{self.id}_{language}.csv'
+                csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
                 columns = {"id": 0, "parent": 1, "name": 2, "description": 3, "order": -1, "fullName": -1,
                            "isDefault": -1}
-                path = f'{self.id}_{lang}'
-                csv.to_csv(path_or_buf=path, sep=';', index=False)
-                self.put(csv_file_path=path, lang=lang)
+                response = self.__upload_csv(csv, columns, csv_file_path=path, lang=language)
+                self.__export_csv(response)
 
     def __upload_csv(self, csv, columns, csv_file_path='', lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
             {"type": "conceptScheme",
              "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
-             "lang": lang,  # HE DADO POR HECHO QUE SE VA A SUBIR EN ESPANYOL, CUIDAO
+             "lang": lang,
              "firstRowHeader": 'true',
              "columns": columns, "textSeparator": ";", "textDelimiter": 'null'})
 
@@ -115,7 +116,7 @@ class ConceptScheme:
             'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
         upload_headers['Content-Type'] = content_type
-
+        upload_headers['language'] = lang
         try:
             self.logger.info('Subiendo el archivo %s a la API', csv_file_path)
             response = self.session.post(

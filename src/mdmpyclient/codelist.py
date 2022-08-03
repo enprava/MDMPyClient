@@ -2,7 +2,6 @@ import logging
 import sys
 
 import pandas
-import numpy as np
 import requests.models
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
@@ -68,40 +67,59 @@ class Codelist:
             raise e
 
         for code in response_data:
-            for key in codes:
+            for key, column in codes.items():
                 try:
-                    if key == 'id' or key == 'parent':
-                        codes[key].append(code[key])
+                    if 'id' in key or 'parent' in key:
+                        column.append(code[key])
                     else:
                         language = key[-2:]
                         if 'name' in key:
-                            codes[key].append(code['names'][language])
+                            column.append(code['names'][language])
                         if 'des' in key:
-                            codes[key].append(code['descriptions'][language])
+                            column.append(code['descriptions'][language])
 
-                except Exception as e:
-                    codes[key].append(None)
+                except Exception:
+                    column.append(None)
         return pandas.DataFrame(data=codes, dtype='string')
 
-    def put(self, csv_file_route=None):
+    def put(self, csv_file_path=None, lang='es'):
+        if csv_file_path:
+            with open(csv_file_path, 'r', encoding='utf-8') as csv:
+                columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
+                           "isDefault": -1}
+                response = self.__upload_csv(csv, columns, csv_file_path=csv_file_path, lang=lang)
+                self.__export_csv(response)
+        else:
+            for language in self.configuracion['languages']:
+                csv = self.codes.copy()
+                for column_name in csv.columns[2:]:
+                    if language not in column_name[-2:]:
+                        del csv[column_name]
+                csv.columns = ['Id', 'ParentCode', 'Name', 'Description']
+                path = f'traduccion_{self.id}_{language}.csv'
+                csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
+                columns = {"id": 0, "parent": 1, "name": 2, "description": 3, "order": -1, "fullName": -1,
+                           "isDefault": -1}
+                response = self.__upload_csv(csv, columns, csv_file_path=path, lang=language)
+                self.__export_csv(response)
+
+    def __upload_csv(self, csv, columns, csv_file_path='', lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
-            {"type": "codelist", "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
-             "lang": 'es',  # HE DADO POR HECHO QUE SE VA A SUBIR EN ESPANYOL, CUIDAO
+            {"type": "codelist",
+             "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
+             "lang": lang,
              "firstRowHeader": 'true',
-             "columns": {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
-                         "isDefault": -1}, "textSeparator": ";", "textDelimiter": 'null'}
-        )
+             "columns": columns, "textSeparator": ";", "textDelimiter": 'null'})
 
-        with open(csv_file_route, 'r', encoding='utf-8') as csv:
-            files = {'file': (
-                csv_file_route, csv, 'application/vnd.ms-excel', {}),
-                'CustomData': (None, custom_data)}
+        files = {'file': (
+            csv_file_path, csv, 'application/vnd.ms-excel', {}),
+            'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
         upload_headers['Content-Type'] = content_type
-
+        upload_headers['language'] = lang
         try:
-            self.logger.info('Subiendo el archivo %s a la API', csv_file_route)
+            self.logger.info('Subiendo el archivo %s a la API', csv_file_path)
             response = self.session.post(
                 f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
                 data=body)
@@ -110,23 +128,22 @@ class Codelist:
 
         except Exception as e:
             raise e
-        self.logger.info('Archivo subido correctamente')
         response = response.json()
         response['identity']['ID'] = self.id
         response['identity']['Agency'] = self.agency_id
         response['identity']['Version'] = self.version
+        return response
 
+    def __export_csv(self, json):
         try:
-            self.logger.info('Importando códigos a la lista')
+            self.logger.info('Importando conceptos al esquema')
             self.session.post(
                 f'{self.configuracion["url_base"]}importFileCsvItem',
-                json=response)
-
-            # self.logger.info('Codigos Actualizados correctamente en: %s', language)
+                json=json)
 
         except Exception as e:
             raise e
-        self.logger.info('Códigos importados correctamente')
+        self.logger.info('Conceptos importados correctamente')
         ## Utilizar decoradores correctamente para los getters y setters sería clave.
         # la sintaxis tb se puede mejorar seguro.
 

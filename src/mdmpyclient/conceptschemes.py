@@ -60,9 +60,9 @@ class ConceptSchemes:
                                                                     version, names, des, init_data=init_data)
         return concept_schemes
 
-    def put(self, agency, id, version, names, des):
+    def put(self, agency, conceptscheme_id, version, names, des):
         json = {'data': {'conceptSchemes': [
-            {'agencyID': agency, 'id': id, 'isFinal': 'true', 'names': names, 'descriptions': des,
+            {'agencyID': agency, 'id': conceptscheme_id, 'isFinal': 'true', 'names': names, 'descriptions': des,
              'version': str(version)}]},
             'meta': {}}
 

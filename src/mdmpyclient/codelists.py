@@ -38,8 +38,7 @@ class Codelists:
             response = self.session.get(f'{self.configuracion["url_base"]}codelist').json()['data']['codelists']
         except KeyError:
             self.logger.error(
-                'No se han extraído los esquemas de concepto debido a un error de conexión con el servidor: %s',
-                response.text)
+                'No se han extraído los esquemas de concepto debido a un error de conexión con el servidor')
             return codelists
         except Exception as e:
             raise e
@@ -50,18 +49,18 @@ class Codelists:
             codelist_id = codelist['id']
             version = codelist['version']
             names = codelist['names']
-            des = codelist['descriptions'] if 'descriptions' in codelists.keys() else None
+            des = codelist['descriptions'] if 'descriptions' in codelists else None
             if agency not in codelists:
                 codelists[agency] = {}
-            if codelist_id not in codelists[agency].keys():
+            if codelist_id not in codelists[agency]:
                 codelists[agency][codelist_id] = {}
             codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
                                                                version, names, des, init_data=init_data)
         return codelists
 
-    def create(self, agencia, id, version, nombres, descripciones):
+    def create(self, agencia, codelist_id, version, nombres, descripciones):
         json = {'data': {'codelists': [
-            {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
+            {'agencyID': agencia, 'id': codelist_id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': str(version)}]},
             'meta': {}}
 
@@ -75,9 +74,9 @@ class Codelists:
         except Exception as e:
             raise e
 
-    def put(self, agencia, id, version, descripciones, nombres):
+    def put(self, agencia, codelist_id, version, descripciones, nombres):
         json = {'data': {'codelists': [
-            {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
+            {'agencyID': agencia, 'id': codelist_id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': version}]},
             'meta': {}}
 
