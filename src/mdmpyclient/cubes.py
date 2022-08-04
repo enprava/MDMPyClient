@@ -38,5 +38,14 @@ class Cubes:
 
         return cubes
 
-    def put(self, code, cat_id, names, dsd):
-        pass
+    def put(self, code, cube_cat_id, names, dsd):
+        json = {'Code': code, 'DSDCode': f'{dsd.id}+{dsd.agency_id}+{dsd.version}', 'IDCat': cube_cat_id,
+                'labels': names, 'Dimensions': [], 'Attributes': [], 'Measures': []}
+        for dimension in dsd.data['dimensions']:
+            code = dimension['id']
+            codelist_code = dimension['codelist']
+            is_time_series = 'TIME_PERIOD' in code
+            json['Dimensions'].append({'Code': code, 'CodelistCode': codelist_code, 'IsTimeSeriesDim': is_time_series})
+
+        primary_meassure = dsd.data['primary_meassure']
+        json['Measures'].append({'Code':primary_meassure['id'],'isAlphanumeric': False})

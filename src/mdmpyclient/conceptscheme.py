@@ -28,7 +28,7 @@ class ConceptScheme:
 
     Attributes:
 
-        data (:obj:`DataFrame`) DataFrame con todos los conceptos del esquema
+        concepts (:obj:`DataFrame`) DataFrame con todos los conceptos del esquema
 
 
     """

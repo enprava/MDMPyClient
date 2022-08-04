@@ -40,9 +40,9 @@ class Cube:
         self.cat_id = cat_id
         self.dsd_code = dsd_code
         self.names = names
-        self.data = self.get_data() if init_data else None
+        self.data = self.get() if init_data else None
 
-    def get_data(self):
+    def get(self):
         data = {}
         request_data = {'FilterTable': [], 'PageNum': 1, 'PageSize': 2147483647, 'SortByDesc': False, 'SortCols': None}
         try:
