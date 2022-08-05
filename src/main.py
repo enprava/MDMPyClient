@@ -49,8 +49,16 @@ if __name__ == '__main__':
         # cs.categories = cs.translate(traductor, traducciones)
         # cs.put()
 
-        dsd = controller.dsds.data['ESC01']['DSD_APARTAMENTOS_TURISTICOS']['1.0']
-        dsd.init_data()
-        print(dsd.data)
+        # dsd = controller.dsds.data['ESC01']['DSD_APARTAMENTOS_TURISTICOS']['1.0']
+        # dsd.init_data()
 
+        # cube = controller.cubes.data['ESC01_EOC_67672']
+        # cube.init_data()
+
+        # mapping = controller.mappings.data['MAPP_175_ESC01_EOC_67667']
+        # mapping.init_data()
+
+        dataflow = controller.dataflows.data['ESC01']['DF_CAMPINGS_67670']['1.0']
+        dataflow.init_data()
+        print(dataflow.data.to_string())
         controller.logout()

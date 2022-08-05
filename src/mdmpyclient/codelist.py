@@ -16,13 +16,13 @@ class Codelist:
         configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
          parámetros necesarios como la url de la API. Debe ser inicializado a partir del
          fichero de configuración configuracion/configuracion.yaml.
-        codelist_id (:class:`String`): Identificador de la codelist.
+        id (:class:`String`): Identificador de la codelist.
         version (:class:`String`): Versión de la codelist.
         agency_id (:class:`String`): Agencia vinculada a la codelist.
         names (class: `Diccionario`): Diccionario con los nombres de la codelist en varios idiomas.
         des (class: `String`): Diccionario con las descripciones de la codelist en varios idiomas.
         init_data (:class:`Boolean`): True para traer todos los datos de la codelist,
-         False para traer solo id, agencia y versión. Por defecto toma el valor False.
+         False para no traerlos. Por defecto toma el valor False.
 
     Attributes:
 
@@ -30,12 +30,12 @@ class Codelist:
 
     """
 
-    def __init__(self, session, configuracion, codelist_id, agency_id, version, names, des, init_data=False):
+    def __init__(self, session, configuracion, id, agency_id, version, names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
-        self.id = codelist_id
+        self.id = id
         self.version = version
         self.agency_id = agency_id
         self.names = names

@@ -8,14 +8,18 @@ logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class Cubes:
-    def __init__(self, session, configuracion, init_data):
+    def __init__(self, session, configuracion, init_data=False):
+        self.logger = logging.getLogger(f'{self.__class__.__name__}')
+
         self.session = session
         self.configuracion = configuracion
 
         self.data = self.get(init_data)
 
-    def get(self, init_data):
+    def get(self, init_data=True):
         cubes = {}
+        self.logger.info('Solicitando información de los cubos')
+
         try:
             response = self.session.get(f'{self.configuracion["url_base"]}cubesNoFilter')
             response_data = response.json()
@@ -25,6 +29,7 @@ class Cubes:
             return cubes
         except Exception as e:
             raise e
+        self.logger.info('Cubos extraídos correctamente')
 
         for cube in response_data:
             cube_id = cube['IDCube']
@@ -33,12 +38,12 @@ class Cubes:
             dsd_code = cube['DSDCode']
             names = cube['labels']
 
-            cubes[cube_id] = Cube(self.session, self.configuracion, cube_id, cube_code, cat_id, dsd_code, names,
+            cubes[cube_code] = Cube(self.session, self.configuracion, cube_id, cube_code, cat_id, dsd_code, names,
                                   init_data)
 
         return cubes
 
-    def put(self, code, cube_cat_id, names, dsd):
+    def put(self, code, cube_cat_id, names, dsd):#TODO
         json = {'Code': code, 'DSDCode': f'{dsd.id}+{dsd.agency_id}+{dsd.version}', 'IDCat': cube_cat_id,
                 'labels': names, 'Dimensions': [], 'Attributes': [], 'Measures': []}
         for dimension in dsd.data['dimensions']:

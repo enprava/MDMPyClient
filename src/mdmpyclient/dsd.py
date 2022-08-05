@@ -64,7 +64,7 @@ class DSD:
         for attribute in attribute_list:
             id = attribute['id']
             concept = attribute['conceptIdentity']
-            codelist = attribute['localRepresentation']['enumeration']
+            codelist = self.__decode_codelist_info(attribute['localRepresentation']['enumeration'])
             assignment_status = attribute['assignmentStatus']
             # EL NIVEL DE APEGO SE CONSIGUE DEPENDIENDO DE LO QUE HAYA AQUI. SI ES VACIO ES DATASET, SI TIENE LA
             # PRIMARY MEASSURE ES OBSERVATION, SI ES DIMENSIONGROUP TIENE UNA LISTA DE DIMENSIONES Y SI TIENE GRUPOS

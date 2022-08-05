@@ -6,8 +6,10 @@ import requests
 from src.mdmpyclient.categoryschemes import CategorySchemes
 from src.mdmpyclient.codelists import Codelists
 from src.mdmpyclient.conceptschemes import ConceptSchemes
-from src.mdmpyclient.cube import Cube
+from src.mdmpyclient.cubes import Cubes
+from src.mdmpyclient.dataflows import Dataflows
 from src.mdmpyclient.dsds import DSDs
+from src.mdmpyclient.mappings import Mappings
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -38,7 +40,7 @@ class MDM:
 
         self.session = self.authenticate()
 
-        self.codelists = Codelists(self.session,self.configuracion)
+        self.codelists = Codelists(self.session, self.configuracion)
 
         self.concept_schemes = ConceptSchemes(self.session, self.configuracion)
 
@@ -46,7 +48,11 @@ class MDM:
 
         self.dsds = DSDs(self.session, self.configuracion)
 
-        # self.cubes = self.get_all_cube()
+        self.cubes = Cubes(self.session, self.configuracion)
+
+        self.mappings = Mappings(self.session, self.configuracion)
+
+        self.dataflows = Dataflows(self.session, self.configuracion)
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['languages'][0],
@@ -78,5 +84,3 @@ class MDM:
     def logout(self):
         self.logger.info('Finalizando conexión con la API')
         self.session.post(f'{self.configuracion["url_base"]}api/Security/Logout')
-
-
