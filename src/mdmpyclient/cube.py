@@ -45,13 +45,14 @@ class Cube:
     def get(self):
         components = {'Measures': [], 'Attributes': [], 'Dimensions': []}
 
+        self.logger.info('Solicitando información del cubo con id %s', self.id)
         try:
             response = self.session.get(f'{self.configuracion["url_base"]}cube/{self.id}')
             response_data = response.json()
         except Exception as e:
             raise e
 
-        for key, item in response_data.items():#Queda mas reducido pero no se si es lo recomendable
+        for key, item in response_data.items():  # Queda mas reducido pero no se si es lo recomendable
             if isinstance(item, list):
                 for component in item:
                     if 'Dimensions' in key:

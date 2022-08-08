@@ -21,11 +21,14 @@ class DSDs:
          Attributes:
              data (:obj:`Dicconario`) Diccionario con todos los DSDs
          """
-    def __init__(self, session, configuracion, init_data=False):
+
+    def __init__(self, session, configuracion, codelists, concept_schemes, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
+        self.codelists = codelists
+        self.concept_schemes = concept_schemes
 
         self.data = self.get(init_data)
 
@@ -54,7 +57,7 @@ class DSDs:
             if dsd_id not in dsd[agency]:
                 dsd[agency][dsd_id] = {}
             dsd[agency][dsd_id][version] = DSD(self.session, self.configuracion, dsd_id, agency, version, names, des,
-                                               init_data)
+                                               self.codelists, self.concept_schemes, init_data)
         return dsd
 
     def put(self, agency, dsd_id, version, names, des, primary_meassure, dimensions, measure_dimensions,

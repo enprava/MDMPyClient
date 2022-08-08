@@ -8,7 +8,7 @@ logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class Dataflows:
-    """ Clase que representa el conjunto de mappings del M&D Manager.
+    """ Clase que representa el conjunto de dataflows del M&D Manager.
 
                Args:
                    session (:class:`requests.session.Session`): Sesión autenticada en la API.

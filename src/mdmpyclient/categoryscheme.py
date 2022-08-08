@@ -49,6 +49,7 @@ class CategoryScheme:
             categories[f'name_{language}'] = []
             categories[f'des_{language}'] = []
 
+        self.logger.info('Solicitando información del esquema de categorías con id: %s', self.id)
         try:
             response = self.session.get(
                 f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}')
@@ -62,10 +63,10 @@ class CategoryScheme:
             return pandas.DataFrame(data=categories, dtype='string')
         except Exception as e:
             raise e
+        self.logger.info('Esquema de categorías extraído correctamente')
 
         dcs = self.__dcs_to_dict(response_dcs)
         categories = self.__merge_categories(response_data, None, dcs, categories)
-        print(categories)
         return pandas.DataFrame(data=categories, dtype='string')
 
     def put(self, csv_file_path=None, lang='es'):
@@ -151,27 +152,6 @@ class CategoryScheme:
                             column.append(categorie['descriptions'][lang])
                 except Exception:
                     column.append(None)
-            # Parte del antiguo metodo
-            #
-            # categories['id'].append(category_id)
-            # categories['parent'].append(parent)
-            #
-            # for language in self.configuracion['languages']:
-            #     if language in categorie['names'].keys():
-            #         categories[f'name_{language}'].append(categorie['names'][language])
-            #     else:
-            #         categories[f'name_{language}'].append(None)
-            #
-            #     if 'descriptions' in categorie.keys() and language in categorie['descriptions']:
-            #         categories[f'des_{language}'].append(categorie['description'][language])
-            #     else:
-            #         categories[f'des_{language}'].append(None)
-            #
-            # if category_id in dcs.keys():
-            #     categories['id_cube_cat'].append(dcs[category_id])
-            # else:
-            #     categories['id_cube_cat'].append(None)
-            #
             if 'categories' in categorie:
                 self.__merge_categories(categorie['categories'], category_id, dcs, categories)
         return categories

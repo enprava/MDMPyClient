@@ -10,6 +10,9 @@ from src.mdmpyclient.cubes import Cubes
 from src.mdmpyclient.dataflows import Dataflows
 from src.mdmpyclient.dsds import DSDs
 from src.mdmpyclient.mappings import Mappings
+from src.mdmpyclient.metadataflows import Metadataflows
+from src.mdmpyclient.metadatasets import Metadatasets
+from src.mdmpyclient.msds import MSDs
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -46,13 +49,19 @@ class MDM:
 
         self.category_schemes = CategorySchemes(self.session, self.configuracion)
 
-        self.dsds = DSDs(self.session, self.configuracion)
+        self.dsds = DSDs(self.session, self.configuracion, self.codelists, self.concept_schemes)
 
         self.cubes = Cubes(self.session, self.configuracion)
 
         self.mappings = Mappings(self.session, self.configuracion)
 
         self.dataflows = Dataflows(self.session, self.configuracion)
+
+        self.msds = MSDs(self.session, self.configuracion)
+
+        self.metadataflows = Metadataflows(self.session, self.configuracion)
+
+        self.metadatasets = Metadatasets(self.session, self.configuracion)
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['languages'][0],

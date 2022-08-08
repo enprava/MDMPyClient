@@ -51,6 +51,7 @@ if __name__ == '__main__':
 
         # dsd = controller.dsds.data['ESC01']['DSD_APARTAMENTOS_TURISTICOS']['1.0']
         # dsd.init_data()
+        # print(dsd.data)
 
         # cube = controller.cubes.data['ESC01_EOC_67672']
         # cube.init_data()
@@ -58,7 +59,21 @@ if __name__ == '__main__':
         # mapping = controller.mappings.data['MAPP_175_ESC01_EOC_67667']
         # mapping.init_data()
 
-        dataflow = controller.dataflows.data['ESC01']['DF_CAMPINGS_67670']['1.0']
-        dataflow.init_data()
-        print(dataflow.data.to_string())
-        controller.logout()
+        # dataflow = controller.dataflows.data['ESC01']['DF_CAMPINGS_67670']['1.0']
+        # dataflow.init_data()
+        # print(dataflow.data.to_string())
+        # controller.logout()
+
+        # msd = controller.msds.data['ESC01']['MSD_IECA']['1.0']
+        # msd.init_data()
+        # print(msd.data)
+        # print(msd.meta)
+
+        # metadataflow = controller.metadataflows.data['ESC01']['MDF_ESC01_ECTA']['1.0']
+        # metadataflow.init_data()
+        # print(metadataflow.data)
+        # print(metadataflow.meta)
+
+        # metadataset = controller.metadatasets.data['MDS_ESC01_EOAT']
+        # metadataset.init_data()
+        # print(metadataset.reports)
