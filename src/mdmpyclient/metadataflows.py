@@ -44,7 +44,7 @@ class Metadataflows:
         self.logger.info('Metadataflows extraídos correctamente')
 
         for metadata in response_data:
-            id = metadata['id']
+            meta_id = metadata['id']
             agency = metadata['agencyID']
             version = metadata['version']
             names = metadata['names']
@@ -52,8 +52,8 @@ class Metadataflows:
 
             if agency not in data:
                 data[agency] = {}
-            if id not in data[agency]:
-                data[agency][id] = {}
-            data[agency][id][version] = Metadataflow(self.session, self.configuracion, id, agency, version, names, des,
-                                                     init_data)
+            if meta_id not in data[agency]:
+                data[agency][meta_id] = {}
+            data[agency][meta_id][version] = Metadataflow(self.session, self.configuracion, meta_id, agency, version,
+                                                          names, des, init_data)
         return data, response_meta

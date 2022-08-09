@@ -22,6 +22,7 @@ class Dataflows:
                    data (:obj:`Dicconario`) Diccionario con todos los dataflows
 
                """
+
     def __init__(self, session, configuracion, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
@@ -42,11 +43,11 @@ class Dataflows:
 
         for dataflow in response_data:
             code = dataflow['ID']
-            id = dataflow['IDDataflow']
+            dataflow_id = dataflow['IDDataflow']
             cube_id = dataflow['IDCube']
             agency_id = dataflow['Agency']
             version = dataflow['Version']
-            filter = dataflow['Filter']
+            # filter = dataflow['Filter']
             names = dataflow['labels']
             des = dataflow['Descriptions'] if 'Descriptions' in dataflow else None
 
@@ -54,7 +55,7 @@ class Dataflows:
                 data[agency_id] = {}
             if code not in data[agency_id]:
                 data[agency_id][code] = {}
-            data[agency_id][code][version] = Dataflow(self.session, self.configuracion, code, agency_id, version, id,
-                                                      cube_id, filter, names, des, init_data)
+            data[agency_id][code][version] = Dataflow(self.session, self.configuracion, code, agency_id, version,
+                                                      dataflow_id,cube_id, names, des, init_data)
 
         return data

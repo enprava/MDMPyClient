@@ -24,12 +24,12 @@ class Mapping:
            components (:obj:`List`) Lista con todos los componentes del mapping.
        """
 
-    def __init__(self, session, configuracion, id, cube_id, name, des, init_data=False):
+    def __init__(self, session, configuracion, mapping_id, cube_id, name, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
-        self.id = id
+        self.id = mapping_id
         self.cube_id = cube_id
         self.code = name
         self.des = des
@@ -50,12 +50,12 @@ class Mapping:
         self.logger.info('Datos extraídos correctamente')
 
         for component in response_data:
-            id_comp = component['IDComp']
+            comp_id = component['IDComp']
             column = component['ColumnName']
             column_mapped = component['CubeComponentCode']
-            type = ['CubeComponentType']
+            comp_type = ['CubeComponentType']
 
-            components.append({'id_comp': id_comp, 'column': column, 'column_mapped': column_mapped, 'type': type})
+            components.append({'id_comp': comp_id, 'column': column, 'column_mapped': column_mapped, 'type': comp_type})
         return components
 
     def init_data(self):

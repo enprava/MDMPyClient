@@ -30,12 +30,12 @@ class Codelist:
 
     """
 
-    def __init__(self, session, configuracion, id, agency_id, version, names, des, init_data=False):
+    def __init__(self, session, configuracion, codelist_id, agency_id, version, names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
-        self.id = id
+        self.id = codelist_id
         self.version = version
         self.agency_id = agency_id
         self.names = names
@@ -169,7 +169,7 @@ class Codelist:
             fake_indexes = codes[codes[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
             codes[column][to_be_translated_indexes] = codes[source_column][to_be_translated_indexes].map(
-                lambda value: self.__get_translate(translator, value, target_language, translations_cache))
+                lambda value, tl=target_language: self.__get_translate(translator, value, tl, translations_cache))
         return codes
 
     def __get_translate(self, translator, value, target_language, translations_cache):

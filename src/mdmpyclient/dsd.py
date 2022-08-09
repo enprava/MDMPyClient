@@ -25,8 +25,7 @@ class DSD:
             data (:obj:`DataFrame`) DataFrame con todos los datos del DSD
         """
 
-    def __init__(self, session, configuracion, dsd_id, agency_id, version, names, des, codelists, concept_schemes,
-                 init_data=False):
+    def __init__(self, session, configuracion, dsd_id, agency_id, version, names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
@@ -36,8 +35,6 @@ class DSD:
         self.version = version
         self.names = names
         self.des = des
-        self.codelists = codelists
-        self.concept_schemes = concept_schemes
 
         self.data = self.get() if init_data else None
 
@@ -68,28 +65,19 @@ class DSD:
     def __get_attributes(self, attribute_list):
         attributes = []
         for attribute in attribute_list:
-            id = attribute['id']
+            at_id = attribute['id']
             concept = attribute['conceptIdentity']
-            codelist = self.__get_codelist(attribute['localRepresentation']['enumeration']) if 'enumeration' in \
-                                                                                               attribute[
-                                                                                                   'localRepresentation'] else None
+            codelist = self.__decode(attribute['localRepresentation']['enumeration']) if 'enumeration' in attribute[
+                'localRepresentation'] else None
             assignment_status = attribute['assignmentStatus']
             # EL NIVEL DE APEGO SE CONSIGUE DEPENDIENDO DE LO QUE HAYA AQUI. SI ES VACIO ES DATASET, SI TIENE LA
             # PRIMARY MEASSURE ES OBSERVATION, SI ES DIMENSIONGROUP TIENE UNA LISTA DE DIMENSIONES Y SI TIENE GRUPOS
             # ES GROUP(ESTE ULTIMO LO SUPONGO, NO LO SE 100%
             attribute_relationship = attribute['attributeRelationship']
             attributes.append(
-                {'id': id, 'concept': concept, 'codelist': codelist, 'assignment_status': assignment_status,
+                {'id': at_id, 'concept': concept, 'codelist': codelist, 'assignment_status': assignment_status,
                  'relationship': attribute_relationship})
         return attributes
-
-    def __get_codelist(self, info):
-        codelist = self.__decode(info)
-        return self.codelists.reports[codelist[0]][codelist[1]][codelist[2]]
-
-    def __get_concept_scheme(self, info):
-        cs = self.__decode(info)
-        return self.codelists.reports[cs[0]][cs[1]][cs[2]]
 
     def __decode(self, info):
         index = info.find('=') + 1
@@ -107,22 +95,21 @@ class DSD:
         dimension_iterator = dimension_list['dimensions'] + measures + dimension_list[
             'timeDimensions']
         for dimension in dimension_iterator:
-            id = dimension['id']
+            dim_id = dimension['id']
             pos = dimension['position']
-            type = dimension['type']
+            dim_type = dimension['type']
             concept = dimension['conceptIdentity']
-            codelist = self.__get_codelist(dimension['localRepresentation']['enumeration']) if 'enumeration' in \
-                                                                                               dimension[
-                                                                                                   'localRepresentation'] else None
-            dimensions.append({'id': id, 'pos': pos, 'type': type, 'concept': concept, 'codelist': codelist})
+            codelist = self.__get_codelist(dimension['localRepresentation']['enumeration']) \
+                if 'enumeration' in dimension['localRepresentation'] else None
+            dimensions.append({'id': dim_id, 'pos': pos, 'type': dim_type, 'concept': concept, 'codelist': codelist})
         return dimensions
 
     def __get_meassures(self, meassure_list):
-        id = meassure_list['id']
+        meas_id = meassure_list['id']
         concept = meassure_list['conceptIdentity']
-        codelist = self.__get_codelist(meassure_list['localRepresentation']['enumeration']) if 'localRepresentation' in \
-                                                                                               meassure_list else None
-        return {'id': id, 'concept': concept, 'codelist': codelist}
+        codelist = self.__get_codelist(meassure_list['localRepresentation']['enumeration'])\
+            if 'localRepresentation' in meassure_list else None
+        return {'id': meas_id, 'concept': concept, 'codelist': codelist}
 
     def init_data(self):
         self.data = self.get()

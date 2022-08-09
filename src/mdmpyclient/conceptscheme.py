@@ -160,7 +160,7 @@ class ConceptScheme:
             fake_indexes = concepts[concepts[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
             concepts[column][to_be_translated_indexes] = concepts[source_column][to_be_translated_indexes].map(
-                lambda value: self.__get_translate(translator, value, target_language, translations_cache))
+                lambda value, tl=target_language: self.__get_translate(translator, value, tl, translations_cache))
         return concepts
 
     def __get_translate(self, translator, value, target_language, translations_cache):

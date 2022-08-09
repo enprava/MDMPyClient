@@ -39,7 +39,7 @@ class Codelists:
         except KeyError:
             self.logger.error(
                 'No se han extraído los esquemas de concepto debido a un error de conexión con el servidor')
-            return codelists
+            return {}
         except Exception as e:
             raise e
         self.logger.info('Codelist extraídas correctamente')
@@ -56,7 +56,7 @@ class Codelists:
                 codelists[agency][codelist_id] = {}
             codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
                                                                version, names, des, init_data=init_data)
-        return codelists
+        return response
 
     def create(self, agencia, codelist_id, version, nombres, descripciones):
         json = {'data': {'codelists': [

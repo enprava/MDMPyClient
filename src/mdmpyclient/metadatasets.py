@@ -41,8 +41,8 @@ class Metadatasets:
         self.logger.info('Metadatasets extraídos correctamente')
 
         for metadata in response_data:
-            id = metadata['id']
+            meta_id = metadata['id']
             names = metadata['names']
 
-            data[id] = Metadataset(self.session, self.configuracion, id, names, init_data)
+            data[meta_id] = Metadataset(self.session, self.configuracion, meta_id, names, init_data)
         return data

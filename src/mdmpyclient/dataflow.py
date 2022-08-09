@@ -29,7 +29,7 @@ class Dataflow:
            Attributes:
                data (:obj:`List`) Lista con todos los datos del dataflow.
            """
-    def __init__(self, session, configuracion, code, agency_id, version, id, cube_id, filter, names, des,
+    def __init__(self, session, configuracion, code, agency_id, version, dataflow_id, cube_id, names, des,
                  init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
@@ -38,11 +38,10 @@ class Dataflow:
         self.code = code
         self.agency_id = agency_id
         self.version = version
-        self.id = id
+        self.id = dataflow_id
         self.cube_id = cube_id
         self.names = names
         self.des = des
-        self.filter = filter
         self.data = self.get() if init_data else None
 
     def get(self):
@@ -52,8 +51,8 @@ class Dataflow:
             response = self.session.get(f'{self.configuracion["url_base"]}ddbDataflow/{self.id}')
             response_data = response.json()['DataflowColumns']
         except KeyError:
-            self.logger.error('Ha habido un error solicitando estructura del dataflow con id %s', self.code)
-            return pandas.DataFrame.empty()
+            self.logger.error('Ha habido un error solicitando estruct   ura del dataflow con id %s', self.code)
+            return pandas.DataFrame(data={})
         except Exception as e:
             raise e
         self.logger.info('Estructura extraída correctamente')

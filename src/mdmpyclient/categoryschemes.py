@@ -61,12 +61,12 @@ class CategorySchemes:
                                                                                    names, des, init_data=init_data)
         return category_schemes
 
-    def put(self, agencia, id, version, descripciones, nombres):
+    def put(self, agencia, cat_id, version, descripciones, nombres):
         json = {'data': {'categorySchemes': [
-            {'agencyID': agencia, 'id': id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
+            {'agencyID': agencia, 'id': cat_id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': version}]},
             'meta': {}}
-        self.logger.info('Creando o actualizando esquema de categorías con id: %s', id)
+        self.logger.info('Creando o actualizando esquema de categorías con id: %s', cat_id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
             response.raise_for_status()

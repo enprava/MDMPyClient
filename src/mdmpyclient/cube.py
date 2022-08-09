@@ -1,8 +1,6 @@
 import logging
 import sys
 
-import pandas
-
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
@@ -30,13 +28,13 @@ class Cube:
 
            """
 
-    def __init__(self, session, configuracion, id, cube_code, cat_id, dsd_code, names, init_data=False):
+    def __init__(self, session, configuracion, cube_id, code, cat_id, dsd_code, names, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
-        self.id = id
-        self.cube_code = cube_code
+        self.id = cube_id
+        self.cube_code = code
         self.cat_id = cat_id
         self.dsd_code = dsd_code
         self.names = names
@@ -56,22 +54,23 @@ class Cube:
             if isinstance(item, list):
                 for component in item:
                     if 'Dimensions' in key:
-                        id = component['IDDim']
+                        cube_id = component['IDDim']
                     elif 'Measures' in key:
-                        id = component['IDMeas']
+                        cube_id = component['IDMeas']
                     else:
-                        id = component['IDAtt']
+                        cube_id = component['IDAtt']
                     code = component['Code']
                     column_name = component['ColName']
                     codelist_code = component['CodelistCode'] if 'CodelistCode' in component else None
                     codes = component['codes'] if 'codes' in component else None
                     components[key].append(
-                        {'id': id, 'code': code, 'column_name': column_name, 'codelist': codelist_code, 'codes': codes})
+                        {'id': cube_id, 'code': code, 'column_name': column_name, 'codelist': codelist_code,
+                         'codes': codes})
         return components
 
     # def get(self):
     #     data = {}
-    #     request_data = {'FilterTable': [], 'PageNum': 1, 'PageSize': 2147483647, 'SortByDesc': False, 'SortCols': None}
+    #    request_data = {'FilterTable': [], 'PageNum': 1, 'PageSize': 2147483647, 'SortByDesc': False, 'SortCols': None}
     #     self.logger.info('Solicitando información del cubo con id %s', self.cube_id)
     #     try:
     #         response = self.session.post(

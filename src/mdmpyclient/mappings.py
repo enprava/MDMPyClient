@@ -42,9 +42,9 @@ class Mappings:
         self.logger.info('Mappings extraídos correctamente')
 
         for mapping in response_data:
-            id = mapping['IDMapping']
+            mapping_id = mapping['IDMapping']
             cube_id = mapping['IDCube']
             name = mapping['Name']
             des = mapping['Description'] if 'Description' in mapping else None
-            data[name] = Mapping(self.session, self.configuracion, id, cube_id, name, des, init_data=init_data)
+            data[name] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, des, init_data=init_data)
         return data

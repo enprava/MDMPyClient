@@ -28,13 +28,23 @@ class MDM:
          fichero de configuración configuracion/configuracion.yaml
 
     Attributes:
-        codelists (:obj:`Dicconario`): Diccionario que contiene todos las codelist
-         de la API indexados por agencia, id y versión.
-        concept_schemes (:obj:`Diccionario`): Diccionario que contiene todos los esquemas de
-         conceptos de la API indexados por agencia, id y versión.
-        category_schemes (:obj:`Diccionario`): Diccionario que contiene todos los esquemas de
-         categorías de la API indexados por agencia, id y versión.
-
+        codelists (:obj:`Codelists`): Objeto que contiene todos las codelist
+         de la API y encargado de gestionarlas
+        concept_schemes (:obj:`ConceptSchemes`): Objeto que contiene todos los esquemas de
+         conceptos de la API y encargado de gestionarlos
+        category_schemes (:obj:`CategorySchemes`): Objeto que contiene todos los esquemas de
+         categorías de la API y encargado de gestionarlos.
+        dsds (:obj:`DSDs`): Objeto que contiene todos los DSDs de la API y encargado de gestionarlos.
+        cubes (:obj:`Cubes`): Objeto que contiene todos los cubos de la API y encargado de gestionarlos.
+        mappings (:obj:`Mappings`): Objeto que contiene todos los mappings de la API y
+         encargado de gestionarlos.
+        dataflows (:obj:`Dataflows`): Objeto que contiene todos los dataflows de la API
+         y encargado de gestionarlos.
+        msds (:obj:`MSDs`): Objeto que contiene todos los MSDs de la API y encargado de gestionarlos.
+        metadataflows (:obj:`Metadataflows`): Objeto que contiene todos los metadataflows de la API
+         y encargado de gestionarlos.
+        metadatasets (:obj:`Metadatasets`): Objeto que contiene todos los metatatasets de la API
+         y encargado de gestionarlos.
     """
 
     def __init__(self, configuracion):
@@ -49,7 +59,7 @@ class MDM:
 
         self.category_schemes = CategorySchemes(self.session, self.configuracion)
 
-        self.dsds = DSDs(self.session, self.configuracion, self.codelists, self.concept_schemes)
+        self.dsds = DSDs(self.session, self.configuracion)
 
         self.cubes = Cubes(self.session, self.configuracion)
 
