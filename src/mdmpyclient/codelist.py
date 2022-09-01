@@ -173,4 +173,10 @@ class Codelist:
         return codes
 
     def __get_translate(self, translator, value, target_language, translations_cache):
-        return str(translator.translate_text(value, target_lang=target_language))
+        if value in translations_cache:
+            translation = translations_cache[value][target_language]
+        else:
+            translation = str(translator.translate_text(value, target_lang=target_language))
+            translations_cache[value] = {}
+            translations_cache[value][target_language] = translation
+        return translation

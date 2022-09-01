@@ -50,6 +50,7 @@ class Codelists:
             version = codelist['version']
             names = codelist['names']
             des = codelist['descriptions'] if 'descriptions' in codelists else None
+            # names, des = self.translate(names, des)
             if agency not in codelists:
                 codelists[agency] = {}
             if codelist_id not in codelists[agency]:
@@ -87,3 +88,22 @@ class Codelists:
         except Exception as e:
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
+
+    def translate(self, translator, translations_cache, names, des):
+        for data in [names, des]:
+            if data:
+                languages = self.configuracion['languages']
+                to_translate_langs = list(set(languages) - list(data.keys()))
+                value = data.values()[0]
+                for target_lang in to_translate_langs:
+                    data[target_lang] = self.__get_translate(translator, value, target_lang, translations_cache)
+        return names, des
+
+    def __get_translate(self, translator, value, target_language, translations_cache):
+        if value in translations_cache:
+            translation = translations_cache[value][target_language]
+        else:
+            translation = str(translator.translate_text(value, target_lang=target_language))
+            translations_cache[value] = {}
+            translations_cache[value][target_language] = translation
+        return translation
