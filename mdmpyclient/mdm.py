@@ -3,16 +3,16 @@ import sys
 
 import requests
 
-from src.mdmpyclient.categoryschemes import CategorySchemes
-from src.mdmpyclient.codelists import Codelists
-from src.mdmpyclient.conceptschemes import ConceptSchemes
-from src.mdmpyclient.cubes import Cubes
-from src.mdmpyclient.dataflows import Dataflows
-from src.mdmpyclient.dsds import DSDs
-from src.mdmpyclient.mappings import Mappings
-from src.mdmpyclient.metadataflows import Metadataflows
-from src.mdmpyclient.metadatasets import Metadatasets
-from src.mdmpyclient.msds import MSDs
+from mdmpyclient.categoryscheme.categoryschemes import CategorySchemes
+from mdmpyclient.codelist.codelists import Codelists
+from mdmpyclient.conceptscheme.conceptschemes import ConceptSchemes
+from cube.cubes import Cubes
+from dataflow.dataflows import Dataflows
+from dsd.dsds import DSDs
+from mapping.mappings import Mappings
+from mdmpyclient.metadataflow.metadataflows import Metadataflows
+from mdmpyclient.metadataset.metadatasets import Metadatasets
+from mdmpyclient.msd.msds import MSDs
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)

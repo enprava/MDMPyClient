@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from src.mdmpyclient.msd import MSD
+from mdmpyclient.msd.msd import MSD
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)

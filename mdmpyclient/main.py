@@ -3,7 +3,7 @@ import sys
 import deepl
 import yaml
 
-from src.mdmpyclient.mdm import MDM
+from mdmpyclient.mdm import MDM
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)

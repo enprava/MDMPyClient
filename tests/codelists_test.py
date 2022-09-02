@@ -1,5 +1,5 @@
-from src.mdmpyclient.codelists import Codelists
-from mock import patch, MagicMock
+from mdmpyclient.codelist.codelists import Codelists
+from mock import patch
 
 config = {'url_base': 'http://test.com', 'nodeId': 'ESC01', 'languages': ['en', 'es']}
 get = {'data': {'codelists': [{'agencyID': 0, 'id': 0, 'version': 0, 'names': {}}]}}

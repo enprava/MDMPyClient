@@ -82,13 +82,15 @@ class Codelist:
                     column.append(None)
         return pandas.DataFrame(data=codes, dtype='string')
 
-    def put(self, csv_file_path=None, lang='es'):
-        if csv_file_path:
-            with open(csv_file_path, 'r', encoding='utf-8') as csv:
-                columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
-                           "isDefault": -1}
-                response = self.__upload_csv(csv, columns, csv_file_path=csv_file_path, lang=lang)
-                self.__export_csv(response)
+    def put(self, data=None, lang='es'):
+        if data:
+            csv = data.to_csv(sep=';', index=False).encode(encoding='utf-8')
+            # csv.columns = ['ID', 'COD', 'NAME', 'DESCRIPTION', 'PARENTCODE', 'ORDER']
+            csv.columns = ['Id', 'uselessname1', 'Name', 'Description', 'ParentCode', 'uselessname2']
+            columns = {"id": 0, "name": 2, "description": 3, "parent": 4, "order": -1, "fullName": -1,
+                       "isDefault": -1}
+            response = self.__upload_csv(csv, columns, csv_file_path=data, lang=lang)
+            self.__export_csv(response)
         else:
             for language in self.configuracion['languages']:
                 csv = self.codes.copy()

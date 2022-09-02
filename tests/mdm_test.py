@@ -1,4 +1,4 @@
-from src.mdmpyclient.mdm import MDM
+from mdmpyclient.mdm import MDM
 
 from mock import patch
 
