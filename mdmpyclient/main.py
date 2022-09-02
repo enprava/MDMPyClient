@@ -1,6 +1,7 @@
 import logging
 import sys
 import deepl
+import pandas
 import yaml
 
 from mdmpyclient.mdm import MDM
@@ -26,6 +27,8 @@ if __name__ == '__main__':
 
         controller.codelists.data = controller.codelists.get(False)
         codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
+        data = pandas.read_csv('csv/ASDF.csv', sep=';')
+        codelist2.put(data)
         # codelist2.put('csv/TEST.csv')
         # # codelist2.init_codes() Hay un bug aqui??? No entiendo
         # codelist2.codes = codelist2.get()

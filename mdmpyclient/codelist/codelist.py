@@ -83,27 +83,15 @@ class Codelist:
         return pandas.DataFrame(data=codes, dtype='string')
 
     def put(self, data=None, lang='es'):
-        if data:
-            csv = data.to_csv(sep=';', index=False).encode(encoding='utf-8')
-            # csv.columns = ['ID', 'COD', 'NAME', 'DESCRIPTION', 'PARENTCODE', 'ORDER']
-            csv.columns = ['Id', 'uselessname1', 'Name', 'Description', 'ParentCode', 'uselessname2']
-            columns = {"id": 0, "name": 2, "description": 3, "parent": 4, "order": -1, "fullName": -1,
-                       "isDefault": -1}
-            response = self.__upload_csv(csv, columns, csv_file_path=data, lang=lang)
-            self.__export_csv(response)
-        else:
-            for language in self.configuracion['languages']:
-                csv = self.codes.copy()
-                for column_name in csv.columns[2:]:
-                    if language not in column_name[-2:]:
-                        del csv[column_name]
-                csv.columns = ['Id', 'ParentCode', 'Name', 'Description']
-                path = f'traduccion_{self.id}_{language}.csv'
-                csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
-                columns = {"id": 0, "parent": 1, "name": 2, "description": 3, "order": -1, "fullName": -1,
-                           "isDefault": -1}
-                response = self.__upload_csv(csv, columns, csv_file_path=path, lang=language)
-                self.__export_csv(response)
+        csv = data.copy(deep=True)
+        csv.columns = ['Id', 'Name', 'Description', 'ParentCode', 'order']
+        csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
+        csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
+        # csv.columns = ['ID', 'COD', 'NAME', 'DESCRIPTION', 'PARENTCODE', 'ORDER']
+        columns = {"id": 0, "name": 2, "description": 3, "parent": 4, "order": -1, "fullName": -1,
+                   "isDefault": -1}
+        response = self.__upload_csv(csv, columns, csv_file_path='algo.csv', lang=lang)
+        self.__export_csv(response)
 
     def __upload_csv(self, csv, columns, csv_file_path='', lang='es'):
         upload_headers = self.session.headers.copy()

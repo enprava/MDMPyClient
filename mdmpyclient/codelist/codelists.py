@@ -57,7 +57,7 @@ class Codelists:
                 codelists[agency][codelist_id] = {}
             codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
                                                                version, names, des, init_data=init_data)
-        return response
+        return codelists
 
     def create(self, agencia, codelist_id, version, nombres, descripciones):
         json = {'data': {'codelists': [

@@ -6,10 +6,10 @@ import requests
 from mdmpyclient.categoryscheme.categoryschemes import CategorySchemes
 from mdmpyclient.codelist.codelists import Codelists
 from mdmpyclient.conceptscheme.conceptschemes import ConceptSchemes
-from cube.cubes import Cubes
-from dataflow.dataflows import Dataflows
-from dsd.dsds import DSDs
-from mapping.mappings import Mappings
+from mdmpyclient.cube.cubes import Cubes
+from mdmpyclient.dataflow.dataflows import Dataflows
+from mdmpyclient.dsd.dsds import DSDs
+from mdmpyclient.mapping.mappings import Mappings
 from mdmpyclient.metadataflow.metadataflows import Metadataflows
 from mdmpyclient.metadataset.metadatasets import Metadatasets
 from mdmpyclient.msd.msds import MSDs
