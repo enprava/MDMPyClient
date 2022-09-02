@@ -38,7 +38,7 @@ class Codelists:
             response = self.session.get(f'{self.configuracion["url_base"]}codelist').json()['data']['codelists']
         except KeyError:
             self.logger.error(
-                'No se han extraído los esquemas de concepto debido a un error de conexión con el servidor')
+                'No se han extraído las codelist debido a un error de conexión con el servidor')
             return {}
         except Exception as e:
             raise e
@@ -81,13 +81,14 @@ class Codelists:
              'version': version}]},
             'meta': {}}
 
-        self.logger.info('Creando o actualizando codelist con id: %s', id)
+        self.logger.info('Creando o actualizando codelist con id: %s', codelist_id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
+        self.data = self.get(False) #Provisional.
 
     def translate(self, translator, translations_cache, names, des):
         for data in [names, des]:

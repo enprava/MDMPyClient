@@ -92,8 +92,9 @@ class Codelist:
                    "isDefault": -1}
         response = self.__upload_csv(csv, columns, csv_file_path='algo.csv', lang=lang)
         self.__export_csv(response)
+        self.init_codes()
 
-    def __upload_csv(self, csv, columns, csv_file_path='', lang='es'):
+    def __upload_csv(self, csv, columns, csv_file_path='algo.csv', lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
             {"type": "codelist",
@@ -109,7 +110,7 @@ class Codelist:
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:
-            self.logger.info('Subiendo el archivo %s a la API', csv_file_path)
+            self.logger.info('Subiendo códigos a la codelist con id: %s', self.id   )
             response = self.session.post(
                 f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
                 data=body)
@@ -126,14 +127,14 @@ class Codelist:
 
     def __export_csv(self, json):
         try:
-            self.logger.info('Importando conceptos al esquema')
+            self.logger.info('Importando códigos al esquema')
             self.session.post(
                 f'{self.configuracion["url_base"]}importFileCsvItem',
                 json=json)
 
         except Exception as e:
             raise e
-        self.logger.info('Conceptos importados correctamente')
+        self.logger.info('Códigos importados correctamente')
         ## Utilizar decoradores correctamente para los getters y setters sería clave.
         # la sintaxis tb se puede mejorar seguro.
 
