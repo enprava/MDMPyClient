@@ -23,10 +23,12 @@ class Codelists:
 
     """
 
-    def __init__(self, session, configuracion, init_data=False):
+    def __init__(self, session, configuracion, translator, translator_cache, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
         self.session = session
         self.configuracion = configuracion
+        self.translator = translator
+        self.translator_cache = translator_cache
 
         self.data = self.get(init_data)
 
@@ -55,7 +57,8 @@ class Codelists:
                 codelists[agency] = {}
             if codelist_id not in codelists[agency]:
                 codelists[agency][codelist_id] = {}
-            codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, codelist_id, agency,
+            codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, self.translator,
+                                                               self.translator_cache, codelist_id, agency,
                                                                version, names, des, init_data=init_data)
         return codelists
 
@@ -88,7 +91,7 @@ class Codelists:
         except Exception as e:
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
-        self.data = self.get(False) #Provisional.
+        self.data = self.get(False)  # Provisional.
 
     def translate(self, translator, translations_cache, names, des):
         for data in [names, des]:

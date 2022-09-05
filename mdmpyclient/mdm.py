@@ -47,13 +47,15 @@ class MDM:
          y encargado de gestionarlos.
     """
 
-    def __init__(self, configuracion):
+    def __init__(self, configuracion, translator, translator_cache):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
         self.configuracion = configuracion
+        self.translator = translator
+        self.translator_cache = translator_cache
 
         self.session = self.authenticate()
 
-        self.codelists = Codelists(self.session, self.configuracion)
+        self.codelists = Codelists(self.session, self.configuracion, self.translator, self.translator_cache)
 
         self.concept_schemes = ConceptSchemes(self.session, self.configuracion)
 

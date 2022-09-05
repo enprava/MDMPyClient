@@ -18,17 +18,18 @@ if __name__ == '__main__':
         configuracion = yaml.safe_load(configuracion)
         traducciones = yaml.safe_load(traducciones)
 
-        controller = MDM(configuracion)
+        controller = MDM(configuracion, traductor, traducciones)
         # controller.codelists.put('ESC01', 'TEST', '1.0',
         #                          {language: 'dsfsd' if language == 'es' else 'ingles' for language in
         #                           configuracion['languages']},
         #                          {language: 'dsfsd' if language == 'es' else 'ingles' for language in
         #                           configuracion['languages']})
 
-        controller.codelists.data = controller.codelists.get(False)
+        controller.codelists.data = controller.codelists.get()
         codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
-        data = pandas.read_csv('csv/ASDF.csv', sep=';')
+        data = pandas.read_csv('csv/TEST.csv', sep=';')
         codelist2.put(data)
+        print(codelist2.codes.to_string())
         # codelist2.put('csv/TEST.csv')
         # # codelist2.init_codes() Hay un bug aqui??? No entiendo
         # codelist2.codes = codelist2.get()

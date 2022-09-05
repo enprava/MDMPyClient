@@ -1,3 +1,4 @@
+import copy
 import logging
 import sys
 
@@ -30,11 +31,14 @@ class Codelist:
 
     """
 
-    def __init__(self, session, configuracion, codelist_id, agency_id, version, names, des, init_data=False):
+    def __init__(self, session, configuracion, translator, translator_cache, codelist_id, agency_id, version, names,
+                 des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
+        self.translator = translator
+        self.translator_cache = translator_cache
         self.id = codelist_id
         self.version = version
         self.agency_id = agency_id
@@ -83,6 +87,9 @@ class Codelist:
         return pandas.DataFrame(data=codes, dtype='string')
 
     def put(self, data=None, lang='es'):
+        languages = copy.deepcopy(self.configuracion['languages'])
+        languages.remove(lang
+                         )
         csv = data.copy(deep=True)
         csv.columns = ['Id', 'Name', 'Description', 'ParentCode', 'order']
         csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
@@ -90,11 +97,24 @@ class Codelist:
         # csv.columns = ['ID', 'COD', 'NAME', 'DESCRIPTION', 'PARENTCODE', 'ORDER']
         columns = {"id": 0, "name": 2, "description": 3, "parent": 4, "order": -1, "fullName": -1,
                    "isDefault": -1}
-        response = self.__upload_csv(csv, columns, csv_file_path='algo.csv', lang=lang)
+        response = self.__upload_csv(csv, columns, lang=lang)
         self.__export_csv(response)
         self.init_codes()
 
-    def __upload_csv(self, csv, columns, csv_file_path='algo.csv', lang='es'):
+        codes = self.translate()
+        columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                   "isDefault": -1}
+        for language in languages:
+            codes_to_upload = codes.copy(deep=True)
+            codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
+            codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+            csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
+
+            response = self.__upload_csv(csv, columns, lang=language)
+            self.__export_csv(response)
+        self.init_codes()
+
+    def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
             {"type": "codelist",
@@ -104,13 +124,13 @@ class Codelist:
              "columns": columns, "textSeparator": ";", "textDelimiter": 'null'})
 
         files = {'file': (
-            csv_file_path, csv, 'application/vnd.ms-excel', {}),
+            'hehe.csv', csv, 'application/vnd.ms-excel', {}),
             'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:
-            self.logger.info('Subiendo códigos a la codelist con id: %s', self.id   )
+            self.logger.info('Subiendo códigos a la codelist con id: %s', self.id)
             response = self.session.post(
                 f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
                 data=body)
@@ -144,30 +164,37 @@ class Codelist:
     def __repr__(self):
         return f'{self.agency_id} {self.id} {self.version}'
 
-    def translate(self, translator, translations_cache):
+    def translate(self):
         columns = self.codes.columns[2:]
         codes = self.codes.copy()
         for column in columns:
             target_language = column[-2:]
+
+            self.logger.info('Traduciendo los códigos de la codelist %s al %s', self.id, target_language)
+
             source_languages = self.configuracion['languages'].copy()
             source_languages.remove(target_language)
             if target_language == 'en':
                 target_language = 'EN-GB'
             source_language = source_languages[-1]
             source_column = column[:-2] + source_language
-
             to_be_translated_indexes = codes[codes[column].isnull()][column].index
             fake_indexes = codes[codes[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
             codes[column][to_be_translated_indexes] = codes[source_column][to_be_translated_indexes].map(
-                lambda value, tl=target_language: self.__get_translate(translator, value, tl, translations_cache))
+                lambda value, tl=target_language: self.__get_translate(self.translator, value, tl,
+                                                                       self.translator_cache))
         return codes
 
     def __get_translate(self, translator, value, target_language, translations_cache):
         if value in translations_cache:
+            if 'EN-GB' in target_language:
+                target_language = 'en'
             translation = translations_cache[value][target_language]
         else:
             translation = str(translator.translate_text(value, target_lang=target_language))
+            if 'EN-GB' in target_language:
+                target_language = 'en'
             translations_cache[value] = {}
             translations_cache[value][target_language] = translation
         return translation
