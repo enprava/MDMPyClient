@@ -21,11 +21,14 @@ class ConceptSchemes:
      Attributes:
          data (:obj:`Dicconario`) Diccionario con todos los esquemas de conceptos
      """
-    def __init__(self, session, configuracion, init_data=False):
+
+    def __init__(self, session, configuracion, translator, translator_cache, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
+        self.translator = translator
+        self.translator_cache = translator_cache
 
         self.data = self.get(init_data)
 
@@ -56,7 +59,8 @@ class ConceptSchemes:
                 concept_schemes[agency] = {}
             if cs_id not in concept_schemes[agency].keys():
                 concept_schemes[agency][cs_id] = {}
-            concept_schemes[agency][cs_id][version] = ConceptScheme(self.session, self.configuracion, cs_id, agency,
+            concept_schemes[agency][cs_id][version] = ConceptScheme(self.session, self.configuracion, self.translator,
+                                                                    self.translator_cache, cs_id, agency,
                                                                     version, names, des, init_data=init_data)
         return concept_schemes
 

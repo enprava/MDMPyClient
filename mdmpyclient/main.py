@@ -19,13 +19,11 @@ if __name__ == '__main__':
         traducciones = yaml.safe_load(traducciones)
 
         controller = MDM(configuracion, traductor, traducciones)
-        # controller.codelists.put('ESC01', 'TEST', '1.0',
-        #                          {language: 'dsfsd' if language == 'es' else 'ingles' for language in
-        #                           configuracion['languages']},
-        #                          {language: 'dsfsd' if language == 'es' else 'ingles' for language in
-        #                           configuracion['languages']})
+        controller.codelists.put('ESC01', 'TEST', '1.0',
+                                 {'es': 'Esto mensaje lo debe traducir'},
+                                 {'en': 'Hello world!'})
 
-        controller.codelists.data = controller.codelists.get()
+        controller.codelists.data = controller.codelists.get(False)
         codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
         data = pandas.read_csv('csv/TEST.csv', sep=';')
         codelist2.put(data)

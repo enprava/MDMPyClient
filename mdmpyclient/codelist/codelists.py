@@ -52,7 +52,7 @@ class Codelists:
             version = codelist['version']
             names = codelist['names']
             des = codelist['descriptions'] if 'descriptions' in codelists else None
-            # names, des = self.translate(names, des)
+            # names, des = self.translate(names, des, codelist_id)
             if agency not in codelists:
                 codelists[agency] = {}
             if codelist_id not in codelists[agency]:
@@ -93,21 +93,30 @@ class Codelists:
         self.logger.info('Codelist creada o actualizada correctamente')
         self.data = self.get(False)  # Provisional.
 
-    def translate(self, translator, translations_cache, names, des):
+    def translate(self, names, des, codelist_id):
         for data in [names, des]:
             if data:
                 languages = self.configuracion['languages']
-                to_translate_langs = list(set(languages) - list(data.keys()))
-                value = data.values()[0]
+                to_translate_langs = list(set(languages) - set(data.keys()))
+                value = list(data.values())[0]
                 for target_lang in to_translate_langs:
-                    data[target_lang] = self.__get_translate(translator, value, target_lang, translations_cache)
+                    self.logger.info('Traduciendo la codelist con id %s', codelist_id)
+                    if 'en' in target_lang:
+                        target_lang = 'EN-GB'
+                    data[target_lang] = self.__get_translate(self.translator, value, target_lang,
+                                                             self.translator_cache)
         return names, des
 
     def __get_translate(self, translator, value, target_language, translations_cache):
         if value in translations_cache:
+            self.logger.info('Valor encontrado en la caché de traducciones')
+            if 'EN-GB' in target_language:
+                target_language = 'en'
             translation = translations_cache[value][target_language]
         else:
             translation = str(translator.translate_text(value, target_lang=target_language))
             translations_cache[value] = {}
+            if 'EN-GB' in target_language:
+                target_language = 'en'
             translations_cache[value][target_language] = translation
         return translation

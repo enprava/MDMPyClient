@@ -16,7 +16,8 @@ from mdmpyclient.msd.msds import MSDs
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
-
+logger = logging.getLogger("deepl")
+logger.setLevel(logging.WARNING)
 
 class MDM:
     """ Clase encargada de gestionar todas las peticiones a la API del M&D Manager.
@@ -57,7 +58,7 @@ class MDM:
 
         self.codelists = Codelists(self.session, self.configuracion, self.translator, self.translator_cache)
 
-        self.concept_schemes = ConceptSchemes(self.session, self.configuracion)
+        self.concept_schemes = ConceptSchemes(self.session, self.configuracion, self.translator, self.translator_cache)
 
         self.category_schemes = CategorySchemes(self.session, self.configuracion)
 

@@ -4,6 +4,7 @@ import sys
 
 import pandas
 import requests.models
+import yaml
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -98,7 +99,7 @@ class Codelist:
         columns = {"id": 0, "name": 2, "description": 3, "parent": 4, "order": -1, "fullName": -1,
                    "isDefault": -1}
         response = self.__upload_csv(csv, columns, lang=lang)
-        self.__export_csv(response)
+        self.__import_csv(response)
         self.init_codes()
 
         codes = self.translate()
@@ -111,7 +112,7 @@ class Codelist:
             csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
 
             response = self.__upload_csv(csv, columns, lang=language)
-            self.__export_csv(response)
+            self.__import_csv(response)
         self.init_codes()
 
     def __upload_csv(self, csv, columns, lang='es'):
@@ -145,7 +146,7 @@ class Codelist:
         response['identity']['Version'] = self.version
         return response
 
-    def __export_csv(self, json):
+    def __import_csv(self, json):
         try:
             self.logger.info('Importando códigos al esquema')
             self.session.post(
@@ -169,9 +170,6 @@ class Codelist:
         codes = self.codes.copy()
         for column in columns:
             target_language = column[-2:]
-
-            self.logger.info('Traduciendo los códigos de la codelist %s al %s', self.id, target_language)
-
             source_languages = self.configuracion['languages'].copy()
             source_languages.remove(target_language)
             if target_language == 'en':
@@ -181,17 +179,23 @@ class Codelist:
             to_be_translated_indexes = codes[codes[column].isnull()][column].index
             fake_indexes = codes[codes[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
+            self.logger.info('Traduciendo los códigos de la codelist %s al %s', self.id, target_language)
             codes[column][to_be_translated_indexes] = codes[source_column][to_be_translated_indexes].map(
                 lambda value, tl=target_language: self.__get_translate(self.translator, value, tl,
                                                                        self.translator_cache))
+            with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
+                yaml.dump(self.translator_cache, file)
         return codes
 
     def __get_translate(self, translator, value, target_language, translations_cache):
+        self.logger.info('Traduciendo el término %s al %s', value, target_language)
         if value in translations_cache:
             if 'EN-GB' in target_language:
                 target_language = 'en'
+            self.logger.info('Valor encontrado en la caché de traducciones')
             translation = translations_cache[value][target_language]
         else:
+            self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
             translation = str(translator.translate_text(value, target_lang=target_language))
             if 'EN-GB' in target_language:
                 target_language = 'en'
