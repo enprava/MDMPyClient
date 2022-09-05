@@ -148,7 +148,7 @@ class Codelist:
 
     def __import_csv(self, json):
         try:
-            self.logger.info('Importando códigos al esquema')
+            self.logger.info('Importando códigos a la lista')
             self.session.post(
                 f'{self.configuracion["url_base"]}importFileCsvItem',
                 json=json)
@@ -201,4 +201,5 @@ class Codelist:
                 target_language = 'en'
             translations_cache[value] = {}
             translations_cache[value][target_language] = translation
+        self.logger.info('Traducido el término %s como %s', value, translation)
         return translation
