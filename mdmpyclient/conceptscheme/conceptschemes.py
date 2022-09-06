@@ -70,7 +70,7 @@ class ConceptSchemes:
              'version': str(version)}]},
             'meta': {}}
 
-        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', id)
+        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', conceptscheme_id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
 

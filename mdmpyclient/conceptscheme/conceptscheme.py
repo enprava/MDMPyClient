@@ -104,19 +104,19 @@ class ConceptScheme:
             self.__import_csv(response)
             self.init_concepts()
         self.concepts_to_upload = self.concepts_to_upload[0:0]
-
-        concepts = self.translate()
-        columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
-                   "isDefault": -1}
-        for language in languages:
-            codes_to_upload = concepts.copy(deep=True)
-            codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
-            codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
-            csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
-
-            response = self.__upload_csv(csv, columns, lang=language)
-            self.__import_csv(response)
-        self.init_concepts()
+        if self.configuracion['translate']:
+            concepts = self.translate()
+            columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                       "isDefault": -1}
+            for language in languages:
+                concepts_to_upload = concepts.copy(deep=True)
+                concepts_to_upload = concepts_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
+                concepts_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                csv = concepts_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
+                to_upload = len(concepts_to_upload)
+                response = self.__upload_csv(csv, columns, to_upload, lang=language)
+                self.__import_csv(response)
+            self.init_concepts()
 
     def __upload_csv(self, csv, columns, to_upload, lang='es'):
         upload_headers = self.session.headers.copy()
