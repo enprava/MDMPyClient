@@ -61,7 +61,7 @@ class Codelist:
 
         except KeyError:
             if 'data' in response.json().keys():
-                self.logger.error('La codelist con id: %s está vacía', self.id)
+                self.logger.warning('La codelist con id: %s está vacía', self.id)
             else:
                 self.logger.error(
                     'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
@@ -103,29 +103,33 @@ class Codelist:
             csv = codes.merge(csv, on='Id', how='outer', indicator=True, suffixes=('_x', ''))
             csv = csv[csv['_merge'] == 'right_only']
             csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
+        to_upload = len(csv)
+        self.logger.info('Se han detectado %s códigos nuevos para subir a la codelist con id %s', to_upload, self.id)
+        if not to_upload == 0:
+            csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
+            columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
+                       "isDefault": -1}
+            response = self.__upload_csv(csv, columns, to_upload, lang=lang)
+            self.__import_csv(response)
+            self.init_codes()
 
-        csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
-        # csv.columns = ['ID', 'COD', 'NAME', 'DESCRIPTION', 'PARENTCODE', 'ORDER']
-        columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
-                   "isDefault": -1}
-        response = self.__upload_csv(csv, columns, lang=lang)
-        self.__import_csv(response)
-        self.init_codes()
         if self.configuracion['translate']:
             codes = self.translate()
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             for language in languages:
+                self.logger.info('Iniciando proceso de traducción para la codelist con id %s', self.id)
                 codes_to_upload = codes.copy(deep=True)
                 codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
                 codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                to_upload = len(codes_to_upload)
                 csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
 
-                response = self.__upload_csv(csv, columns, lang=language)
+                response = self.__upload_csv(csv, columns, to_upload, lang=language)
                 self.__import_csv(response)
-            self.init_codes()
+                self.init_codes()
 
-    def __upload_csv(self, csv, columns, lang='es'):
+    def __upload_csv(self, csv, columns, to_upload, lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
             {"type": "codelist",
@@ -141,7 +145,7 @@ class Codelist:
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:
-            self.logger.info('Subiendo códigos a la codelist con id: %s', self.id)
+            self.logger.info('Se van a subir %s códigos a la codelist con id: %s', to_upload, self.id)
             response = self.session.post(
                 f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
                 data=body)
@@ -189,27 +193,25 @@ class Codelist:
             to_be_translated_indexes = codes[codes[column].isnull()][column].index
             fake_indexes = codes[codes[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
-            self.logger.info('Traduciendo los códigos de la codelist %s al %s', self.id, target_language)
             codes[column][to_be_translated_indexes] = codes[source_column][to_be_translated_indexes].map(
-                lambda value, tl=target_language: self.__get_translate(self.translator, value, tl,
-                                                                       self.translator_cache))
+                lambda value, tl=target_language: self.__get_translate(value, tl))
             with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
                 yaml.dump(self.translator_cache, file)
         return codes
 
-    def __get_translate(self, translator, value, target_language, translations_cache):
+    def __get_translate(self, value, target_language):
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
-        if value in translations_cache:
+        if value in self.translator_cache:
             if 'EN-GB' in target_language:
                 target_language = 'en'
             self.logger.info('Valor encontrado en la caché de traducciones')
-            translation = translations_cache[value][target_language]
+            translation = self.translator_cache[value][target_language]
         else:
             self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
-            translation = str(translator.translate_text(value, target_lang=target_language))
+            translation = str(self.translator.translate_text(value, target_lang=target_language))
             if 'EN-GB' in target_language:
                 target_language = 'en'
-            translations_cache[value] = {}
-            translations_cache[value][target_language] = translation
+            self.translator_cache[value] = {}
+            self.translator_cache[value][target_language] = translation
         self.logger.info('Traducido el término %s como %s', value, translation)
         return translation

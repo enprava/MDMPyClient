@@ -2,6 +2,7 @@ import logging
 import sys
 
 import requests
+import yaml
 
 from mdmpyclient.categoryscheme.categoryschemes import CategorySchemes
 from mdmpyclient.codelist.codelists import Codelists
@@ -18,6 +19,7 @@ fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger("deepl")
 logger.setLevel(logging.WARNING)
+
 
 class MDM:
     """ Clase encargada de gestionar todas las peticiones a la API del M&D Manager.
@@ -48,11 +50,12 @@ class MDM:
          y encargado de gestionarlos.
     """
 
-    def __init__(self, configuracion, translator, translator_cache):
+    def __init__(self, configuracion, translator):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
         self.configuracion = configuracion
         self.translator = translator
-        self.translator_cache = translator_cache
+        with open(self.configuracion['cache'], 'r', encoding='utf-8') as cache_file:
+            self.translator_cache = yaml.safe_load(cache_file)
 
         self.session = self.authenticate()
 
