@@ -1,7 +1,8 @@
-url_base: http://192.168.56.1/sdmx_172/ws/NODE_API/
+url_base: http://192.168.1.123/sdmx_172/ws/NODE_API/
 nodeId: 'ESC01'
 languages:
   - en
   - es
 extractor_path: /home/prada/PycharmProjects/IECA-extractor/
+translate: True
 cache: configuracion/traducciones.yaml

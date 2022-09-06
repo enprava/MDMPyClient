@@ -89,31 +89,35 @@ class Codelist:
 
     def put(self, data=None, lang='es'):
         languages = copy.deepcopy(self.configuracion['languages'])
-        languages.remove(lang
-                         )
-        csv = data.copy(deep=True)
+        languages.remove(lang)
+        if self.codes:
+            csv = self.codes.merge(data, how='outer', indicator=True)
+            csv = csv[csv['_merge'] == 'right_only']
+        else:
+            csv = data.copy(deep=True)
+
         csv.columns = ['Id', 'Name', 'Description', 'ParentCode', 'order']
         csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
         csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
         # csv.columns = ['ID', 'COD', 'NAME', 'DESCRIPTION', 'PARENTCODE', 'ORDER']
-        columns = {"id": 0, "name": 2, "description": 3, "parent": 4, "order": -1, "fullName": -1,
+        columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
                    "isDefault": -1}
         response = self.__upload_csv(csv, columns, lang=lang)
         self.__import_csv(response)
         self.init_codes()
+        if self.configuracion['translate']:
+            codes = self.translate()
+            columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                       "isDefault": -1}
+            for language in languages:
+                codes_to_upload = codes.copy(deep=True)
+                codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
+                codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
 
-        codes = self.translate()
-        columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
-                   "isDefault": -1}
-        for language in languages:
-            codes_to_upload = codes.copy(deep=True)
-            codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
-            codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
-            csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
-
-            response = self.__upload_csv(csv, columns, lang=language)
-            self.__import_csv(response)
-        self.init_codes()
+                response = self.__upload_csv(csv, columns, lang=language)
+                self.__import_csv(response)
+            self.init_codes()
 
     def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()

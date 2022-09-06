@@ -4798,6 +4798,8 @@ Francia:
 Frecuencia:
   en: Frequency
   es: Frecuencia
+Frequency:
+  es: Frecuencia
 G. TOTAL SECTOR COMERCIO:
   en: G. TOTAL SECTOR COMERCIO
   es: G. TOTAL SECTOR COMERCIO
@@ -4870,6 +4872,8 @@ Habitaciones estimadas:
 Habitaciones medias estimadas:
   en: Estimated average rooms
   es: Habitaciones medias estimadas
+Hello world!:
+  es: "\xA1Hola, mundo!"
 Hogares:
   en: Homes
   es: Hogares
@@ -5074,6 +5078,8 @@ Nulidades:
 "N\xFAmero de pensionistas":
   en: Number of pensioners
   es: "N\xFAmero de pensionistas"
+Observation Status:
+  es: "Estado de observaci\xF3n"
 Otros:
   en: Others
   es: Otros
@@ -5206,6 +5212,8 @@ Puestos de trabajo no asalariados:
 Puestos de trabajo totales:
   en: Total jobs
   es: Puestos de trabajo totales
+"Puntos Tur\xEDsticos":
+  en: Tourist Spots
 "Regi\xF3n de Murcia":
   en: Region of Murcia
   es: "Regi\xF3n de Murcia"
@@ -5336,6 +5344,8 @@ SA5. CNAE 16. Madera y corcho:
 "SA9. CNAE 23. Productos minerales no met\xE1licos diversos":
   en: SA9. CNAE 23. Miscellaneous non-metallic mineral products.
   es: "SA9. CNAE 23. Productos minerales no met\xE1licos diversos"
+SDMX Cross Domain Concept Scheme:
+  es: Esquema del concepto de dominio cruzado SDMX
 "SE1. CNAE 05, 06, 09, 19. Extracci\xF3n de antracita y hulla, Industrias del petr\xF3leo y gas natural":
   en: SE1. CNAE 05, 06, 09, 19. Extraction of anthracite and hard coal, petroleum
     and natural gas industries.
@@ -5695,6 +5705,8 @@ Serbia:
 Sevilla:
   en: Seville
   es: Sevilla
+Sex:
+  es: Sexo
 Sexo:
   en: Sex
   es: Sexo
@@ -5791,6 +5803,8 @@ Territorio:
 "Territorio planificaci\xF3n (Pa\xEDses)":
   en: Planning territory (Countries)
   es: "Territorio planificaci\xF3n (Pa\xEDses)"
+Test codelist:
+  es: "Lista de c\xF3digos de prueba"
 Tipo alojamiento ECTA:
   en: Type of accommodation ECTA
   es: Tipo alojamiento ECTA
@@ -5905,6 +5919,10 @@ Yugoslavia:
 Zona Euro 19 (desde 2015):
   en: Euro Zone 19 (since 2015)
   es: Zona Euro 19 (desde 2015)
+"Zonas tur\xEDsticas":
+  en: Tourist areas
+asdf:
+  en: asdf
 "c1 espa\xF1ol y c2 extranjero":
   en: c1 spanish and c2 foreign
   es: "c1 espa\xF1ol y c2 extranjero"

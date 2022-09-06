@@ -1,3 +1,4 @@
+import copy
 import logging
 import sys
 
@@ -52,7 +53,11 @@ class Codelists:
             version = codelist['version']
             names = codelist['names']
             des = codelist['descriptions'] if 'descriptions' in codelists else None
-            # names, des = self.translate(names, des, codelist_id)
+
+            if self.configuracion['translate']:
+                names = self.translate(names, codelist_id)
+                des = self.translate(des, codelist_id) if des else None
+
             if agency not in codelists:
                 codelists[agency] = {}
             if codelist_id not in codelists[agency]:
@@ -91,32 +96,39 @@ class Codelists:
         except Exception as e:
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
-        self.data = self.get(False)  # Provisional.
+        if codelist_id not in self.data[agencia]:
+            self.data[agencia][codelist_id] = {}
+        self.data[agencia][codelist_id][version] = Codelist(self.session, self.configuracion, self.translator,
+                                                            self.translator_cache, codelist_id, agencia,
+                                                            version, nombres, descripciones, init_data=False)
 
-    def translate(self, names, des, codelist_id):
-        for data in [names, des]:
-            if data:
-                languages = self.configuracion['languages']
-                to_translate_langs = list(set(languages) - set(data.keys()))
-                value = list(data.values())[0]
-                for target_lang in to_translate_langs:
-                    self.logger.info('Traduciendo la codelist con id %s', codelist_id)
-                    if 'en' in target_lang:
-                        target_lang = 'EN-GB'
-                    data[target_lang] = self.__get_translate(self.translator, value, target_lang,
-                                                             self.translator_cache)
-        return names, des
+    def translate(self, data, codelist_id):
+        result = copy.deepcopy(data)
+        languages = copy.deepcopy(self.configuracion['languages'])
+        to_translate_langs = list(set(languages) - set(result.keys()))
+        value = list(result.values())[0]
+        for target_lang in to_translate_langs:
+            self.logger.info('Traduciendo la codelist con id %s', codelist_id)
+            if 'en' in target_lang:
+                target_lang = 'EN-GB'
+            translate = self.__get_translate(value, target_lang)
+            if 'EN-GB' in target_lang:
+                target_lang = 'en'
+                result[target_lang] = translate
+        return result
 
-    def __get_translate(self, translator, value, target_language, translations_cache):
-        if value in translations_cache:
+    def __get_translate(self, value, target_language):
+        if value in self.translator_cache:
             self.logger.info('Valor encontrado en la caché de traducciones')
             if 'EN-GB' in target_language:
                 target_language = 'en'
-            translation = translations_cache[value][target_language]
+            translation = self.translator_cache[value][target_language]
         else:
-            translation = str(translator.translate_text(value, target_lang=target_language))
-            translations_cache[value] = {}
+            self.logger.info('Realizando petición a deepl')
+            translation = str(self.translator.translate_text(value, target_lang=target_language))
+            self.translator_cache[value] = {}
             if 'EN-GB' in target_language:
                 target_language = 'en'
-            translations_cache[value][target_language] = translation
+            self.translator_cache[value][target_language] = translation
+        self.logger.info('Se ha traducido el término %s como %s', value, translation)
         return translation

@@ -87,8 +87,7 @@ class ConceptScheme:
 
     def put(self, data=None, lang='es'):
         languages = copy.deepcopy(self.configuracion['languages'])
-        languages.remove(lang
-                         )
+        languages.remove(lang)
         csv = data.copy(deep=True)
         csv.columns = ['Id', 'Name', 'Description', 'ParentCode', 'order']
         csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
