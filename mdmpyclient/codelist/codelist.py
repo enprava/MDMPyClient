@@ -90,14 +90,20 @@ class Codelist:
     def put(self, data=None, lang='es'):
         languages = copy.deepcopy(self.configuracion['languages'])
         languages.remove(lang)
-        if self.codes:
-            csv = self.codes.merge(data, how='outer', indicator=True)
-            csv = csv[csv['_merge'] == 'right_only']
-        else:
-            csv = data.copy(deep=True)
 
-        csv.columns = ['Id', 'Name', 'Description', 'ParentCode', 'order']
-        csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
+        csv = data.copy(deep=True)
+        csv = csv[['ID', 'NAME', 'DESCRIPTION', 'PARENTCODE']]
+        csv.columns = ['Id', 'Name', 'Description', 'ParentCode']
+
+        if len(self.codes):
+            codes = self.codes.copy(deep=True)
+            codes = codes[['id', 'parent', f'name_{lang}', f'des_{lang}']]
+            codes.columns = ['Id', 'ParentCode', 'Name', 'Description']
+
+            csv = codes.merge(csv, on='Id', how='outer', indicator=True, suffixes=('_x', ''))
+            csv = csv[csv['_merge'] == 'right_only']
+            csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
+
         csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
         # csv.columns = ['ID', 'COD', 'NAME', 'DESCRIPTION', 'PARENTCODE', 'ORDER']
         columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,

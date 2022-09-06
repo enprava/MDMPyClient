@@ -2,6 +2,8 @@ import copy
 import logging
 import sys
 
+import yaml
+
 from mdmpyclient.codelist.codelist import Codelist
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
@@ -115,6 +117,8 @@ class Codelists:
             if 'EN-GB' in target_lang:
                 target_lang = 'en'
                 result[target_lang] = translate
+        with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
+            yaml.dump(self.translator_cache, file)
         return result
 
     def __get_translate(self, value, target_language):
