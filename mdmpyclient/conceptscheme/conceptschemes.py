@@ -1,5 +1,8 @@
+import copy
 import logging
 import sys
+
+import yaml
 
 from mdmpyclient.conceptscheme.conceptscheme import ConceptScheme
 
@@ -64,13 +67,17 @@ class ConceptSchemes:
                                                                     version, names, des, init_data=init_data)
         return concept_schemes
 
-    def put(self, agency, conceptscheme_id, version, names, des):
+    def put(self, agency, concepts_cheme_id, version, names, des):
+        if self.configuracion['translate']:
+            self.logger.info('Traduciendo el esquema de concepto con id %s', concepts_cheme_id)
+            names = self.translate(names)
+            des = self.translate(des)
         json = {'data': {'conceptSchemes': [
-            {'agencyID': agency, 'id': conceptscheme_id, 'isFinal': 'true', 'names': names, 'descriptions': des,
+            {'agencyID': agency, 'id': concepts_cheme_id, 'isFinal': 'true', 'names': names, 'descriptions': des,
              'version': str(version)}]},
             'meta': {}}
 
-        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', conceptscheme_id)
+        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', concepts_cheme_id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
 
@@ -78,3 +85,35 @@ class ConceptSchemes:
         except Exception as e:
             raise e
         self.logger.info('Esquema de conceptos creado o actualizado correctamente')
+
+    def translate(self, data):
+        result = copy.deepcopy(data)
+        languages = copy.deepcopy(self.configuracion['languages'])
+        to_translate_langs = list(set(languages) - set(result.keys()))
+        value = list(result.values())[0]
+        for target_lang in to_translate_langs:
+            if 'en' in target_lang:
+                target_lang = 'EN-GB'
+            translate = self.__get_translate(value, target_lang)
+            if 'EN-GB' in target_lang:
+                target_lang = 'en'
+            result[target_lang] = translate
+        with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
+            yaml.dump(self.translator_cache, file)
+        return result
+
+    def __get_translate(self, value, target_language):
+        if value in self.translator_cache:
+            self.logger.info('Valor encontrado en la caché de traducciones')
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            translation = self.translator_cache[value][target_language]
+        else:
+            self.logger.info('Realizando petición a deepl')
+            translation = str(self.translator.translate_text(value, target_lang=target_language))
+            self.translator_cache[value] = {}
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            self.translator_cache[value][target_language] = translation
+        self.logger.info('Se ha traducido el término %s como %s', value, translation)
+        return translation

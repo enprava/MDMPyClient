@@ -4,5 +4,5 @@ languages:
   - en
   - es
 extractor_path: /home/prada/PycharmProjects/IECA-extractor/
-translate: False
+translate: True
 cache: configuracion/traducciones.yaml

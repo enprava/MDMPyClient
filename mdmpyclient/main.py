@@ -20,22 +20,17 @@ if __name__ == '__main__':
 
         controller = MDM(configuracion, traductor)
 
-        # controller.codelists.put('ESC01', 'TEST', '1.0',
-        #                          {'es': 'Esto mensaje lo debe traducir'},
-        #                          {'en': 'Hello world!'})
-        #
-        # controller.codelists.data = controller.codelists.get(True)
-        # codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
-        # data = pandas.read_csv('csv/TEST.csv', sep=';')
-        # codelist2.put(data)
-        # codelist2.put('csv/TEST.csv')
-        # # codelist2.init_codes() Hay un bug aqui??? No entiendo
-        # codelist2.codes = codelist2.get()
-        # codelist2.codes = codelist2.translate(traductor, traducciones)
-        # codelist2.put()
+        controller.codelists.put('ESC01', 'TEST', '1.0',
+                                 {'es': 'Esto mensaje lo debe traducir'},
+                                 {'en': 'Hello world!'})
+
+        controller.codelists.data = controller.codelists.get(True)
+        codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
+        codelist2.add_code('pepe', None, 'aloha', 'maria')
+        codelist2.put()
 
         controller.concept_schemes.put('ESC01', 'HOLAPEPE', '1.0', {'es': 'pepe'}, {'es': 'ramon'})
-        controller.concept_schemes.data = controller.concept_schemes.get(False)
+        controller.concept_schemes.data = controller.concept_schemes.get(True)
         conceptscheme = controller.concept_schemes.data['ESC01']['HOLAPEPE']['1.0']
         conceptscheme.add_concept(concept_id='petardo', parent=None, names='oha', des='patata')
         conceptscheme.put()

@@ -47,65 +47,68 @@ class ConceptScheme:
         self.version = version
         self.names = names
         self.des = des
-        self.concepts = self.get() if init_data else None
+        self.concepts = self.get(init_data)
         self.concepts_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'])
 
-    def get(self):
+    def get(self, init_data):
         concepts = {'id': [], 'parent': []}
         for language in self.configuracion['languages']:
             concepts[f'name_{language}'] = []
             concepts[f'des_{language}'] = []
-        try:
-            response = self.session.get(
-                f'{self.configuracion["url_base"]}conceptScheme/{self.id}/{self.agency_id}/{self.version}')
-            response_data = response.json()['data']['conceptSchemes'][0]['concepts']
-        except KeyError:
-            if 'data' in response.json().keys():
-                self.logger.error('El esquema de conceptos con id: %s está vacío', self.id)
-            else:
-                self.logger.error(
-                    'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
-                self.logger.error(response.text)
-            return pandas.DataFrame(data=concepts, dtype='string')
-        except Exception as e:
-            raise e
+        if init_data:
+            try:
+                response = self.session.get(
+                    f'{self.configuracion["url_base"]}conceptScheme/{self.id}/{self.agency_id}/{self.version}')
+                response_data = response.json()['data']['conceptSchemes'][0]['concepts']
+            except KeyError:
+                if 'data' in response.json().keys():
+                    self.logger.warning('El esquema de conceptos con id: %s está vacío', self.id)
+                else:
+                    self.logger.error(
+                        'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
+                    self.logger.error(response.text)
+                return pandas.DataFrame(data=concepts, dtype='string')
+            except Exception as e:
+                raise e
 
-        for concept in response_data:
-            for key, column in concepts.items():
-                try:
-                    if 'id' in key or 'parent' in key:
-                        column.append(concept[key])
-                    else:
-                        language = key[-2:]
-                        if 'name' in key:
-                            column.append(concept['names'][language])
-                        if 'des' in key:
-                            column.append(concept['descriptions'][language])
+            for concept in response_data:
+                for key, column in concepts.items():
+                    try:
+                        if 'id' in key or 'parent' in key:
+                            column.append(concept[key])
+                        else:
+                            language = key[-2:]
+                            if 'name' in key:
+                                column.append(concept['names'][language])
+                            if 'des' in key:
+                                column.append(concept['descriptions'][language])
 
-                except Exception:
-                    column.append(None)
+                    except Exception:
+                        column.append(None)
         return pandas.DataFrame(data=concepts, dtype='string')
 
     def add_concept(self, concept_id, parent, names, des):
-        self.concepts_to_upload.loc[len(self.concepts_to_upload)] = [concept_id, parent, names, des]
+        if concept_id.upper() not in self.concepts.id.values:
+            self.concepts_to_upload.loc[len(self.concepts_to_upload)] = [concept_id.upper(), parent, names, des]
 
     def put(self, lang='es'):
         to_upload = len(self.concepts_to_upload)
         self.logger.info('Se han detectado %s conceptos para subir al esquema con id %s', to_upload, self.id)
-        if not to_upload == 0:
-            languages = copy.deepcopy(self.configuracion['languages'])
-            languages.remove(lang)
-            csv = self.concepts_to_upload.copy(deep=True)
-            csv.columns = ['Id', 'ParentCode', 'Name', 'Description']
+        if to_upload:
+            csv = self.concepts_to_upload
             csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             response = self.__upload_csv(csv, columns, to_upload, lang=lang)
             self.__import_csv(response)
             self.init_concepts()
-        self.concepts_to_upload = self.concepts_to_upload[0:0]
+            self.concepts_to_upload = self.concepts_to_upload[0:0]
+
         if self.configuracion['translate']:
-            concepts = self.translate()
+            languages = copy.deepcopy(self.configuracion['languages'])
+            languages.remove(lang)
+
+            concepts = self.translate(self.concepts)
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             for language in languages:
@@ -152,17 +155,17 @@ class ConceptScheme:
     def __import_csv(self, json):
         try:
             self.logger.info('Importando conceptos al esquema')
-            self.session.post(
+            response = self.session.post(
                 f'{self.configuracion["url_base"]}importFileCsvItem',
                 json=json)
-
+            response.raise_for_status()
         except Exception as e:
             raise e
         self.logger.info('Conceptos importados correctamente')
 
-    def translate(self):
-        columns = self.concepts.columns[2:]
-        concepts = self.concepts.copy()
+    def translate(self, data):
+        columns = data.columns[2:]
+        concepts = data.copy()
         for column in columns:
             target_language = column[-2:]
 
@@ -199,7 +202,7 @@ class ConceptScheme:
         return translation
 
     def init_concepts(self):
-        self.concepts = self.get()
+        self.concepts = self.get(True)
 
     def __repr__(self):
         return f'{self.id} {self.version}'

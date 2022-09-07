@@ -46,6 +46,7 @@ class Codelist:
         self.names = names
         self.des = des
         self.codes = self.get() if init_data else None
+        self.codes_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'])
 
     def get(self):
         codes = {'id': [], 'parent': []}
@@ -87,38 +88,32 @@ class Codelist:
                     column.append(None)
         return pandas.DataFrame(data=codes, dtype='string')
 
-    def put(self, data=None, lang='es'):
-        languages = copy.deepcopy(self.configuracion['languages'])
-        languages.remove(lang)
+    def add_code(self, code_id, parent, name, des):
+        if code_id.upper() not in self.codes.id.values:
+            self.codes_to_upload.loc[len(self.codes_to_upload)] = [code_id.upper(), parent, name, des]
 
-        csv = data.copy(deep=True)
-        csv = csv[['ID', 'NAME', 'DESCRIPTION', 'PARENTCODE']]
-        csv.columns = ['Id', 'Name', 'Description', 'ParentCode']
-
-        if len(self.codes):
-            codes = self.codes.copy(deep=True)
-            codes = codes[['id', 'parent', f'name_{lang}', f'des_{lang}']]
-            codes.columns = ['Id', 'ParentCode', 'Name', 'Description']
-
-            csv = codes.merge(csv, on='Id', how='outer', indicator=True, suffixes=('_x', ''))
-            csv = csv[csv['_merge'] == 'right_only']
-            csv = csv[['Id', 'Name', 'Description', 'ParentCode']]
-        to_upload = len(csv)
-        self.logger.info('Se han detectado %s códigos nuevos para subir a la codelist con id %s', to_upload, self.id)
-        if not to_upload == 0:
+    def put(self, lang='es'):
+        to_upload = len(self.codes_to_upload)
+        self.logger.info('Se han detectado %s códigos para subir a la codelist con id %s', to_upload, self.id)
+        if to_upload:
+            csv = self.codes_to_upload
             csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
-            columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
+            columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             response = self.__upload_csv(csv, columns, to_upload, lang=lang)
             self.__import_csv(response)
             self.init_codes()
+            self.codes_to_upload = self.codes_to_upload[0:0]
 
         if self.configuracion['translate']:
-            codes = self.translate()
+            languages = copy.deepcopy(self.configuracion['languages'])
+            languages.remove(lang)
+
+            codes = self.translate(self.codes)
+
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             for language in languages:
-                self.logger.info('Iniciando proceso de traducción para la codelist con id %s', self.id)
                 codes_to_upload = codes.copy(deep=True)
                 codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
                 codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
@@ -127,7 +122,7 @@ class Codelist:
 
                 response = self.__upload_csv(csv, columns, to_upload, lang=language)
                 self.__import_csv(response)
-                self.init_codes()
+            self.init_codes()
 
     def __upload_csv(self, csv, columns, to_upload, lang='es'):
         upload_headers = self.session.headers.copy()
@@ -179,9 +174,10 @@ class Codelist:
     def __repr__(self):
         return f'{self.agency_id} {self.id} {self.version}'
 
-    def translate(self):
-        columns = self.codes.columns[2:]
-        codes = self.codes.copy()
+    def translate(self, data):
+        self.logger.info('Iniciando proceso de traducción para la codelist con id %s', self.id)
+        columns = data.columns[2:]
+        codes = data.copy()
         for column in columns:
             target_language = column[-2:]
             source_languages = self.configuracion['languages'].copy()
@@ -193,6 +189,8 @@ class Codelist:
             to_be_translated_indexes = codes[codes[column].isnull()][column].index
             fake_indexes = codes[codes[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
+            if not len(to_be_translated_indexes):
+                continue
             codes[column][to_be_translated_indexes] = codes[source_column][to_be_translated_indexes].map(
                 lambda value, tl=target_language: self.__get_translate(value, tl))
             with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:

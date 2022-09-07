@@ -6618,6 +6618,8 @@
 "(C01) Andaluc\xEDa":
   en: (C01) Andalusia
   es: "(C01) Andaluc\xEDa"
+"(C01) Andaluc\u0102\xADa":
+  en: (C01) Andalusia
 (C01NC) Provincia sin especificar:
   en: (C01NC) Province not specified
   es: (C01NC) Provincia sin especificar
@@ -11860,6 +11862,8 @@
 '32':
   en: '32'
   es: '32'
+32321ASDF:
+  en: 32321ASDF
 '33':
   en: '33'
   es: '33'
@@ -12194,6 +12198,8 @@ Ambos sexos:
 "Andaluc\xEDa/Provincias Andaluc\xEDa (usar en consultas provinciales)":
   en: Andalusia/Provinces Andalusia (use in provincial queries)
   es: "Andaluc\xEDa/Provincias Andaluc\xEDa (usar en consultas provinciales)"
+"Andaluc\u0102\xADa":
+  en: Andalucia
 "Andaluc\u0102\xADa (no usar, se va a eliminar, usar la 44)":
   en: "Andaluc\u0102a (do not use, to be deleted, use 44)"
 Andorra:
@@ -13058,6 +13064,8 @@ Estados Unidos:
 Estancia media:
   en: Average length of stay
   es: Estancia media
+Esto mensaje lo debe traducir:
+  en: This message should be translated by
 Estonia:
   en: Estonia
   es: Estonia
@@ -14243,6 +14251,8 @@ Zona Euro 19 (desde 2015):
   es: Zona Euro 19 (desde 2015)
 "Zonas tur\xEDsticas":
   en: Tourist areas
+aloha:
+  en: Aloha
 asdf:
   en: asdf
 "c1 espa\xF1ol y c2 extranjero":
@@ -14257,6 +14267,12 @@ c1 extranjero, nacionalidad del c2 desconocida:
 c2 extranjero, nacionalidad del c1 desconocida:
   en: c2 foreign, nationality of c1 unknown
   es: c2 extranjero, nacionalidad del c1 desconocida
+maria:
+  en: maria
+pepe:
+  en: pepe
+ramon:
+  en: ramon
 "\xCDndice":
   en: Index
   es: "\xCDndice"

@@ -55,11 +55,6 @@ class Codelists:
             version = codelist['version']
             names = codelist['names']
             des = codelist['descriptions'] if 'descriptions' in codelists else None
-
-            if self.configuracion['translate']:
-                names = self.translate(names, codelist_id)
-                des = self.translate(des, codelist_id) if des else None
-
             if agency not in codelists:
                 codelists[agency] = {}
             if codelist_id not in codelists[agency]:
@@ -85,7 +80,11 @@ class Codelists:
         except Exception as e:
             raise e
 
-    def put(self, agencia, codelist_id, version, descripciones, nombres):
+    def put(self, agencia, codelist_id, version, nombres, descripciones):
+        if self.configuracion['translate']:
+            self.logger.info('Traduciendo la codelist con id %s', codelist_id)
+            nombres = self.translate(nombres)
+            descripciones = self.translate(descripciones) if descripciones else None
         json = {'data': {'codelists': [
             {'agencyID': agencia, 'id': codelist_id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': version}]},
@@ -104,19 +103,18 @@ class Codelists:
                                                             self.translator_cache, codelist_id, agencia,
                                                             version, nombres, descripciones, init_data=False)
 
-    def translate(self, data, codelist_id):
+    def translate(self, data):
         result = copy.deepcopy(data)
         languages = copy.deepcopy(self.configuracion['languages'])
         to_translate_langs = list(set(languages) - set(result.keys()))
         value = list(result.values())[0]
         for target_lang in to_translate_langs:
-            self.logger.info('Traduciendo la codelist con id %s', codelist_id)
             if 'en' in target_lang:
                 target_lang = 'EN-GB'
             translate = self.__get_translate(value, target_lang)
             if 'EN-GB' in target_lang:
                 target_lang = 'en'
-                result[target_lang] = translate
+            result[target_lang] = translate
         with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
             yaml.dump(self.translator_cache, file)
         return result
