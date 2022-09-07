@@ -45,47 +45,48 @@ class Codelist:
         self.agency_id = agency_id
         self.names = names
         self.des = des
-        self.codes = self.get() if init_data else None
+        self.codes = self.get(init_data)
         self.codes_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'])
 
-    def get(self):
+    def get(self, init_data):
         codes = {'id': [], 'parent': []}
         for language in self.configuracion['languages']:
             codes[f'name_{language}'] = []
             codes[f'des_{language}'] = []
-        try:
-            response = self.session.post(f'{self.configuracion["url_base"]}NOSQL/codelist/',
-                                         json={"id": self.id, "agencyId": self.agency_id, "version": self.version,
-                                               "lang": "es", "pageNum": 1, "pageSize": 2147483647, "rebuildDb": False})
+        if init_data:
+            try:
+                response = self.session.post(f'{self.configuracion["url_base"]}NOSQL/codelist/',
+                                             json={"id": self.id, "agencyId": self.agency_id, "version": self.version,
+                                                   "lang": "es", "pageNum": 1, "pageSize": 2147483647, "rebuildDb": False})
 
-            response_data = response.json()['data']['codelists'][0]['codes']
+                response_data = response.json()['data']['codelists'][0]['codes']
 
-        except KeyError:
-            if 'data' in response.json().keys():
-                self.logger.warning('La codelist con id: %s está vacía', self.id)
-            else:
-                self.logger.error(
-                    'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
-                self.logger.error(response.text)
-            return pandas.DataFrame(data=codes, dtype='string')
+            except KeyError:
+                if 'data' in response.json().keys():
+                    self.logger.warning('La codelist con id: %s está vacía', self.id)
+                else:
+                    self.logger.error(
+                        'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
+                    self.logger.error(response.text)
+                return pandas.DataFrame(data=codes, dtype='string')
 
-        except Exception as e:
-            raise e
+            except Exception as e:
+                raise e
 
-        for code in response_data:
-            for key, column in codes.items():
-                try:
-                    if 'id' in key or 'parent' in key:
-                        column.append(code[key])
-                    else:
-                        language = key[-2:]
-                        if 'name' in key:
-                            column.append(code['names'][language])
-                        if 'des' in key:
-                            column.append(code['descriptions'][language])
+            for code in response_data:
+                for key, column in codes.items():
+                    try:
+                        if 'id' in key or 'parent' in key:
+                            column.append(code[key])
+                        else:
+                            language = key[-2:]
+                            if 'name' in key:
+                                column.append(code['names'][language])
+                            if 'des' in key:
+                                column.append(code['descriptions'][language])
 
-                except Exception:
-                    column.append(None)
+                    except Exception:
+                        column.append(None)
         return pandas.DataFrame(data=codes, dtype='string')
 
     def add_code(self, code_id, parent, name, des):
