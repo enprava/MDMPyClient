@@ -55,15 +55,18 @@ class Codelist:
             codes[f'des_{language}'] = []
         if init_data:
             try:
-                response = self.session.post(f'{self.configuracion["url_base"]}NOSQL/codelist/',
-                                             json={"id": self.id, "agencyId": self.agency_id, "version": self.version,
-                                                   "lang": "es", "pageNum": 1, "pageSize": 2147483647, "rebuildDb": False})
-
+                # response = self.session.post(f'{self.configuracion["url_base"]}NOSQL/codelist/',
+                #                              json={"id": self.id, "agencyId": self.agency_id, "version": self.version,
+                #                                    "lang": "es", "pageNum": 1, "pageSize": 2147483647,
+                #                                    "rebuildDb": False})
+                response = self.session.get(
+                    f'{self.configuracion["url_base"]}codelist/{self.id}/{self.agency_id}/{self.version}/1/2147483647')
                 response_data = response.json()['data']['codelists'][0]['codes']
 
             except KeyError:
                 if 'data' in response.json().keys():
                     self.logger.warning('La codelist con id: %s está vacía', self.id)
+                    print(response.json())
                 else:
                     self.logger.error(
                         'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
@@ -93,10 +96,15 @@ class Codelist:
         if code_id.upper() not in self.codes.id.values:
             self.codes_to_upload.loc[len(self.codes_to_upload)] = [code_id.upper(), parent, name, des]
 
+    def add_codes(self, codes):
+        codes.apply(
+            lambda codigos: self.add_code(codigos['ID'], codigos['PARENTCODE'], codigos['NAME'],
+                                          codigos['DESCRIPTION']), axis=1)
+
     def put(self, lang='es'):
         to_upload = len(self.codes_to_upload)
-        self.logger.info('Se han detectado %s códigos para subir a la codelist con id %s', to_upload, self.id)
         if to_upload:
+            self.logger.info('Se han detectado %s códigos para subir a la codelist con id %s', to_upload, self.id)
             csv = self.codes_to_upload
             csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
@@ -106,24 +114,26 @@ class Codelist:
             self.init_codes()
             self.codes_to_upload = self.codes_to_upload[0:0]
 
-        if self.configuracion['translate']:
-            languages = copy.deepcopy(self.configuracion['languages'])
-            languages.remove(lang)
+            if self.configuracion['translate']:
+                languages = copy.deepcopy(self.configuracion['languages'])
+                languages.remove(lang)
 
-            codes = self.translate(self.codes)
+                codes = self.translate(self.codes)
 
-            columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
-                       "isDefault": -1}
-            for language in languages:
-                codes_to_upload = codes.copy(deep=True)
-                codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
-                codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
-                to_upload = len(codes_to_upload)
-                csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
+                columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                           "isDefault": -1}
+                for language in languages:
+                    codes_to_upload = codes.copy(deep=True)
+                    codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
+                    codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                    to_upload = len(codes_to_upload)
+                    csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
 
-                response = self.__upload_csv(csv, columns, to_upload, lang=language)
-                self.__import_csv(response)
-            self.init_codes()
+                    response = self.__upload_csv(csv, columns, to_upload, lang=language)
+                    self.__import_csv(response)
+                self.init_codes()
+        else:
+            self.logger.info('La codelist con id %s está actualizada', self.id)
 
     def __upload_csv(self, csv, columns, to_upload, lang='es'):
         upload_headers = self.session.headers.copy()
@@ -170,7 +180,7 @@ class Codelist:
         # la sintaxis tb se puede mejorar seguro.
 
     def init_codes(self):
-        self.codes = self.get()
+        self.codes = self.get(True)
 
     def __repr__(self):
         return f'{self.agency_id} {self.id} {self.version}'
@@ -179,6 +189,7 @@ class Codelist:
         self.logger.info('Iniciando proceso de traducción para la codelist con id %s', self.id)
         columns = data.columns[2:]
         codes = data.copy()
+        codes_translated = pandas.DataFrame(columns=codes.columns)
         for column in columns:
             target_language = column[-2:]
             source_languages = self.configuracion['languages'].copy()
@@ -194,9 +205,12 @@ class Codelist:
                 continue
             codes[column][to_be_translated_indexes] = codes[source_column][to_be_translated_indexes].map(
                 lambda value, tl=target_language: self.__get_translate(value, tl))
+
             with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
                 yaml.dump(self.translator_cache, file)
-        return codes
+            print(codes.iloc[to_be_translated_indexes])
+            codes_translated = pandas.concat([codes_translated, codes.iloc[to_be_translated_indexes]]) # Se guardan los codigos traducidos
+        return codes_translated
 
     def __get_translate(self, value, target_language):
         self.logger.info('Traduciendo el término %s al %s', value, target_language)

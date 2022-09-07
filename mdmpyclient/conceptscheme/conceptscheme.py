@@ -91,6 +91,11 @@ class ConceptScheme:
         if concept_id.upper() not in self.concepts.id.values:
             self.concepts_to_upload.loc[len(self.concepts_to_upload)] = [concept_id.upper(), parent, names, des]
 
+    def add_concepts(self, concepts):
+        concepts.apply(
+            lambda conceptos: self.add_code(conceptos['ID'], conceptos['PARENTCODE'], conceptos['NAME'],
+                                            conceptos['DESCRIPTION']), axis=1)
+
     def put(self, lang='es'):
         to_upload = len(self.concepts_to_upload)
         self.logger.info('Se han detectado %s conceptos para subir al esquema con id %s', to_upload, self.id)

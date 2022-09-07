@@ -82,9 +82,8 @@ class Codelists:
 
     def put(self, agencia, codelist_id, version, nombres, descripciones):
         if self.configuracion['translate']:
-            self.logger.info('Traduciendo la codelist con id %s', codelist_id)
-            nombres = self.translate(nombres)
-            descripciones = self.translate(descripciones) if descripciones else None
+            nombres = self.translate(nombres, codelist_id)
+            descripciones = self.translate(descripciones, codelist_id) if descripciones else None
         json = {'data': {'codelists': [
             {'agencyID': agencia, 'id': codelist_id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': version}]},
@@ -103,11 +102,13 @@ class Codelists:
                                                             self.translator_cache, codelist_id, agencia,
                                                             version, nombres, descripciones, init_data=False)
 
-    def translate(self, data):
+    def translate(self, data, codelist_id):
         result = copy.deepcopy(data)
         languages = copy.deepcopy(self.configuracion['languages'])
         to_translate_langs = list(set(languages) - set(result.keys()))
         value = list(result.values())[0]
+        if to_translate_langs:
+            self.logger.info('Traduciendo la codelist con id %s', codelist_id)
         for target_lang in to_translate_langs:
             if 'en' in target_lang:
                 target_lang = 'EN-GB'
