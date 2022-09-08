@@ -101,36 +101,34 @@ class ConceptSchemes:
                                                                        agency,
                                                                        version, names, des, init_data=False)
 
+    def translate(self, data):
+        result = copy.deepcopy(data)
+        languages = copy.deepcopy(self.configuracion['languages'])
+        to_translate_langs = list(set(languages) - set(result.keys()))
+        value = list(result.values())[0]
+        for target_lang in to_translate_langs:
+            if 'en' in target_lang:
+                target_lang = 'EN-GB'
+            translate = self.__get_translate(value, target_lang)
+            if 'EN-GB' in target_lang:
+                target_lang = 'en'
+            result[target_lang] = translate
+        with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
+            yaml.dump(self.translator_cache, file)
+        return result
 
-def translate(self, data):
-    result = copy.deepcopy(data)
-    languages = copy.deepcopy(self.configuracion['languages'])
-    to_translate_langs = list(set(languages) - set(result.keys()))
-    value = list(result.values())[0]
-    for target_lang in to_translate_langs:
-        if 'en' in target_lang:
-            target_lang = 'EN-GB'
-        translate = self.__get_translate(value, target_lang)
-        if 'EN-GB' in target_lang:
-            target_lang = 'en'
-        result[target_lang] = translate
-    with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
-        yaml.dump(self.translator_cache, file)
-    return result
-
-
-def __get_translate(self, value, target_language):
-    if value in self.translator_cache:
-        self.logger.info('Valor encontrado en la caché de traducciones')
-        if 'EN-GB' in target_language:
-            target_language = 'en'
-        translation = self.translator_cache[value][target_language]
-    else:
-        self.logger.info('Realizando petición a deepl')
-        translation = str(self.translator.translate_text(value, target_lang=target_language))
-        self.translator_cache[value] = {}
-        if 'EN-GB' in target_language:
-            target_language = 'en'
-        self.translator_cache[value][target_language] = translation
-    self.logger.info('Se ha traducido el término %s como %s', value, translation)
-    return translation
+    def __get_translate(self, value, target_language):
+        if value in self.translator_cache:
+            self.logger.info('Valor encontrado en la caché de traducciones')
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            translation = self.translator_cache[value][target_language]
+        else:
+            self.logger.info('Realizando petición a deepl')
+            translation = str(self.translator.translate_text(value, target_lang=target_language))
+            self.translator_cache[value] = {}
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            self.translator_cache[value][target_language] = translation
+        self.logger.info('Se ha traducido el término %s como %s', value, translation)
+        return translation

@@ -4,6 +4,7 @@ import sys
 
 import pandas
 import requests
+import yaml
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -104,29 +105,30 @@ class ConceptScheme:
             csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
-            response = self.__upload_csv(csv, columns, to_upload, lang=lang)
+            response = self.__upload_csv(csv, columns, lang=lang)
             self.__import_csv(response)
             self.init_concepts()
             self.concepts_to_upload = self.concepts_to_upload[0:0]
 
-        if self.configuracion['translate']:
-            languages = copy.deepcopy(self.configuracion['languages'])
-            languages.remove(lang)
+            if self.configuracion['translate']:
+                languages = copy.deepcopy(self.configuracion['languages'])
+                languages.remove(lang)
 
-            concepts = self.translate(self.concepts)
-            columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
-                       "isDefault": -1}
-            for language in languages:
-                concepts_to_upload = concepts.copy(deep=True)
-                concepts_to_upload = concepts_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
-                concepts_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
-                csv = concepts_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
-                to_upload = len(concepts_to_upload)
-                response = self.__upload_csv(csv, columns, to_upload, lang=language)
-                self.__import_csv(response)
-            self.init_concepts()
+                concepts = self.translate(self.concepts)
+                columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                           "isDefault": -1}
+                for language in languages:
+                    concepts_to_upload = concepts.copy(deep=True)
+                    concepts_to_upload = concepts_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
+                    concepts_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                    csv = concepts_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
+                    response = self.__upload_csv(csv, columns, lang=language)
+                    self.__import_csv(response)
+                self.init_concepts()
+            else:
+                self.logger.info('El esquema de conceptos con id %s está actualizado', self.id)
 
-    def __upload_csv(self, csv, columns, to_upload, lang='es'):
+    def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
             {"type": "conceptScheme",
@@ -142,7 +144,7 @@ class ConceptScheme:
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:
-            self.logger.info('Se van a subir %s códigos al esquema con id: %s', to_upload, self.id)
+            self.logger.info('Subiendo conceptos a la API')
             response = self.session.post(
                 f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
                 data=body)
@@ -169,13 +171,12 @@ class ConceptScheme:
         self.logger.info('Conceptos importados correctamente')
 
     def translate(self, data):
+        self.logger.info('Iniciando proceso de traducción del esquema de conceptos con id %s', self.id)
         columns = data.columns[2:]
         concepts = data.copy()
+        concepts_translated = pandas.DataFrame(columns=concepts.columns)
         for column in columns:
             target_language = column[-2:]
-
-            self.logger.info('Traduciendo los códigos de la codelist %s al %s', self.id, target_language)
-
             source_languages = self.configuracion['languages'].copy()
             source_languages.remove(target_language)
             if target_language == 'en':
@@ -185,9 +186,19 @@ class ConceptScheme:
             to_be_translated_indexes = concepts[concepts[column].isnull()][column].index
             fake_indexes = concepts[concepts[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
+            indexes_size = len(to_be_translated_indexes)
+            if not indexes_size:
+                continue
             concepts[column][to_be_translated_indexes] = concepts[source_column][to_be_translated_indexes].map(
                 lambda value, tl=target_language: self.__get_translate(value, tl))
-        return concepts
+            with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
+                yaml.dump(self.translator_cache, file)
+            concepts_translated = pandas.concat(
+                [concepts_translated, concepts.iloc[to_be_translated_indexes]])  # Se guardan los conceptos traducidos
+            self.logger.info('Se han traducido %s conceptos de la columna %s al %s', indexes_size, column[:-3],
+                             target_language)
+        self.logger.info('Proceso de traducción finalizado')
+        return concepts_translated
 
     def __get_translate(self, value, target_language):
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
