@@ -207,7 +207,8 @@ class Codelist:
 
             with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
                 yaml.dump(self.translator_cache, file)
-            # codes_translated = pandas.concat([codes_translated, codes.iloc[to_be_translated_indexes]]) # Se guardan los codigos traducidos
+            codes_translated = pandas.concat(
+                [codes_translated, codes.iloc[to_be_translated_indexes]])  # Se guardan los codigos traducidos
         return codes_translated
 
     def __get_translate(self, value, target_language):
