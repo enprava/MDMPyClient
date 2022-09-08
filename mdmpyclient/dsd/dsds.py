@@ -58,23 +58,65 @@ class DSDs:
                                                init_data)
         return dsd
 
-    def put(self, agency, dsd_id, version, names, des, primary_meassure, dimensions, measure_dimensions,
-            time_dimensions, attributes):
-        # {"meta": {}, "data": {"dataStructures": [ {"id": "ASDF", "version": "1.0", "agencyID": "ESC01", "names": {
-        # "es": "ASDFASDF"}, "dataStructureComponents": {"measureList": {"id": "MeasureDescriptor", "primaryMeasure":
-        # {"id": "OBS_VALUE", "conceptIdentity":
-        # "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESC01:CS_ECONOMIC(1.0).TIPO_ESTABLECIMIENTO",
-        # "localRepresentation": { "enumeration":
-        # "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ESC01:CL_PROCEDENCIA_ECTA(1.0)"}}}, "dimensionList": {"id":
-        # "DimensionDescriptor", "dimensions": [ {"id": "ASDF", "position": 0, "conceptIdentity":
-        # "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESC01:ASDF(1.0).R1", "localRepresentation": {
-        # "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX:CL_FREQ(2.0)"}, "type": "Dimension"},
-        # {"id": "TEMP", "position": 1, "conceptIdentity":
-        # "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).AGE",
-        # "localRepresentation": { "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX:CL_FREQ(2.0)"},
-        # "type": "Dimension"}], "measureDimensions": [], "timeDimensions": []}, "attributeList": {"id":
-        # "AttributeDescriptor", "attributes": [{"id": "OBS", "conceptIdentity":
-        # "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).ACCURACY",
-        # "localRepresentation": { "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ESC01:CL_OBS_STATUS(
-        # 1.0)"}, "attributeRelationship": { "primaryMeasure": "OBS_VALUE"}, "assignmentStatus": "Conditional"}]}}}]}}
+    def put(self, agency, dsd_id, version, names, des, dimensions):
+        format_dimensions = self.format_dimensions(dimensions)
+        json = {"meta": {},
+                "data": {"dataStructures": [{"id": dsd_id, "version": version, "agencyID": agency, "names":
+                    names, "description": des, "dataStructureComponents": {
+                    "measureList": {"id": "MeasureDescriptor", "primaryMeasure":
+                        {"id": "OBS_VALUE", "conceptIdentity":
+                            "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_VALUE"}}
+                    , "dimensionList": {"id": "DimensionDescriptor",
+                                        "dimensions": format_dimensions + [
+                                            {"id": "FREQ", "position": len(format_dimensions) + 1,
+                                             "conceptIdentity":
+                                                 "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).FREQ",
+                                             "type": "Dimension"}, {"id": "INDICATOR",
+                                                                    "position": len(format_dimensions),
+                                                                    "type": "Dimension",
+                                                                    "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).INDICATOR",
+                                                                    "localRepresentation": {
+                                                                        "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ESC01:CL_UNIT(1.0)"}}]
+                        , "measureDimensions": [], "timeDimensions": [{"id": "TIME_PERIOD",
+                                                                       "position": len(format_dimensions) + 2,
+                                                                       "type": "TimeDimension",
+                                                                       "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).TIME_PERIOD",
+                                                                       "localRepresentation": {"textFormat": {
+                                                                           "textType": "ObservationalTimePeriod",
+                                                                           "isSequence": False,
+                                                                           "isMultiLingual": False}}}]},
+                    "attributeList": {"id": "AttributeDescriptor",
+                                      "attributes": [{"id": "OBS_STATUS",
+                                                      "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_STATUS",
+                                                      "localRepresentation": {
+                                                          "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ESC01:CL_OBS_STATUS(1.0)"},
+                                                      "assignmentStatus": "Conditional",
+                                                      "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
+                                                      "assignmentStatus": "Conditional"}]}}}]}}
+        try:
+            response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
         pass
+
+    def format_dimensions(self, dimensions):
+        result = []
+        i = 0
+        for id, values in dimensions.items():
+            dimension = {}
+            concept_scheme = values['concept_scheme']
+            codelist = values['codelist']
+            dimension['id'] = id
+            dimension['position'] = i
+            i += 1
+            dimension['type'] = 'Dimension'
+            dimension[
+                'conceptIdentity'] = f'urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept={concept_scheme["agency"]}' \
+                                     f':{concept_scheme["id"]}({concept_scheme["version"]})' \
+                                     f'.{concept_scheme["concepto"]}'
+            dimension['localRepresentation'] = {
+                'enumeration': f'urn:sdmx:org.sdmx.infomodel.codelist.Codelist={codelist["agency"]}'
+                               f':{codelist["id"]}({codelist["version"]})'}
+            result.append(dimension)
+        return result

@@ -20,21 +20,21 @@ if __name__ == '__main__':
 
         controller = MDM(configuracion, traductor)
 
-        controller.codelists.put('ESC01', 'TEST', '1.0',
-                                 {'es': 'Esto mensaje lo debe traducir'},
-                                 {'en': 'Hello world!'})
+        # controller.codelists.put('ESC01', 'TEST', '1.0',
+        #                          {'es': 'Esto mensaje lo debe traducir'},
+        #                          {'en': 'Hello world!'})
 
-        controller.codelists.data = controller.codelists.get(True)
-        codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
-        codelist2.add_code('pepe', None, 'aloha', 'maria')
-        codelist2.put()
-
-        controller.concept_schemes.put('ESC01', 'HOLAPEPE', '1.0', {'es': 'pepe'}, {'es': 'ramon'})
-        controller.concept_schemes.data = controller.concept_schemes.get(True)
-        conceptscheme = controller.concept_schemes.data['ESC01']['HOLAPEPE']['1.0']
-        conceptscheme.add_concept(concept_id='petardo', parent=None, names='oha', des='patata')
-        conceptscheme.put()
-        conceptscheme.init_concepts()
+        # controller.codelists.data = controller.codelists.get(True)
+        # codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
+        # codelist2.add_code('pepe', None, 'aloha', 'maria')
+        # codelist2.put()
+        #
+        # controller.concept_schemes.put('ESC01', 'HOLAPEPE', '1.0', {'es': 'pepe'}, {'es': 'ramon'})
+        # controller.concept_schemes.data = controller.concept_schemes.get(True)
+        # conceptscheme = controller.concept_schemes.data['ESC01']['HOLAPEPE']['1.0']
+        # conceptscheme.add_concept(concept_id='petardo', parent=None, names='oha', des='patata')
+        # conceptscheme.put()
+        # conceptscheme.init_concepts()
 
         # controller.category_schemes.put('ESC01', 'POTATO', '1.0', {'en': 'wow im british'},
         #                                 {'en': 'amazing categories'})
@@ -47,8 +47,10 @@ if __name__ == '__main__':
 
         # dsd = controller.dsds.data['ESC01']['DSD_APARTAMENTOS_TURISTICOS']['1.0']
         # dsd.init_data()
-        # print(dsd.data)
-
+        dimensions = {"SEXO": {'codelist': {'agency': 'ESC01', 'id': 'CL_SEXO', 'version': '1.0'},
+                               'concept_scheme': {'agency': 'ESC01', 'concepto': 'TIPO_ESTABLECIMIENTO', 'id': 'CS_ECONOMIC',
+                                                  'version': '1.0'}}}
+        controller.dsds.put('ESC01', 'POTATO', '1.0', {'es': 'hola'}, None, dimensions)
         # cube = controller.cubes.data['ESC01_EOC_67672']
         # cube.init_data()
 
