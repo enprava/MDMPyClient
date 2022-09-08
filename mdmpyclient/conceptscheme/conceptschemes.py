@@ -67,17 +67,23 @@ class ConceptSchemes:
                                                                     version, names, des, init_data=init_data)
         return concept_schemes
 
-    def put(self, agency, concepts_cheme_id, version, names, des):
+    def put(self, agency, concepts_scheme_id, version, names, des):
+        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', concepts_scheme_id)
+        try:
+            concepts_scheme = self.data[agency][concepts_scheme_id][version]
+            self.logger.info('El esquema de conceptos con id %s ya se encuentra actualizado', concepts_scheme.id)
+        except KeyError:
+            self._put(agency, concepts_scheme_id, version, names, des)
+
+    def _put(self, agency, concepts_scheme_id, version, names, des):
         if self.configuracion['translate']:
-            self.logger.info('Traduciendo el esquema de concepto con id %s', concepts_cheme_id)
+            self.logger.info('Traduciendo el esquema de concepto con id %s', concepts_scheme_id)
             names = self.translate(names)
             des = self.translate(des)
         json = {'data': {'conceptSchemes': [
-            {'agencyID': agency, 'id': concepts_cheme_id, 'isFinal': 'true', 'names': names, 'descriptions': des,
+            {'agencyID': agency, 'id': concepts_scheme_id, 'isFinal': 'true', 'names': names, 'descriptions': des,
              'version': str(version)}]},
             'meta': {}}
-
-        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', concepts_cheme_id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
 

@@ -81,6 +81,14 @@ class Codelists:
             raise e
 
     def put(self, agencia, codelist_id, version, nombres, descripciones):
+        self.logger.info('Creando o actualizando codelist con id: %s', codelist_id)
+        try:
+            codelist = self.data[agencia][codelist_id][version]
+            self.logger.info('La codelist con id %s ya se encuentra actualizada', codelist.id)
+        except KeyError:
+            self._put(agencia, codelist_id, version, nombres, descripciones)
+
+    def _put(self, agencia, codelist_id, version, nombres, descripciones):
         if self.configuracion['translate']:
             nombres = self.translate(nombres, codelist_id)
             descripciones = self.translate(descripciones, codelist_id) if descripciones else None
@@ -88,8 +96,6 @@ class Codelists:
             {'agencyID': agencia, 'id': codelist_id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
              'version': version}]},
             'meta': {}}
-
-        self.logger.info('Creando o actualizando codelist con id: %s', codelist_id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
             response.raise_for_status()

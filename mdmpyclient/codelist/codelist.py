@@ -66,7 +66,6 @@ class Codelist:
             except KeyError:
                 if 'data' in response.json().keys():
                     self.logger.warning('La codelist con id: %s está vacía', self.id)
-                    print(response.json())
                 else:
                     self.logger.error(
                         'Ha ocurrido un error mientras se cargaban los datos de la codelist con id: %s', self.id)
@@ -208,8 +207,7 @@ class Codelist:
 
             with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
                 yaml.dump(self.translator_cache, file)
-            print(codes.iloc[to_be_translated_indexes])
-            codes_translated = pandas.concat([codes_translated, codes.iloc[to_be_translated_indexes]]) # Se guardan los codigos traducidos
+            # codes_translated = pandas.concat([codes_translated, codes.iloc[to_be_translated_indexes]]) # Se guardan los codigos traducidos
         return codes_translated
 
     def __get_translate(self, value, target_language):

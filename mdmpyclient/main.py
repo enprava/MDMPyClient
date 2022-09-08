@@ -29,12 +29,12 @@ if __name__ == '__main__':
         codelist2.add_code('pepe', None, 'aloha', 'maria')
         codelist2.put()
 
-        controller.concept_schemes.put('ESC01', 'HOLAPEPE', '1.0', {'es': 'pepe'}, {'es': 'ramon'})
-        controller.concept_schemes.data = controller.concept_schemes.get(True)
-        conceptscheme = controller.concept_schemes.data['ESC01']['HOLAPEPE']['1.0']
-        conceptscheme.add_concept(concept_id='petardo', parent=None, names='oha', des='patata')
-        conceptscheme.put()
-        conceptscheme.init_concepts()
+        # controller.concept_schemes.put('ESC01', 'HOLAPEPE', '1.0', {'es': 'pepe'}, {'es': 'ramon'})
+        # controller.concept_schemes.data = controller.concept_schemes.get(True)
+        # conceptscheme = controller.concept_schemes.data['ESC01']['HOLAPEPE']['1.0']
+        # conceptscheme.add_concept(concept_id='petardo', parent=None, names='oha', des='patata')
+        # conceptscheme.put()
+        # conceptscheme.init_concepts()
 
         # controller.category_schemes.put('ESC01', 'POTATO', '1.0', {'en': 'wow im british'},
         #                                 {'en': 'amazing categories'})
