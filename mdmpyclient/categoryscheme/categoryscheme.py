@@ -88,9 +88,10 @@ class CategoryScheme:
             csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
-            print(self.categories_to_upload)
             response = self.__upload_csv(csv, columns)
             self.__export_csv(response)
+            self.categories_to_upload.apply(lambda x: self.create_cube_category(x.Id, x.ParentCode, {'es': x.Name}),
+                                            axis=1)
             self.init_categories()
             self.categories_to_upload = self.categories_to_upload[0:0]
 
@@ -112,8 +113,18 @@ class CategoryScheme:
                     response = self.__upload_csv(csv, columns, lang=language)
                     self.__import_csv(response)
                 self.init_categories()
+
         else:
             self.logger.info('El esquema de categorías con id %s está actualizado', self.id)
+
+    def create_cube_category(self, id, parent, names):
+        if id not in self.categories.id.values:
+            json = {"catCode": id, "parCode": parent, "ord": None, "labels": names}
+            try:
+                response = self.session.post(f'{self.configuracion["url_base"]}InsertDCS', json=json)
+                response.raise_for_status()
+            except Exception as e:
+                raise e
 
     def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()

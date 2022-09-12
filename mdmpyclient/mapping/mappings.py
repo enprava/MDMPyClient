@@ -53,7 +53,7 @@ class Mappings:
         # POST http://192.168.1.123/sdmx_172/ws/NODE_API/uploadFileOnServer
         # GET http://192.168.1.123/sdmx_172/ws/NODE_API/getCSVHeader/%3B/true?filePath=\Temp\67910_20220912_112500785.csv
         # POST http://192.168.1.123/sdmx_172/ws/NODE_API/fileMapping
-        components = []  # TODO
+        components = []  # TODO Funciona para el caso que he probado pero hay que ver el resto.
         for dim in dimensions:
 
             col = dim if dim in columns else self.configuracion['mappings'][dim]

@@ -36,9 +36,10 @@ if __name__ == '__main__':
         # conceptscheme.put()
         # conceptscheme.init_concepts()
 
-        # cs = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
-        # cs.add_category('PROBANDOOOO', 'DEMO_SOCIAL_STAT', 'Hola mundo!', None)
-        # cs.put()
+        cs = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
+        cs.init_categories()
+        cs.add_category('ASDASFPROBANDOaasdfasasdfaaaaOOO', 'DEMO_SOCIAL_STAT', 'Hola mundo!', None)
+        cs.put()
         # cs.put(csv_file_path='csv/POTATO.csv', lang='en')
         # cs.init_data()
         # cs.categories = cs.translate(traductor, traducciones)
