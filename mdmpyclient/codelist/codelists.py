@@ -102,6 +102,10 @@ class Codelists:
         except Exception as e:
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
+        try:
+            self.data[agencia]
+        except:
+            self.data[agencia]={}
         if codelist_id not in self.data[agencia]:
             self.data[agencia][codelist_id] = {}
         self.data[agencia][codelist_id][version] = Codelist(self.session, self.configuracion, self.translator,
