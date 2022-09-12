@@ -1,8 +1,10 @@
+import copy
 import logging
 import sys
 
 import pandas
 import requests
+import yaml
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -31,67 +33,89 @@ class CategoryScheme:
 
     """
 
-    def __init__(self, session, configuracion, category_scheme_id, agency_id, version, names, des, init_data=False):
+    def __init__(self, session, configuracion, translator, translator_cache, category_scheme_id, agency_id, version,
+                 names, des, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
+        self.translator = translator
+        self.translator_cache = translator_cache
         self.id = category_scheme_id
         self.agency_id = agency_id
         self.version = version
         self.names = names
         self.des = des
-        self.categories = self.get() if init_data else None
+        self.categories = self.get(init_data)
+        self.categories_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'])
 
-    def get(self):
+    def get(self, init_data):
         categories = {'id': [], 'parent': [], 'id_cube_cat': []}
         for language in self.configuracion['languages']:
             categories[f'name_{language}'] = []
             categories[f'des_{language}'] = []
+        if init_data:
+            self.logger.info('Solicitando información del esquema de categorías con id: %s', self.id)
+            try:
+                response = self.session.get(
+                    f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}')
+                response_data = response.json()['data']['categorySchemes'][0]['categories']
+                response_dcs = self.session.get(f'{self.configuracion["url_base"]}dcs').json()
 
-        self.logger.info('Solicitando información del esquema de categorías con id: %s', self.id)
-        try:
-            response = self.session.get(
-                f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}')
-            response_data = response.json()['data']['categorySchemes'][0]['categories']
-            response_dcs = self.session.get(f'{self.configuracion["url_base"]}dcs').json()
+            except KeyError:
+                self.logger.error(
+                    'Ha ocurrido un error mientras se cargaban los datos del esquema de categorías con id: %s', self.id)
+                self.logger.error(response.text)
+                return pandas.DataFrame(data=categories, dtype='string')
+            except Exception as e:
+                raise e
+            self.logger.info('Esquema de categorías extraído correctamente')
 
-        except KeyError:
-            self.logger.error(
-                'Ha ocurrido un error mientras se cargaban los datos del esquema de categorías con id: %s', self.id)
-            self.logger.error(response.text)
-            return pandas.DataFrame(data=categories, dtype='string')
-        except Exception as e:
-            raise e
-        self.logger.info('Esquema de categorías extraído correctamente')
-
-        dcs = self.__dcs_to_dict(response_dcs)
-        categories = self.__merge_categories(response_data, None, dcs, categories)
+            dcs = self.__dcs_to_dict(response_dcs)
+            categories = self.__merge_categories(response_data, None, dcs, categories)
         return pandas.DataFrame(data=categories, dtype='string')
 
-    def put(self, csv_file_path=None, lang='es'):
-        if csv_file_path:
-            with open(csv_file_path, 'r', encoding='utf-8') as csv:
-                columns = {"id": 0, "name": 1, "description": 2, "parent": 3, "order": -1, "fullName": -1,
-                           "isDefault": -1}
-                response = self.__upload_csv(csv, columns, csv_file_path=csv_file_path, lang=lang)
-                self.__export_csv(response)
-        else:
-            for language in self.configuracion['languages']:
-                csv = self.categories.copy()
-                del csv['id_cube_cat']
-                for column_name in csv.columns[2:]:
-                    if language not in column_name[-2:]:
-                        del csv[column_name]
-                csv.columns = ['Id', 'ParentCode', 'Name', 'Description']
-                path = f'traduccion_{self.id}_{language}.csv'
-                csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
-                columns = {"id": 0, "parent": 1, "name": 2, "description": 3, "order": -1, "fullName": -1,
-                           "isDefault": -1}
-                response = self.__upload_csv(csv, columns, csv_file_path=path, lang=language)
-                self.__export_csv(response)
+    def add_category(self, category_id, parent, name, des):
+        if category_id.upper() not in self.categories_to_upload.Id.values:
+            self.categories_to_upload.loc[len(self.categories_to_upload)] = [category_id.upper(), parent, name, des]
 
-    def __upload_csv(self, csv, columns, csv_file_path='', lang='es'):
+    def put(self, lang='es'):
+        to_upload = len(self.categories_to_upload)
+        if to_upload:
+            self.logger.info('Se han detectado %s nuevas categorías para subir al esquema con id %s', to_upload,
+                             self.id)
+            csv = self.categories_to_upload
+            csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
+            columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                       "isDefault": -1}
+            print(self.categories_to_upload)
+            response = self.__upload_csv(csv, columns)
+            self.__export_csv(response)
+            self.init_categories()
+            self.categories_to_upload = self.categories_to_upload[0:0]
+
+            if self.configuracion['translate']:
+                languages = copy.deepcopy(self.configuracion['languages'])
+                languages.remove(lang)
+
+                categories = self.translate(self.categories)
+                self.logger.info('Se va a subir la traducción de las categorías al esquema de categorías con id: %s',
+                                 self.id)
+                columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                           "isDefault": -1}
+                for language in languages:
+                    categories_to_upload = categories.copy(deep=True)
+                    categories_to_upload = categories_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
+                    categories_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                    csv = categories_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
+
+                    response = self.__upload_csv(csv, columns, lang=language)
+                    self.__import_csv(response)
+                self.init_categories()
+        else:
+            self.logger.info('El esquema de categorías con id %s está actualizado', self.id)
+
+    def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
             {"type": "categoryScheme",
@@ -101,13 +125,13 @@ class CategoryScheme:
              "columns": columns, "textSeparator": ";", "textDelimiter": 'null'})
 
         files = {'file': (
-            csv_file_path, csv, 'application/vnd.ms-excel', {}),
+            'potato.csv', csv, 'application/vnd.ms-excel', {}),
             'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:
-            self.logger.info('Subiendo el archivo %s a la API', csv_file_path)
+            self.logger.info('Subiendo categorías a la API')
             response = self.session.post(
                 f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
                 data=body)
@@ -124,14 +148,14 @@ class CategoryScheme:
 
     def __export_csv(self, json):
         try:
-            self.logger.info('Importando conceptos al esquema')
+            self.logger.info('Importando categorías al esquema')
             self.session.post(
                 f'{self.configuracion["url_base"]}importFileCsvItem',
                 json=json)
 
         except Exception as e:
             raise e
-        self.logger.info('Conceptos importados correctamente')
+        self.logger.info('Categorías importados correctamente')
 
     def __merge_categories(self, response, parent, dcs, categories):
         for categorie in response:
@@ -139,7 +163,7 @@ class CategoryScheme:
             for key, column in categories.items():
                 try:
                     if 'cube' in key:
-                        column.append(dcs[key])
+                        column.append(dcs[category_id])
                     elif 'id' in key:
                         column.append(category_id)
                     elif 'parent' in key:
@@ -163,9 +187,11 @@ class CategoryScheme:
             dcs[dc['CatCode']] = dc['IDCat']
         return dcs
 
-    def translate(self, translator, translations_cache):
-        columns = self.categories.columns[3:]
-        categories = self.categories.copy()
+    def translate(self, data):
+        self.logger.info('Iniciando proceso de traducción para el esquema de categorías con id %s', self.id)
+        columns = data.columns[3:]
+        categories = data.copy()
+        codes_translated = pandas.DataFrame(columns=categories.columns)
         for column in columns:
             target_language = column[-2:]
             source_languages = self.configuracion['languages'].copy()
@@ -174,25 +200,43 @@ class CategoryScheme:
                 target_language = 'EN-GB'
             source_language = source_languages[-1]
             source_column = column[:-2] + source_language
-
             to_be_translated_indexes = categories[categories[column].isnull()][column].index
             fake_indexes = categories[categories[source_column].isnull()][source_column].index
             to_be_translated_indexes = to_be_translated_indexes.difference(fake_indexes, sort=False)
+            indexes_size = len(to_be_translated_indexes)
+            if not indexes_size:
+                continue
             categories[column][to_be_translated_indexes] = categories[source_column][to_be_translated_indexes].map(
-                lambda value, tl=target_language: self.__get_translate(translator, value, tl, translations_cache))
-        return categories
+                lambda value, tl=target_language: self.__get_translate(value, tl))
 
-    def __get_translate(self, translator, value, target_language, translations_cache):
-        if value in translations_cache:
-            translation = translations_cache[value][target_language]
+            with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
+                yaml.dump(self.translator_cache, file)
+            codes_translated = pandas.concat(
+                [codes_translated, categories.iloc[to_be_translated_indexes]])  # Se guardan los codigos traducidos
+            self.logger.info('Se han traducido %s categorías de la columna %s al %s', indexes_size, column[:-3],
+                             target_language)
+        self.logger.info('Proceso de traducción finalizado')
+        return codes_translated
+
+    def __get_translate(self, value, target_language):
+        self.logger.info('Traduciendo el término %s al %s', value, target_language)
+        if value in self.translator_cache:
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            self.logger.info('Valor encontrado en la caché de traducciones')
+            translation = self.translator_cache[value][target_language]
         else:
-            translation = str(translator.translate_text(value, target_lang=target_language))
-            translations_cache[value] = {}
-            translations_cache[value][target_language] = translation
+            self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
+            translation = str(self.translator.translate_text(value, target_lang=target_language))
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            self.translator_cache[value] = {}
+            self.translator_cache[value][target_language] = translation
+        self.logger.info('Traducido el término %s como %s', value, translation)
         return translation
 
-    def init_data(self):
-        self.categories = self.get()
+    def init_categories(self):
+        self.categories = self.get(True)
 
     def __repr__(self):
         return f'{self.id} {self.version}'

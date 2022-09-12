@@ -22,11 +22,14 @@ class CategorySchemes:
            data (:obj:`Dicconario`) Diccionario con todas las codelists
 
        """
-    def __init__(self, session, configuracion, init_data=False):
+
+    def __init__(self, session, configuracion, translator, translator_cache, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
+        self.translator = translator
+        self.translator_cache = translator_cache
         self.data = self.get(init_data)
 
     def get(self, init_data=True):
@@ -56,6 +59,8 @@ class CategorySchemes:
             if category_scheme_id not in category_schemes[agency].keys():
                 category_schemes[agency][category_scheme_id] = {}
             category_schemes[agency][category_scheme_id][version] = CategoryScheme(self.session, self.configuracion,
+                                                                                   self.translator,
+                                                                                   self.translator_cache,
                                                                                    category_scheme_id, agency,
                                                                                    version,
                                                                                    names, des, init_data=init_data)

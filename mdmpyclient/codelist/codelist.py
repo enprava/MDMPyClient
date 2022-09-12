@@ -118,7 +118,7 @@ class Codelist:
                 languages.remove(lang)
 
                 codes = self.translate(self.codes)
-                self.logger.info('Se van a subir la traducción de los códigos a la codelist con id: %s', self.id)
+                self.logger.info('Se va a subir la traducción de los códigos a la codelist con id: %s', self.id)
                 columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                            "isDefault": -1}
                 for language in languages:

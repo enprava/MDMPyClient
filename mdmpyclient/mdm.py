@@ -63,7 +63,8 @@ class MDM:
 
         self.concept_schemes = ConceptSchemes(self.session, self.configuracion, self.translator, self.translator_cache)
 
-        self.category_schemes = CategorySchemes(self.session, self.configuracion)
+        self.category_schemes = CategorySchemes(self.session, self.configuracion, self.translator,
+                                                self.translator_cache)
 
         self.dsds = DSDs(self.session, self.configuracion)
 

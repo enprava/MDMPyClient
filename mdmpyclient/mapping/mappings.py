@@ -48,3 +48,30 @@ class Mappings:
             des = mapping['Description'] if 'Description' in mapping else None
             data[name] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, des, init_data=init_data)
         return data
+
+    def put(self, columns, dimensions, cube_id, name):
+        # POST http://192.168.1.123/sdmx_172/ws/NODE_API/uploadFileOnServer
+        # GET http://192.168.1.123/sdmx_172/ws/NODE_API/getCSVHeader/%3B/true?filePath=\Temp\67910_20220912_112500785.csv
+        # POST http://192.168.1.123/sdmx_172/ws/NODE_API/fileMapping
+        components = []  # TODO
+        for dim in dimensions:
+
+            col = dim if dim in columns else self.configuracion['mappings'][dim]
+            dim_type = 'Dimension'  # Tambien se podria hacer con un diccionario en config pero por ahora se queda asi
+            if 'OBS_STATUS' in dim:
+                dim_type = 'Attribute'
+            if 'TIME_PERIOD' in dim:
+                dim_type = 'TimeDimension'
+            if 'OBS_VALUE' in dim:
+                dim_type = 'Measure'
+
+            components.append({'ColumnName': col, 'CubeComponentCode': dim, 'CubeComponentType': dim_type})
+        json = {'Components': components,
+                'CSVDelimiter': None, 'CSVSeparator': ";", 'Description': None, 'HasHeader': True,
+                'HasSpecialTimePeriod': False, 'IDCube': cube_id, 'Name': name, 'Tid': None,
+                'XMLFilePath': None}
+        try:
+            response = self.session.post(f'{self.configuracion["url_base"]}fileMapping', json=json)
+            response.raise_for_status()
+        except Exception as e:
+            raise e

@@ -36,26 +36,33 @@ if __name__ == '__main__':
         # conceptscheme.put()
         # conceptscheme.init_concepts()
 
-        # controller.category_schemes.put('ESC01', 'POTATO', '1.0', {'en': 'wow im british'},
-        #                                 {'en': 'amazing categories'})
-        # controller.category_schemes.data = controller.category_schemes.get(False)
-        # cs = controller.category_schemes.data['ESC01']['POTATO']['1.0']
+        # cs = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
+        # cs.add_category('PROBANDOOOO', 'DEMO_SOCIAL_STAT', 'Hola mundo!', None)
+        # cs.put()
         # cs.put(csv_file_path='csv/POTATO.csv', lang='en')
         # cs.init_data()
         # cs.categories = cs.translate(traductor, traducciones)
         # cs.put()
+        # category = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
+        # category.init_data()
+        # print(category.categories)
 
         # dsd = controller.dsds.data['ESC01']['DSD_APARTAMENTOS_TURISTICOS']['1.0']
         # dsd.init_data()
-        dimensions = {"SEXO": {'codelist': {'agency': 'ESC01', 'id': 'CL_SEXO', 'version': '1.0'},
-                               'concept_scheme': {'agency': 'ESC01', 'concepto': 'TIPO_ESTABLECIMIENTO', 'id': 'CS_ECONOMIC',
-                                                  'version': '1.0'}}}
-        controller.dsds.put('ESC01', 'POTATO', '1.0', {'es': 'hola'}, None, dimensions)
+        # dimensions = {"SEXO": {'codelist': {'agency': 'ESC01', 'id': 'CL_SEXO', 'version': '1.0'},
+        #                        'concept_scheme': {'agency': 'ESC01', 'concepto': 'TIPO_ESTABLECIMIENTO', 'id': 'CS_ECONOMIC',
+        #                                           'version': '1.0'}}}
+        # controller.dsds.put('ESC01', 'POTATO', '1.0', {'es': 'hola'}, None, dimensions)
         # cube = controller.cubes.data['ESC01_EOC_67672']
         # cube.init_data()
 
         # mapping = controller.mappings.data['MAPP_175_ESC01_EOC_67667']
         # mapping.init_data()
+        # controller.mappings.put(
+        #     ['ESTADO_DATO', 'TERRITORIO', 'TEMPORAL', 'RESITUR', 'INDICATOR', 'OBS_VALUE', 'FREQ', 'PARQUES_TURISMO',
+        #      'PUNTOS_TURISTICOS'],
+        #     ['OBS_STATUS', 'REF_AREA', 'TIME_PERIOD', 'RESITUR', 'INDICATOR', 'OBS_VALUE', 'FREQ', 'PARQUES_TURISMO',
+        #      'PUNTOS_TURISTICOS'], 30, 'Creada por un bot')
 
         # dataflow = controller.dataflows.data['ESC01']['DF_CAMPINGS_67670']['1.0']
         # dataflow.init_data()
