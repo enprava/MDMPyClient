@@ -94,7 +94,6 @@ class DSDs:
                                               "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
                                               "assignmentStatus": "Conditional"}]}}}]}}
         try:
-            print(json)
             response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:

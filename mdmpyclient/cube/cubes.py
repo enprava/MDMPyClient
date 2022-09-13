@@ -39,18 +39,51 @@ class Cubes:
             names = cube['labels']
 
             cubes[cube_code] = Cube(self.session, self.configuracion, cube_id, cube_code, cat_id, dsd_code, names,
-                                  init_data)
+                                    init_data)
 
         return cubes
 
-    def put(self, code, cube_cat_id, names, dsd):#TODO
-        json = {'Code': code, 'DSDCode': f'{dsd.id}+{dsd.agency_id}+{dsd.version}', 'IDCat': cube_cat_id,
-                'labels': names, 'Dimensions': [], 'Attributes': [], 'Measures': []}
-        for dimension in dsd.reports['dimensions']:
-            code = dimension['id']
-            codelist_code = dimension['codelist']
-            is_time_series = 'TIME_PERIOD' in code
-            json['Dimensions'].append({'Code': code, 'CodelistCode': codelist_code, 'IsTimeSeriesDim': is_time_series})
+    def put(self, id_consulta, cube_cat_id, desd_id,descripcion, dimensiones):
+        json = {"Code": self.configuracion['nodeId']+"_"+id_consulta, "labels": {"es": descripcion},
+                "IDCat": int(cube_cat_id), "DSDCode": desd_id+"+ESC01+1.0", "Attributes": [{
+                "IsTid": False,
+                "Code": "OBS_STATUS",
+                "IsMandatory": False,
+                "AttachmentLevel": "Observation",
+                "CodelistCode": "CL_OBS_STATUS+ESTAT+2.2",
+                "refDim": [
 
-        primary_meassure = dsd.reports['primary_meassure']
-        json['Measures'].append({'Code':primary_meassure['id'],'isAlphanumeric': False})
+                ]
+            }], "Dimensions": [
+                {
+                    "IsTimeSeriesDim": False,
+                    "Code": "INDICATOR",
+                    "CodelistCode": "CL_UNIT+ESC01+1.0"
+                },
+                {
+                    "IsTimeSeriesDim": False,
+                    "Code": "FREQ",
+                    "CodelistCode": None
+                },
+                {
+                    "IsTimeSeriesDim": True,
+                    "Code": "TIME_PERIOD",
+                    "CodelistCode": None
+                }],
+                "Measures": [{
+                    "Code": "OBS_VALUE",
+                    "IsAlphanumeric": False
+                }]}
+
+        for dimension in dimensiones:
+            codelist = dimensiones[dimension]['codelist']
+            json['Dimensions'].append({"Code": dimension,
+                                       "CodelistCode": codelist['id'] + '+' + codelist['agency'] + '+' + codelist[
+                                           'version'], "IsTimeSeriesDim": False})
+
+        try:
+            response = self.session.post(f'{self.configuracion["url_base"]}cube', json=json)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        return int(response.text)

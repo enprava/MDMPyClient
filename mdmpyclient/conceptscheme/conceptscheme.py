@@ -141,6 +141,7 @@ class ConceptScheme:
             'hehe.csv', csv, 'application/vnd.ms-excel', {}),
             'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
+        body = body.decode('utf-8')
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:

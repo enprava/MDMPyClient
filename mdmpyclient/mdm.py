@@ -74,11 +74,11 @@ class MDM:
 
         self.dataflows = Dataflows(self.session, self.configuracion)
 
-        self.msds = MSDs(self.session, self.configuracion)
-
-        self.metadataflows = Metadataflows(self.session, self.configuracion)
-
-        self.metadatasets = Metadatasets(self.session, self.configuracion)
+        # self.msds = MSDs(self.session, self.configuracion)
+        #
+        # self.metadataflows = Metadataflows(self.session, self.configuracion)
+        #
+        # self.metadatasets = Metadatasets(self.session, self.configuracion)
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['languages'][0],

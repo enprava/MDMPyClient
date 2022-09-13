@@ -105,7 +105,7 @@ class Codelist:
         if to_upload:
             self.logger.info('Se han detectado %s códigos para subir a la codelist con id %s', to_upload, self.id)
             csv = self.codes_to_upload
-            csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
+            csv = csv.to_csv(sep=';', index=False, encoding='utf_8')
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             response = self.__upload_csv(csv, columns, lang=lang)
@@ -146,6 +146,7 @@ class Codelist:
             'hehe.csv', csv, 'application/vnd.ms-excel', {}),
             'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
+        body = body.decode('utf-8')
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:
