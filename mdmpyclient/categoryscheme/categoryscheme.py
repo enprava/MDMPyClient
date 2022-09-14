@@ -143,48 +143,17 @@ class CategoryScheme:
                         "UNICEF", "UNSD", "WB"]
         token = self.session.headers['Authorization'][7:]
         categories = []
-        if not len(self.categories):
-            self.init_categories()
-        self.categories.apply(lambda x: categories.append(x.id), axis=1)
-        # json = {
-        #     "agencies": agencies,
-        #     "category": categories, "cube": [], "cubeOwner": [],
-        #     "functionality": ["agency-schemes", "app", "artefact-browser", "attribute-file", "builder",
-        #                       "categorisations", "category-schemes", "category-schemes-and-dataflows", "codelists",
-        #                       "compare-dsds", "compare-item-schemes", "concept-schemes", "configurations",
-        #                       "content-constraints", "cube-list", "data-consumer-schemes", "dataflow-builder",
-        #                       "dataflows", "data-manager", "data-provider-schemes", "data-structure-definitions",
-        #                       "dcat-ap-it", "ddb-reset", "file-mapping", "hierarchical-codelists", "import-structures",
-        #                       "loader", "manage-series", "merge-item-schemes", "metadataflows", "metadata-set",
-        #                       "meta-manager", "msds", "nodes", "organization-unit-schemes", "permissions",
-        #                       "provision-agreements", "reference-metadata", "registrations", "remove-temp-tables",
-        #                       "structure-sets", "synchronize-codelists", "update-databrowser-cache", "upgrade-dsd",
-        #                       "user-management", "users", "utilities"],
-        #     "rules": ["AdminRole", "CanDeleteData", "CanDeleteStructuralMetadata", "CanIgnoreProductionFlag",
-        #               "CanImportData", "CanImportStructures", "CanModifyStoreSettings",
-        #               "CanPerformInternalMappingConfig", "CanReadData", "CanReadStructuralMetadata", "CanUpdateData",
-        #               "CanUpdateStructuralMetadata", "DataImporterRole", "DomainUserRole", "StructureImporterRole",
-        #               "WsUserRole"], "dataflow": [], "metadataFlow": [], "dataflowOwner": [],
-        #     "metadataFlowOwner": [], "username": "admin", "email": None,
-        #     "token": token,
-        #     "isAuthenticated": False}
-        # print(json)
+        try:
+            self.logger.info('Obteniendo los DCs')
+            response = self.session.get(f'{self.configuracion["url_base"]}dcs')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        for dc in response.json():
+            categories.append(dc['CatCode'])
         json = {
-            "agencies": ["BE2", "BIS", "ECB", "ESC01", "ESTAT", "FAO", "IAEG-SDGs", "ILO", "IMF", "IT1", "OECD", "TN1",
-                         "UNICEF", "UNSD", "WB"],
-            "category": ["DEMO_SOCIAL_STAT", "CULTURE", "COMMUNITY_ACTIVITIES", "TIME_USE", "ASDASFPROBANDOOOO",
-                         "ASDASFPROBANDOAAAAOOO", "ASDASFPROBANDOAAAAAOOO", "ASDASFPROBANDOAASDFASASDFAAAAOOO",
-                         "POP_MIGRATION", "LABOUR", "EDUCATION", "HEALTH", "INCOME_CONSUMP", "SOCIAL_PROTECT",
-                         "HOUSING", "JUSTICE_CRIME", "PROBANDOOOO", "ECO_STAT", "MACROECO_STAT", "ECO_ACCOUNTS",
-                         "BUSINESS_STAT", "SECTORAL_STAT", "AGRI_FOREST_FISH", "ENERGY", "MINING_MANUFACT_CONSTRUCT",
-                         "TRANSPORT", "TOURISM", "EOAT", "EOAT_VPEM", "EOAT_VARIOS", "ECTA", "ECTA_MOV",
-                         "ECTA_ESTANCIA_MEDIA", "ECTA_GASTO", "EOATR", "EOATR_VPEM", "EOATR_VARIOS", "EOC", "ECO_VPEM",
-                         "EOC_VARIOS", "EOC_VPEM", "BANK_INSURANCE_FINANCE", "INDUSTRY", "SERVICES", "COMMERCE",
-                         "GOV_FINANCE_PUBLIC_SECTOR", "INTERN_TRADE_BOP", "PRICES", "LABOUR_COST",
-                         "SCIENCE_TECHNO_INNO", "ENVIRONMENT_MULTIDOMAIN_STAT", "ENVIRONMENT", "REGIONAL_STAT",
-                         "MULTIDOMAIN_STAT_INDIC", "LIVING_CONDITIONS", "GENDER_SPECIAL_POP_GROUPS", "INFORMATION_SOC",
-                         "GLOBALISATION", "MILLENIUM_GOALS", "SUSTAINABLE_DEV", "ENTREPRENEURSHIP",
-                         "YEARBOOKS_COMPENDIA"], "cube": [], "cubeOwner": [],
+            "agencies": agencies,
+            "category": categories, "cube": [], "cubeOwner": [],
             "functionality": ["agency-schemes", "app", "artefact-browser", "attribute-file", "builder",
                               "categorisations", "category-schemes", "category-schemes-and-dataflows", "codelists",
                               "compare-dsds", "compare-item-schemes", "concept-schemes", "configurations",
@@ -200,8 +169,8 @@ class CategoryScheme:
                       "CanImportData", "CanImportStructures", "CanModifyStoreSettings",
                       "CanPerformInternalMappingConfig", "CanReadData", "CanReadStructuralMetadata", "CanUpdateData",
                       "CanUpdateStructuralMetadata", "DataImporterRole", "DomainUserRole", "StructureImporterRole",
-                      "WsUserRole"], "dataflow": [], "metadataFlow": [], "dataflowOwner": [], "metadataFlowOwner": [],
-            "username": "admin", "email": None,
+                      "WsUserRole"], "dataflow": [], "metadataFlow": [], "dataflowOwner": [],
+            "metadataFlowOwner": [], "username": "admin", "email": None,
             "token": token,
             "isAuthenticated": False}
         try:
