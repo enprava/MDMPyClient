@@ -110,3 +110,11 @@ class MDM:
     def logout(self):
         self.logger.info('Finalizando conexión con la API')
         self.session.post(f'{self.configuracion["url_base"]}api/Security/Logout')
+
+    def ddb_reset(self):
+        self.logger.info('Se va a reinicar la DDB')
+        try:
+            response = self.session.post(f'{self.configuracion["url_base"]}DDBReset')
+            response.raise_for_status()
+        except Exception as e:
+            raise e

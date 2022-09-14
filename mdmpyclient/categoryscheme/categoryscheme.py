@@ -126,6 +126,90 @@ class CategoryScheme:
             except Exception as e:
                 raise e
 
+    def import_dcs(self):
+        self.logger.info(
+            'Se van a importar todas las categorías del esquema con id %s a las categorías de los cubos(DCS)', self.id)
+        try:
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}importDCS/{self.id}/{self.agency_id}/{self.version}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        self.logger.info('Se han importado las categorías correctamente')
+
+    def set_permissions(self, agencies=None):
+        if not agencies:
+            agencies = ["BE2", "BIS", "ECB", "ESC01", "ESTAT", "FAO", "IAEG-SDGs", "ILO", "IMF", "IT1", "OECD", "TN1",
+                        "UNICEF", "UNSD", "WB"]
+        token = self.session.headers['Authorization'][7:]
+        categories = []
+        if not len(self.categories):
+            self.init_categories()
+        self.categories.apply(lambda x: categories.append(x.id), axis=1)
+        # json = {
+        #     "agencies": agencies,
+        #     "category": categories, "cube": [], "cubeOwner": [],
+        #     "functionality": ["agency-schemes", "app", "artefact-browser", "attribute-file", "builder",
+        #                       "categorisations", "category-schemes", "category-schemes-and-dataflows", "codelists",
+        #                       "compare-dsds", "compare-item-schemes", "concept-schemes", "configurations",
+        #                       "content-constraints", "cube-list", "data-consumer-schemes", "dataflow-builder",
+        #                       "dataflows", "data-manager", "data-provider-schemes", "data-structure-definitions",
+        #                       "dcat-ap-it", "ddb-reset", "file-mapping", "hierarchical-codelists", "import-structures",
+        #                       "loader", "manage-series", "merge-item-schemes", "metadataflows", "metadata-set",
+        #                       "meta-manager", "msds", "nodes", "organization-unit-schemes", "permissions",
+        #                       "provision-agreements", "reference-metadata", "registrations", "remove-temp-tables",
+        #                       "structure-sets", "synchronize-codelists", "update-databrowser-cache", "upgrade-dsd",
+        #                       "user-management", "users", "utilities"],
+        #     "rules": ["AdminRole", "CanDeleteData", "CanDeleteStructuralMetadata", "CanIgnoreProductionFlag",
+        #               "CanImportData", "CanImportStructures", "CanModifyStoreSettings",
+        #               "CanPerformInternalMappingConfig", "CanReadData", "CanReadStructuralMetadata", "CanUpdateData",
+        #               "CanUpdateStructuralMetadata", "DataImporterRole", "DomainUserRole", "StructureImporterRole",
+        #               "WsUserRole"], "dataflow": [], "metadataFlow": [], "dataflowOwner": [],
+        #     "metadataFlowOwner": [], "username": "admin", "email": None,
+        #     "token": token,
+        #     "isAuthenticated": False}
+        # print(json)
+        json = {
+            "agencies": ["BE2", "BIS", "ECB", "ESC01", "ESTAT", "FAO", "IAEG-SDGs", "ILO", "IMF", "IT1", "OECD", "TN1",
+                         "UNICEF", "UNSD", "WB"],
+            "category": ["DEMO_SOCIAL_STAT", "CULTURE", "COMMUNITY_ACTIVITIES", "TIME_USE", "ASDASFPROBANDOOOO",
+                         "ASDASFPROBANDOAAAAOOO", "ASDASFPROBANDOAAAAAOOO", "ASDASFPROBANDOAASDFASASDFAAAAOOO",
+                         "POP_MIGRATION", "LABOUR", "EDUCATION", "HEALTH", "INCOME_CONSUMP", "SOCIAL_PROTECT",
+                         "HOUSING", "JUSTICE_CRIME", "PROBANDOOOO", "ECO_STAT", "MACROECO_STAT", "ECO_ACCOUNTS",
+                         "BUSINESS_STAT", "SECTORAL_STAT", "AGRI_FOREST_FISH", "ENERGY", "MINING_MANUFACT_CONSTRUCT",
+                         "TRANSPORT", "TOURISM", "EOAT", "EOAT_VPEM", "EOAT_VARIOS", "ECTA", "ECTA_MOV",
+                         "ECTA_ESTANCIA_MEDIA", "ECTA_GASTO", "EOATR", "EOATR_VPEM", "EOATR_VARIOS", "EOC", "ECO_VPEM",
+                         "EOC_VARIOS", "EOC_VPEM", "BANK_INSURANCE_FINANCE", "INDUSTRY", "SERVICES", "COMMERCE",
+                         "GOV_FINANCE_PUBLIC_SECTOR", "INTERN_TRADE_BOP", "PRICES", "LABOUR_COST",
+                         "SCIENCE_TECHNO_INNO", "ENVIRONMENT_MULTIDOMAIN_STAT", "ENVIRONMENT", "REGIONAL_STAT",
+                         "MULTIDOMAIN_STAT_INDIC", "LIVING_CONDITIONS", "GENDER_SPECIAL_POP_GROUPS", "INFORMATION_SOC",
+                         "GLOBALISATION", "MILLENIUM_GOALS", "SUSTAINABLE_DEV", "ENTREPRENEURSHIP",
+                         "YEARBOOKS_COMPENDIA"], "cube": [], "cubeOwner": [],
+            "functionality": ["agency-schemes", "app", "artefact-browser", "attribute-file", "builder",
+                              "categorisations", "category-schemes", "category-schemes-and-dataflows", "codelists",
+                              "compare-dsds", "compare-item-schemes", "concept-schemes", "configurations",
+                              "content-constraints", "cube-list", "data-consumer-schemes", "dataflow-builder",
+                              "dataflows", "data-manager", "data-provider-schemes", "data-structure-definitions",
+                              "dcat-ap-it", "ddb-reset", "file-mapping", "hierarchical-codelists", "import-structures",
+                              "loader", "manage-series", "merge-item-schemes", "metadataflows", "metadata-set",
+                              "meta-manager", "msds", "nodes", "organization-unit-schemes", "permissions",
+                              "provision-agreements", "reference-metadata", "registrations", "remove-temp-tables",
+                              "structure-sets", "synchronize-codelists", "update-databrowser-cache", "upgrade-dsd",
+                              "user-management", "users", "utilities"],
+            "rules": ["AdminRole", "CanDeleteData", "CanDeleteStructuralMetadata", "CanIgnoreProductionFlag",
+                      "CanImportData", "CanImportStructures", "CanModifyStoreSettings",
+                      "CanPerformInternalMappingConfig", "CanReadData", "CanReadStructuralMetadata", "CanUpdateData",
+                      "CanUpdateStructuralMetadata", "DataImporterRole", "DomainUserRole", "StructureImporterRole",
+                      "WsUserRole"], "dataflow": [], "metadataFlow": [], "dataflowOwner": [], "metadataFlowOwner": [],
+            "username": "admin", "email": None,
+            "token": token,
+            "isAuthenticated": False}
+        try:
+            response = self.session.post(f'{self.configuracion["url_base"]}AssignsAll', json=json)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+
     def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(
