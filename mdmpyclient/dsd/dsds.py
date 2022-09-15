@@ -130,7 +130,9 @@ class DSDs:
         return result
 
     def delete_all(self, agency):
-        if len(self.data): #Miramos que no este vacio self.data
+        try:
             for dict_dsd in self.data[agency].values():
                 for dsd in dict_dsd.values():
                     dsd.delete()
+        except KeyError:
+            pass
