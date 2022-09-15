@@ -149,6 +149,7 @@ class Codelist:
         body = body.decode('utf-8')
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
+        body = body.encode()
         try:
             self.logger.info('Subiendo códigos a la API')
             response = self.session.post(
