@@ -19,27 +19,30 @@ if __name__ == '__main__':
         traducciones = yaml.safe_load(traducciones)
 
         controller = MDM(configuracion, traductor)
-
+        controller.delete_all('ESC01', 'ESC01_CAT_EN_ES', '1.0')
         # controller.codelists.put('ESC01', 'TEST', '1.0',
         #                          {'es': 'Esto mensaje lo debe traducir'},
         #                          {'en': 'Hello world!'})
 
         # controller.codelists.data = controller.codelists.get(True)
         # codelist2 = controller.codelists.data['ESC01']['TEST']['1.0']
+        # codelist2.delete()
         # codelist2.add_code('pepe', None, 'aloha', 'maria')
         # codelist2.put()
         #
         # controller.concept_schemes.put('ESC01', 'HOLAPEPE', '1.0', {'es': 'pepe'}, {'es': 'ramon'})
         # controller.concept_schemes.data = controller.concept_schemes.get(True)
+        # cs = controller.concept_schemes.data['ESC01']['HOLAPEPE']['1.0']
+        # cs.delete()
         # conceptscheme = controller.concept_schemes.data['ESC01']['HOLAPEPE']['1.0']
         # conceptscheme.add_concept(concept_id='petardo', parent=None, names='oha', des='patata')
         # conceptscheme.put()
         # conceptscheme.init_concepts()
 
-        controller.ddb_reset()
-        cs = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
-        cs.import_dcs()
-        cs.set_permissions()
+        # controller.ddb_reset()
+        # cs = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
+        # cs.import_dcs()
+        # cs.set_permissions()
         # cs.init_categories()
         # cs.add_category('ASDASFPROBANDOaasdfasasdfaaaaOOO', 'DEMO_SOCIAL_STAT', 'Hola mundo!', None)
         # cs.put()
@@ -51,7 +54,8 @@ if __name__ == '__main__':
         # category.init_data()
         # print(category.categories)
 
-        # dsd = controller.dsds.data['ESC01']['DSD_APARTAMENTOS_TURISTICOS']['1.0']
+        # dsd = controller.dsds.data['ESC01']['POTATO']['1.0']
+        # dsd.delete()
         # dsd.init_data()
         # dimensions = {"SEXO": {'codelist': {'agency': 'ESC01', 'id': 'CL_SEXO', 'version': '1.0'},
         #                        'concept_scheme': {'agency': 'ESC01', 'concepto': 'TIPO_ESTABLECIMIENTO', 'id': 'CS_ECONOMIC',
@@ -60,11 +64,11 @@ if __name__ == '__main__':
         # cube = controller.cubes.data['ESC01_EOC_67672']
         # cube.init_data()
 
-        # mapping = controller.mappings.data['MAPP_175_ESC01_EOC_67667']
-        # mapping.init_data()
+        mapping = controller.mappings.data[66]
+        data = pandas.read_csv(
+            '/home/prada/PycharmProjects/IECA-extractor/sistema_informacion/SDMX/datos/EPA/11883.csv', sep=';')
+        mapping.load_cube(data)
         # controller.mappings.put(
-        #     ['ESTADO_DATO', 'TERRITORIO', 'TEMPORAL', 'RESITUR', 'INDICATOR', 'OBS_VALUE', 'FREQ', 'PARQUES_TURISMO',
-        #      'PUNTOS_TURISTICOS'],
         #     ['OBS_STATUS', 'REF_AREA', 'TIME_PERIOD', 'RESITUR', 'INDICATOR', 'OBS_VALUE', 'FREQ', 'PARQUES_TURISMO',
         #      'PUNTOS_TURISTICOS'], 30, 'Creada por un bot')
 
@@ -86,3 +90,5 @@ if __name__ == '__main__':
         # metadataset = controller.metadatasets.data['MDS_ESC01_EOAT']
         # metadataset.init_data()
         # print(metadataset.reports)
+
+        controller.logout()

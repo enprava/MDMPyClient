@@ -46,18 +46,16 @@ class Mappings:
             cube_id = mapping['IDCube']
             name = mapping['Name']
             des = mapping['Description'] if 'Description' in mapping else None
-            data[name] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, des, init_data=init_data)
+            data[mapping_id] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, des,
+                                       init_data=init_data)
         return data
 
-    def put(self, columns, dimensions, cube_id, name):
-        # POST http://192.168.1.123/sdmx_172/ws/NODE_API/uploadFileOnServer
-        # GET http://192.168.1.123/sdmx_172/ws/NODE_API/getCSVHeader/%3B/true?filePath=\Temp\67910_20220912_112500785.csv
-        # POST http://192.168.1.123/sdmx_172/ws/NODE_API/fileMapping
-        components = []  # TODO Funciona para el caso que he probado pero hay que ver el resto.
-        for dim in dimensions:
-
-            col = dim if dim in columns else self.configuracion['mappings'][dim]
-            dim_type = 'Dimension'  # Tambien se podria hacer con un diccionario en config pero por ahora se queda asi
+    def put(self, columns, cube_id, name):
+        self.logger.info('Se va a realizar un mapping del cubo con id %s', cube_id)
+        components = []
+        for col in columns:
+            dim = col if 'TEMPORAL' not in col else 'TIME_PERIOD'
+            dim_type = 'Dimension'
             if 'OBS_STATUS' in dim:
                 dim_type = 'Attribute'
             if 'TIME_PERIOD' in dim:
@@ -75,3 +73,6 @@ class Mappings:
             response.raise_for_status()
         except Exception as e:
             raise e
+        mapping_id = int(response.text)
+        self.logger.info('Mapping creado correctamente con id %s', mapping_id)
+        return mapping_id

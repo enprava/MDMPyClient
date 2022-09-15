@@ -118,3 +118,13 @@ class MDM:
             response.raise_for_status()
         except Exception as e:
             raise e
+
+    def delete_all(self, agency, category_scheme_id, version):
+        self.logger.info('Se van a borrar todo los datos')
+        self.ddb_reset()
+        cs = self.category_schemes.data[agency][category_scheme_id][version]
+        cs.import_dcs()
+        cs.set_permissions()
+        self.dsds.delete_all(agency)
+        self.concept_schemes.delete_all(agency)
+        self.codelists.delete_all(agency)

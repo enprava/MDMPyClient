@@ -105,7 +105,7 @@ class Codelists:
         try:
             self.data[agencia]
         except:
-            self.data[agencia]={}
+            self.data[agencia] = {}
         if codelist_id not in self.data[agencia]:
             self.data[agencia][codelist_id] = {}
         self.data[agencia][codelist_id][version] = Codelist(self.session, self.configuracion, self.translator,
@@ -145,3 +145,11 @@ class Codelists:
             self.translator_cache[value][target_language] = translation
         self.logger.info('Se ha traducido el término %s como %s', value, translation)
         return translation
+
+    def delete_all(self, agency):
+        if len(self.data):  # Miramos que no este vacio self.data
+            for codelist_id, dict_codelist in self.data[agency].items():
+                if codelist_id == 'OBS_STATUS':
+                    continue
+                for codelist in dict_codelist.values():
+                    codelist.delete()
