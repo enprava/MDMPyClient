@@ -1,5 +1,6 @@
 import logging
 import sys
+import requests
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -57,6 +58,32 @@ class Mapping:
 
             components.append({'id_comp': comp_id, 'column': column, 'column_mapped': column_mapped, 'type': comp_type})
         return components
+
+    def load_cube(self, data):
+        self.logger.info('Cargando datos en el cubo con id %s', self.cube_id)
+        csv = data.to_csv(sep=';', index=False).encode(encoding='utf-8')
+        files = {'file': (
+            'hehe.csv', csv, 'application/vnd.ms-excel', {})}
+        upload_headers = self.session.headers.copy()
+        body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
+        upload_headers['Content-Type'] = content_type
+        upload_headers['language'] = 'es'
+        try:
+            response = self.session.post(f'{self.configuracion["url_base"]}uploadFileOnServer/{self.cube_id}',
+                                         data=body, headers=upload_headers)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = response.text
+        self.logger.info('Archivo con datos subido a la API. Volcando los datos en el cubo')
+
+        try:
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/{self.cube_id}/{self.id}?filePath={path}&checkFiltAttributes=true')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        self.logger.info('Datos volcados con exito')
 
     def init_data(self):
         self.components = self.get()

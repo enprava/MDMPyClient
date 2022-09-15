@@ -171,6 +171,19 @@ class ConceptScheme:
             raise e
         self.logger.info('Conceptos importados correctamente')
 
+    def delete(self):
+        self.logger.info('Eliminando el esquema de conceptos con id %s', self.id)
+        try:
+            response = self.session.delete(
+                f'{self.configuracion["url_base"]}artefact/ConceptScheme/{self.id}/{self.agency_id}/{self.version}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        if response.text.lower() == 'true':
+            self.logger.info('Esquema de conceptos eliminado correctamente')
+        else:
+            self.logger.info('El esquema de conceptos no ha sido eliminado debido a un error en el servidor')
+
     def translate(self, data):
         self.logger.info('Iniciando proceso de traducción del esquema de conceptos con id %s', self.id)
         columns = data.columns[2:]

@@ -91,6 +91,19 @@ class Codelist:
                         column.append(None)
         return pandas.DataFrame(data=codes, dtype='string')
 
+    def delete(self):
+        self.logger.info('Eliminando la codelist con id %s', self.id)
+        try:
+            response = self.session.delete(
+                f'{self.configuracion["url_base"]}artefact/Codelist/{self.id}/{self.agency_id}/{self.version}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        if response.text.lower() == 'true':
+            self.logger.info('Codelist eliminada correctamente')
+        else:
+            self.logger.info('La codelist no ha sido eliminada debido a un error en el servidor')
+
     def add_code(self, code_id, parent, name, des):
         if code_id.upper() not in self.codes.id.values:
             self.codes_to_upload.loc[len(self.codes_to_upload)] = [code_id.upper(), parent, name, des]

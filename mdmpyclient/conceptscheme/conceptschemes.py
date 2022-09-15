@@ -132,3 +132,11 @@ class ConceptSchemes:
             self.translator_cache[value][target_language] = translation
         self.logger.info('Se ha traducido el término %s como %s', value, translation)
         return translation
+
+    def delete_all(self, agency):
+        if len(self.data):  # Miramos que no este vacio self.data
+            for cs_id, dict_concept_scheme in self.data[agency].items():
+                if cs_id == 'CS_MSD':
+                    continue
+                for concept_scheme in dict_concept_scheme.values():
+                    concept_scheme.delete()

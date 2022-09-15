@@ -156,55 +156,18 @@ class CategoryScheme:
         json = {
             "agencies": agencies,
             "category": categories, "cube": [], "cubeOwner": [],
-            "functionality": [
-                "agency-schemes",
-                "app",
-                "artefact-browser",
-                "attribute-file",
-                "builder",
-                "categorisations",
-                "category-schemes",
-                "category-schemes-and-dataflows",
-                "codelists",
-                "compare-dsds",
-                "compare-item-schemes",
-                "concept-schemes",
-                "configurations",
-                "content-constraints",
-                "cube-list",
-                "data-consumer-schemes",
-                "dataflow-builder",
-                "dataflows",
-                "data-manager",
-                "data-provider-schemes",
-                "data-structure-definitions",
-                "dcat-ap-it",
-                "ddb-reset",
-                "file-mapping",
-                "hierarchical-codelists",
-                "import-structures",
-                "loader",
-                "manage-series",
-                "merge-item-schemes",
-                "metadataflows",
-                "metadata-set",
-                "meta-manager",
-                "msds",
-                "nodes",
-                "organization-unit-schemes",
-                "permissions",
-                "provision-agreements",
-                "reference-metadata",
-                "registrations",
-                "remove-temp-tables",
-                "structure-sets",
-                "synchronize-codelists",
-                "update-databrowser-cache",
-                "upgrade-dsd",
-                "user-management",
-                "users",
-                "utilities"
-            ],
+            "functionality": ["agency-schemes", "app", "artefact-browser", "attribute-file", "builder",
+                              "categorisations", "category-schemes", "category-schemes-and-dataflows", "codelists",
+                              "compare-dsds", "compare-item-schemes", "concept-schemes", "configurations",
+                              "content-constraints", "cube-list", "data-consumer-schemes", "dataflow-builder",
+                              "dataflows", "data-manager", "data-provider-schemes", "data-structure-definitions",
+                              "dcat-ap-it", "ddb-reset", "file-mapping", "hierarchical-codelists", "import-structures",
+                              "loader", "manage-series", "merge-item-schemes", "metadataflows", "metadata-set",
+                              "meta-manager", "msds", "nodes", "organization-unit-schemes", "permissions",
+                              "provision-agreements", "reference-metadata", "registrations", "remove-temp-tables",
+                              "structure-sets", "synchronize-codelists", "update-databrowser-cache", "upgrade-dsd",
+                              "user-management", "users", "utilities"
+                              ],
             "rules": ["AdminRole", "CanDeleteData", "CanDeleteStructuralMetadata", "CanIgnoreProductionFlag",
                       "CanImportData", "CanImportStructures", "CanModifyStoreSettings",
                       "CanPerformInternalMappingConfig", "CanReadData", "CanReadStructuralMetadata", "CanUpdateData",
@@ -214,10 +177,12 @@ class CategoryScheme:
             "token": token,
             "isAuthenticated": False}
         try:
+            self.logger.info('Estableciendo permisos para las categorías')
             response = self.session.post(f'{self.configuracion["url_base"]}AssignsAll', json=json)
             response.raise_for_status()
         except Exception as e:
             raise e
+        self.logger.info('Permisos establecidos correctamnte')
 
     def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()

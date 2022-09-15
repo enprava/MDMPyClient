@@ -62,6 +62,19 @@ class DSD:
 
         return data
 
+    def delete(self):
+        self.logger.info('Eliminando el DSD con id %s', self.id)
+        try:
+            response = self.session.delete(
+                f'{self.configuracion["url_base"]}artefact/Dsd/{self.id}/{self.agency_id}/{self.version}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        if response.text.lower() == 'true':
+            self.logger.info('DSD eliminado correctamente')
+        else:
+            self.logger.info('El DSD no ha sido eliminado debido a un error en el servidor')
+
     def __get_attributes(self, attribute_list):
         attributes = []
         for attribute in attribute_list:
@@ -107,7 +120,7 @@ class DSD:
     def __get_meassures(self, meassure_list):
         meas_id = meassure_list['id']
         concept = meassure_list['conceptIdentity']
-        codelist = self.__get_codelist(meassure_list['localRepresentation']['enumeration'])\
+        codelist = self.__get_codelist(meassure_list['localRepresentation']['enumeration']) \
             if 'localRepresentation' in meassure_list else None
         return {'id': meas_id, 'concept': concept, 'codelist': codelist}
 
