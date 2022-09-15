@@ -147,9 +147,11 @@ class Codelists:
         return translation
 
     def delete_all(self, agency):
-        if len(self.data):  # Miramos que no este vacio self.data
+        try:  # Miramos que no este vacio self.data
             for codelist_id, dict_codelist in self.data[agency].items():
                 if codelist_id == 'OBS_STATUS':
                     continue
                 for codelist in dict_codelist.values():
                     codelist.delete()
+        except KeyError:
+            pass
