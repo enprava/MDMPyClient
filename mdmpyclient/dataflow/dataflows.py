@@ -56,6 +56,39 @@ class Dataflows:
             if code not in data[agency_id]:
                 data[agency_id][code] = {}
             data[agency_id][code][version] = Dataflow(self.session, self.configuracion, code, agency_id, version,
-                                                      dataflow_id,cube_id, names, des, init_data)
+                                                      dataflow_id, cube_id, names, des, init_data)
 
         return data
+
+    def put(self, id, agency, version, names, des, cube_id, dsd, category_scheme, category):
+        self.logger.info('Obteniendo dataflow con id %s', id)
+        # try:
+        #     dataflow = self.data[agency][id][version]
+        # except KeyError:
+        #     self.logger.info('El dataflow no se encuentra en la API. Creando dataflow con id %s', id)
+        hierarchy = category_scheme.get_category_hierarchy(category)
+        json = {
+            "ddbDF": {"ID": id, "Agency": agency, "Version": version, "labels": names, "IDCube": cube_id,
+                      "DataflowColumns": ["ID_INDICATOR", "ID_FREQ", "ID_SEXO", "ID_EDAD", "ID_EPA_RELACTIVIDAD",
+                                          "ID_EPA_NIVEL", "ID_TERRITORIO", "ID_CNAE09", "ID_CNO11",
+                                          "ID_EPA_NACIONALIDAD", "ID_EPA_CLASEINACTIV", "ID_CNED2014",
+                                          "ID_EPA_ESTRUCHOGAR", "ID_EPA_TIPACTIVIDADHOGAR", "ID_TIME_PERIOD",
+                                          "ID_OBS_STATUS", "OBS_VALUE"],
+                      "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}}, "msdbDF": {"meta": {}, "data": {
+                "dataflows": [
+                    {"id": id, "version": version, "agencyID": agency, "isFinal": True, "names": names,
+                     "structure": f"urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure={dsd.agency_id}:{dsd.id}({dsd.version})"}]}},
+            "msdbCat": {"meta": {}, "data": {"categorisations": [
+                {"id": f"CAT_{id}", "version": "1.0", "agencyID": agency, "names": {"en": f"CAT_{id}"},
+                 "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{id}({version})",
+                 "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}:{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
+        if des:
+            json['msdbDF']['data']['dataflows'][0]['descriptions'] = des
+        try:
+            response = self.session.post(f'{self.configuracion["url_base"]}createDDBDataflow', json=json)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        self.logger.info('Dataflow creado correctamente')
+        dataflow_id = int(response.text)
+        return dataflow_id
