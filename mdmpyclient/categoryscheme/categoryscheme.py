@@ -184,6 +184,17 @@ class CategoryScheme:
             raise e
         self.logger.info('Permisos establecidos correctamnte')
 
+    def get_category_hierarchy(self, category):
+        self.logger.info('Obteniendo jerarquía de la categoría %s', category)
+        return self._get_category_hierarchy(category, category)
+
+    def _get_category_hierarchy(self, category, hierarchy):
+        parent = self.categories.loc[self.categories['id'] == category].parent.item()
+        if pandas.isnull(parent):
+            return hierarchy
+        else:
+            return self._get_category_hierarchy(parent, f'{parent}.{hierarchy}')
+
     def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()
         custom_data = str(

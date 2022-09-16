@@ -19,7 +19,7 @@ if __name__ == '__main__':
         traducciones = yaml.safe_load(traducciones)
 
         controller = MDM(configuracion, traductor)
-        controller.delete_all('ESC01', 'ESC01_CAT_EN_ES', '1.0')
+        # controller.delete_all('ESC01', 'ESC01_CAT_EN_ES', '1.0')
         # controller.codelists.put('ESC01', 'TEST', '1.0',
         #                          {'es': 'Esto mensaje lo debe traducir'},
         #                          {'en': 'Hello world!'})
@@ -40,7 +40,8 @@ if __name__ == '__main__':
         # conceptscheme.init_concepts()
 
         # controller.ddb_reset()
-        # cs = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
+        cs = controller.category_schemes.data['ESC01']['ESC01_CAT_EN_ES']['1.0']
+        cs.init_categories()
         # cs.import_dcs()
         # cs.set_permissions()
         # cs.init_categories()
@@ -54,7 +55,7 @@ if __name__ == '__main__':
         # category.init_data()
         # print(category.categories)
 
-        # dsd = controller.dsds.data['ESC01']['POTATO']['1.0']
+        dsd = controller.dsds.data['ESC01']['DSD_EPA']['1.0']
         # dsd.delete()
         # dsd.init_data()
         # dimensions = {"SEXO": {'codelist': {'agency': 'ESC01', 'id': 'CL_SEXO', 'version': '1.0'},
@@ -76,12 +77,12 @@ if __name__ == '__main__':
         # dataflow.init_data()
         # print(dataflow.data.to_string())
         # controller.logout()
-
+        print(
+            controller.dataflows.put('TEST', 'ESC01', '1.0', {'es': 'HOLAAAA'}, {'es': 'HOLAAAA'}, 128, dsd, cs, 'EPA'))
         # msd = controller.msds.data['ESC01']['MSD_IECA']['1.0']
         # msd.init_data()
         # print(msd.data)
-        # print(msd.meta)
-
+        # print(msd.meta)vamos
         # metadataflow = controller.metadataflows.data['ESC01']['MDF_ESC01_ECTA']['1.0']
         # metadataflow.init_data()
         # print(metadataflow.data)
