@@ -46,7 +46,7 @@ class Mappings:
             cube_id = mapping['IDCube']
             name = mapping['Name']
             des = mapping['Description'] if 'Description' in mapping else None
-            data[mapping_id] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, des,
+            data[cube_id] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, des,
                                        init_data=init_data)
         return data
 
@@ -55,6 +55,10 @@ class Mappings:
             if cube_id == mapping.cube_id:
                 return mapping.id
         self.logger.info('Se va a realizar un mapping del cubo con id %s', cube_id)
+        print('put-mapping',cube_id,self.data)
+        if cube_id in self.data:
+            self.logger.info('El Mapping ya se encuentra en la API. Con  %s', cube_id)
+            return self.data[cube_id].id
         components = []
         for col in columns:
             dim = col if 'TEMPORAL' not in col else 'TIME_PERIOD'

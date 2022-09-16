@@ -38,19 +38,18 @@ class Cubes:
             dsd_code = cube['DSDCode']
             names = cube['labels']
 
-            cubes[cube_id] = Cube(self.session, self.configuracion, cube_id, cube_code, cat_id, dsd_code, names,
+            cubes[cube_code] = Cube(self.session, self.configuracion, cube_id, cube_code, cat_id, dsd_code, names,
                                   init_data)
 
         return cubes
 
-    def put(self, id_consulta, cube_cat_id, dsd_id, descripcion, dimensiones):
-        self.logger.info('Se ha solicitado crear el cubo de la consulta con id %s', id_consulta)
-        for cube in self.data.values():
-            if id_consulta in cube.cube_code and cube_cat_id == cube.cat_id:
-                self.logger.info('El cubo ya se encuentra en la API. Con id %s', cube.id)
-                return cube.id
+    def put(self, cube_id, cube_cat_id, dsd_id, descripcion, dimensiones):
+        self.logger.info('Se ha solicitado crear el cubo de la consulta con id %s', cube_id)
+        if cube_id in self.data:
+            self.logger.info('El cubo ya se encuentra en la API. Con  %s', cube_id)
+            return self.data[cube_id].id
         self.logger.info('Realizando petición para crear el cubo')
-        json = {"Code": self.configuracion['nodeId'] + "_" + id_consulta, "labels": {"es": descripcion},
+        json = {"Code": cube_id, "labels": {"es": descripcion},
                 "IDCat": int(cube_cat_id), "DSDCode": dsd_id + "+ESC01+1.0", "Attributes": [{
                 "IsTid": False,
                 "Code": "OBS_STATUS",
@@ -91,6 +90,7 @@ class Cubes:
             response = self.session.post(f'{self.configuracion["url_base"]}cube', json=json)
             response.raise_for_status()
         except Exception as e:
+            print(response.text)
             raise e
         cube_id = int(response.text)
         self.logger.info('Cubo creado correctamente con id %s', cube_id)

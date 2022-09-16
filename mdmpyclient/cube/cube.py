@@ -96,4 +96,4 @@ class Cube:
         self.components = self.get()
 
     def __repr__(self):
-        return f'ID: {self.id} name: {self.name_es}'
+        return f'ID: {self.id} name: {self.names}'

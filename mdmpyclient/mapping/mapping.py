@@ -68,20 +68,25 @@ class Mapping:
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = 'es'
+        print(f'{self.configuracion["url_base"]}uploadFileOnServer/{self.cube_id}')
         try:
             response = self.session.post(f'{self.configuracion["url_base"]}uploadFileOnServer/{self.cube_id}',
                                          data=body, headers=upload_headers)
             response.raise_for_status()
         except Exception as e:
             raise e
-        path = response.text
+        path = response.text.replace('\\\\','%5C').replace('"','')
+
         self.logger.info('Archivo con datos subido a la API. Volcando los datos en el cubo')
 
         try:
+            print( f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/{self.cube_id}/{self.id}?filePath='+path+'&checkFiltAttributes=true')
+
             response = self.session.get(
-                f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/{self.cube_id}/{self.id}?filePath={path}&checkFiltAttributes=true')
+                f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/{self.cube_id}/{self.id}?filePath='+path+'&checkFiltAttributes=true')
             response.raise_for_status()
         except Exception as e:
+            print(response.text)
             raise e
         self.logger.info('Datos volcados con exito')
 
