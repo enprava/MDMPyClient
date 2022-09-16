@@ -51,6 +51,9 @@ class Mappings:
         return data
 
     def put(self, columns, cube_id, name):
+        for mapping in self.data.values():
+            if cube_id == mapping.cube_id:
+                return mapping.id
         self.logger.info('Se va a realizar un mapping del cubo con id %s', cube_id)
         components = []
         for col in columns:
