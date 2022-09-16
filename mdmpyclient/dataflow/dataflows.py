@@ -60,23 +60,24 @@ class Dataflows:
 
         return data
 
-    def put(self, id, agency, version, names, des, columns, cube_id, dsd, category_scheme, category):
-        self.logger.info('Obteniendo dataflow con id %s', id)
-        # try:
-        #     dataflow = self.data[agency][id][version]
-        # except KeyError:
-        #     self.logger.info('El dataflow no se encuentra en la API. Creando dataflow con id %s', id)
+    def put(self, code, agency, version, names, des, columns, cube_id, dsd, category_scheme, category):
+        self.logger.info('Creando dataflow con id %s', code)
+        try:
+            self.logger.info('El dataflow ya se encuentra en la API')
+            return self.data[agency][code][version].id
+        except KeyError:
+            self.logger.info('El dataflow no se encuentra en la API. Creando dataflow con id %s', code)
         hierarchy = category_scheme.get_category_hierarchy(category)
         json = {
-            "ddbDF": {"ID": id, "Agency": agency, "Version": version, "labels": names, "IDCube": cube_id,
+            "ddbDF": {"ID": code, "Agency": agency, "Version": version, "labels": names, "IDCube": cube_id,
                       "DataflowColumns": columns,
                       "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}}, "msdbDF": {"meta": {}, "data": {
                 "dataflows": [
-                    {"id": id, "version": version, "agencyID": agency, "isFinal": True, "names": names,
+                    {"id": code, "version": version, "agencyID": agency, "isFinal": True, "names": names,
                      "structure": f"urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure={dsd.agency_id}:{dsd.id}({dsd.version})"}]}},
             "msdbCat": {"meta": {}, "data": {"categorisations": [
-                {"id": f"CAT_{id}", "version": "1.0", "agencyID": agency, "names": {"en": f"CAT_{id}"},
-                 "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{id}({version})",
+                {"id": f"CAT_{code}", "version": "1.0", "agencyID": agency, "names": {"en": f"CAT_{code}"},
+                 "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{code}({version})",
                  "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}:{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
         if des:
             json['msdbDF']['data']['dataflows'][0]['descriptions'] = des
