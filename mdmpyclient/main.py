@@ -77,8 +77,14 @@ if __name__ == '__main__':
         # dataflow.init_data()
         # print(dataflow.data.to_string())
         # controller.logout()
-        print(
-            controller.dataflows.put('TEST', 'ESC01', '1.0', {'es': 'HOLAAAA'}, {'es': 'HOLAAAA'}, 128, dsd, cs, 'EPA'))
+        controller.dataflows.put('TEST', 'ESC01', '1.0', {'es': 'HOLAAAA'}, {'es': 'HOLAAAA'},
+                                 ["ID_INDICATOR", "ID_FREQ", "ID_SEXO", "ID_EDAD", "ID_EPA_RELACTIVIDAD",
+                                  "ID_EPA_NIVEL", "ID_TERRITORIO", "ID_CNAE09", "ID_CNO11",
+                                  "ID_EPA_NACIONALIDAD", "ID_EPA_CLASEINACTIV", "ID_CNED2014",
+                                  "ID_EPA_ESTRUCHOGAR", "ID_EPA_TIPACTIVIDADHOGAR", "ID_TIME_PERIOD",
+                                  "ID_OBS_STATUS", "OBS_VALUE"], 128, dsd, cs, 'EPA')
+        controller.dataflows.data = controller.dataflows.get()
+        controller.dataflows.data['ESC01']['TEST']['1.0'].publish()
         # msd = controller.msds.data['ESC01']['MSD_IECA']['1.0']
         # msd.init_data()
         # print(msd.data)

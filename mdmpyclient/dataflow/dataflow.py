@@ -29,6 +29,7 @@ class Dataflow:
            Attributes:
                data (:obj:`List`) Lista con todos los datos del dataflow.
            """
+
     def __init__(self, session, configuracion, code, agency_id, version, dataflow_id, cube_id, names, des,
                  init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
@@ -89,3 +90,28 @@ class Dataflow:
 
     def init_data(self):
         self.data = self.get()
+
+    def publish(self):
+        self.logger.info('Iniciando proceso de publicación del dataflow con id %s', self.code)
+        self.logger.info('Creando mappingset del dataflow')
+        try:
+            response = self.session.get(f'{self.configuracion["url_base"]}CreateMappingSetForDataflow/{self.id}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+
+        if response.text == 'true':
+            self.logger.info('Mappingset creado correctamente, publicando el dataflow')
+        else:
+            self.logger.error('Ha ocurrido un error durante la creación del mapping set del dataflow con id %s',
+                              self.code)
+        try:
+            response = self.session.get(f'{self.configuracion["url_base"]}SetDataflowProductionFlag/{self.id}/false')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        if response.text == 'true':
+            self.logger.info('Dataflow publicado correctamente')
+        else:
+            self.logger.error('Ha ocurrido un error durante la publicación del dataflow con id %s',
+                              self.code)
