@@ -60,7 +60,7 @@ class Dataflows:
 
         return data
 
-    def put(self, id, agency, version, names, des, cube_id, dsd, category_scheme, category):
+    def put(self, id, agency, version, names, des, columns, cube_id, dsd, category_scheme, category):
         self.logger.info('Obteniendo dataflow con id %s', id)
         # try:
         #     dataflow = self.data[agency][id][version]
@@ -69,11 +69,7 @@ class Dataflows:
         hierarchy = category_scheme.get_category_hierarchy(category)
         json = {
             "ddbDF": {"ID": id, "Agency": agency, "Version": version, "labels": names, "IDCube": cube_id,
-                      "DataflowColumns": ["ID_INDICATOR", "ID_FREQ", "ID_SEXO", "ID_EDAD", "ID_EPA_RELACTIVIDAD",
-                                          "ID_EPA_NIVEL", "ID_TERRITORIO", "ID_CNAE09", "ID_CNO11",
-                                          "ID_EPA_NACIONALIDAD", "ID_EPA_CLASEINACTIV", "ID_CNED2014",
-                                          "ID_EPA_ESTRUCHOGAR", "ID_EPA_TIPACTIVIDADHOGAR", "ID_TIME_PERIOD",
-                                          "ID_OBS_STATUS", "OBS_VALUE"],
+                      "DataflowColumns": columns,
                       "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}}, "msdbDF": {"meta": {}, "data": {
                 "dataflows": [
                     {"id": id, "version": version, "agencyID": agency, "isFinal": True, "names": names,
