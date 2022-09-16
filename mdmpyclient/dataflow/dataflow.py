@@ -98,7 +98,7 @@ class Dataflow:
             response = self.session.get(f'{self.configuracion["url_base"]}CreateMappingSetForDataflow/{self.id}')
             response.raise_for_status()
         except Exception as e:
-            raise e
+            self.logger.info('')
 
         if response.text == 'true':
             self.logger.info('Mappingset creado correctamente, publicando el dataflow')
@@ -113,5 +113,5 @@ class Dataflow:
         if response.text == 'true':
             self.logger.info('Dataflow publicado correctamente')
         else:
-            self.logger.error('Ha ocurrido un error durante la publicación del dataflow con id %s',
+            self.logger.error('Ha    ocurrido un error durante la publicación del dataflow con id %s',
                               self.code)
