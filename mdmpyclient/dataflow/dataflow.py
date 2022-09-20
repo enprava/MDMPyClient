@@ -113,5 +113,5 @@ class Dataflow:
         if response.text == 'true':
             self.logger.info('Dataflow publicado correctamente')
         else:
-            self.logger.error('Ha    ocurrido un error durante la publicación del dataflow con id %s',
+            self.logger.error('Ha ocurrido un error durante la publicación del dataflow con id %s',
                               self.code)

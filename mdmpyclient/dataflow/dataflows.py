@@ -76,7 +76,7 @@ class Dataflows:
                     {"id": code, "version": version, "agencyID": agency, "isFinal": True, "names": names,
                      "structure": f"urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure={dsd.agency_id}:{dsd.id}({dsd.version})"}]}},
             "msdbCat": {"meta": {}, "data": {"categorisations": [
-                {"id": f"CAT_{code}_{version}", "version": version, "agencyID": agency, "names": {"en": f"CAT_{code}"},
+                {"id": f"CAT_{code}_{cube_id}", "version": version, "agencyID": agency, "names": {"en": f"CAT_{code}"},
                  "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{code}({version})",
                  "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}:{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
         if des:
