@@ -58,7 +58,9 @@ class MDM:
             self.translator_cache = yaml.safe_load(cache_file)
 
         self.session = self.authenticate()
+        self.initialize()
 
+    def initialize(self):
         self.codelists = Codelists(self.session, self.configuracion, self.translator, self.translator_cache)
 
         self.concept_schemes = ConceptSchemes(self.session, self.configuracion, self.translator, self.translator_cache)
@@ -128,3 +130,4 @@ class MDM:
         self.dsds.delete_all(agency)
         self.concept_schemes.delete_all(agency)
         self.codelists.delete_all(agency)
+        self.initialize()
