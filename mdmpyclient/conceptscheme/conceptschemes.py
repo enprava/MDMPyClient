@@ -68,10 +68,10 @@ class ConceptSchemes:
         return concept_schemes
 
     def put(self, agency, concepts_scheme_id, version, names, des):
-        self.logger.info('Creando o actualizando esquema de conceptos con id: %s', concepts_scheme_id)
+        self.logger.info('Obteniendo esquema de conceptos con id: %s', concepts_scheme_id)
         try:
             concepts_scheme = self.data[agency][concepts_scheme_id][version]
-            self.logger.info('El esquema de conceptos con id %s ya se encuentra actualizado', concepts_scheme.id)
+            self.logger.info('El esquema de conceptos con id %s ya se encuentra en la API', concepts_scheme.id)
         except KeyError:
             self._put(agency, concepts_scheme_id, version, names, des)
 
@@ -84,6 +84,7 @@ class ConceptSchemes:
             {'agencyID': agency, 'id': concepts_scheme_id, 'isFinal': 'true', 'names': names, 'descriptions': des,
              'version': str(version)}]},
             'meta': {}}
+        self.logger.info('Creando o actualizando esquema de conceptos con id %s', concepts_scheme_id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
 
@@ -142,3 +143,9 @@ class ConceptSchemes:
                     concept_scheme.delete()
         except KeyError:
             pass
+
+    def put_all_data(self):
+        for agency in self.data.values():
+            for scheme in agency.values():
+                for version in scheme.values():
+                    version.put()

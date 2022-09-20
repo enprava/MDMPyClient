@@ -65,13 +65,9 @@ if __name__ == '__main__':
         # cube = controller.cubes.data['ESC01_EOC_67672']
         # cube.init_data()
 
-        # mapping = controller.mappings.data[66]
-        # data = pandas.read_csv(
-        #     '/home/prada/PycharmProjects/IECA-extractor/sistema_informacion/SDMX/datos/EPA/11883.csv', sep=';')
-        # mapping.load_cube(data)
-        # controller.mappings.put(
-        #     ['OBS_STATUS', 'REF_AREA', 'TIME_PERIOD', 'RESITUR', 'INDICATOR', 'OBS_VALUE', 'FREQ', 'PARQUES_TURISMO',
-        #      'PUNTOS_TURISTICOS'], 30, 'Creada por un bot')
+        mapping = controller.mappings.data.values()
+        for map in mapping:
+            map.load_cube(None)
 
         # dataflow = controller.dataflows.data['ESC01']['DF_CAMPINGS_67670']['1.0']
         # dataflow.init_data()

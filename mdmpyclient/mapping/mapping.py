@@ -60,6 +60,7 @@ class Mapping:
         return components
 
     def load_cube(self, data):
+        # if self.cube_is_loaded():
         self.logger.info('Cargando datos en el cubo con id %s', self.cube_id)
         csv = data.to_csv(sep=';', index=False).encode(encoding='utf-8')
         files = {'file': (
@@ -89,6 +90,19 @@ class Mapping:
             print(response.text)
             raise e
         self.logger.info('Datos volcados con exito')
+        # else:
+        #     self.logger.info('El cubo con id %s ya se encontraba cargado', self.cube_id)
+
+    def cube_is_loaded(self):
+        json = {"PageNum": 1, "PageSize": 1, "FilterTable": [], "SortCols": None, "SortByDesc": None}
+        try:
+            response = self.session.get(f'{self.configuracion["url_base"]}Dataset_{self.cube_id}_ViewCurrentData',
+                                        json=json)
+            response.raise_for_status()
+            response = response.json()['data']
+        except Exception as e:
+            raise e
+        return response
 
     def init_data(self):
         self.components = self.get()

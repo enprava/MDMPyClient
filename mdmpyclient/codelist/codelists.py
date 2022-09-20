@@ -155,3 +155,9 @@ class Codelists:
                     codelist.delete()
         except KeyError:
             pass
+
+    def put_all_data(self):
+        for agency in self.data.values():
+            for codelist in agency.values():
+                for version in codelist.values():
+                    version.put()
