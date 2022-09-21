@@ -117,7 +117,6 @@ class Codelist:
         to_upload = len(self.codes_to_upload)
         if to_upload:
             csv = self.codes_to_upload.drop_duplicates(subset='Id')
-            csv.to_csv(f'csv/{self.id}', index=False, sep=';')
             to_upload = len(csv)
             self.logger.info('Se han detectado %s códigos para subir a la codelist con id %s', to_upload, self.id)
             csv = csv.to_csv(sep=';', index=False, encoding='utf_8')
