@@ -50,7 +50,7 @@ class MDM:
          y encargado de gestionarlos.
     """
 
-    def __init__(self, configuracion, translator):
+    def __init__(self, configuracion, translator, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
         self.configuracion = configuracion
         self.translator = translator
@@ -58,15 +58,16 @@ class MDM:
             self.translator_cache = yaml.safe_load(cache_file)
 
         self.session = self.authenticate()
-        self.initialize()
+        self.initialize(init_data)
 
-    def initialize(self):
-        self.codelists = Codelists(self.session, self.configuracion, self.translator, self.translator_cache)
+    def initialize(self, init_data):
+        self.codelists = Codelists(self.session, self.configuracion, self.translator, self.translator_cache, init_data)
 
-        self.concept_schemes = ConceptSchemes(self.session, self.configuracion, self.translator, self.translator_cache)
+        self.concept_schemes = ConceptSchemes(self.session, self.configuracion, self.translator, self.translator_cache,
+                                              init_data)
 
         self.category_schemes = CategorySchemes(self.session, self.configuracion, self.translator,
-                                                self.translator_cache)
+                                                self.translator_cache, init_data)
 
         self.dsds = DSDs(self.session, self.configuracion)
 
@@ -130,4 +131,4 @@ class MDM:
         self.dsds.delete_all(agency)
         self.concept_schemes.delete_all(agency)
         self.codelists.delete_all(agency)
-        self.initialize()
+        self.initialize(True)

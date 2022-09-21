@@ -49,7 +49,7 @@ class ConceptScheme:
         self.names = names
         self.des = des
         self.concepts = self.get(init_data)
-        self.concepts_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'])
+        self.concepts_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'], dtype='string')
 
     def get(self, init_data):
         concepts = {'id': [], 'parent': []}
@@ -99,15 +99,16 @@ class ConceptScheme:
 
     def put(self, lang='es'):
         to_upload = len(self.concepts_to_upload)
-        self.logger.info('Se han detectado %s conceptos para subir al esquema con id %s', to_upload, self.id)
         if to_upload:
-            csv = self.concepts_to_upload
+            csv = self.concepts_to_upload.drop_duplicates(subset='Id')
+            to_upload = len(csv)
+            self.logger.info('Se han detectado %s conceptos para subir al esquema con id %s', to_upload, self.id)
             csv = csv.to_csv(sep=';', index=False).encode(encoding='utf-8')
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             response = self.__upload_csv(csv, columns, lang=lang)
             self.__import_csv(response)
-            self.init_concepts()
+            # self.init_concepts()
             self.concepts_to_upload = self.concepts_to_upload[0:0]
 
             if self.configuracion['translate']:
@@ -135,7 +136,7 @@ class ConceptScheme:
              "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
              "lang": lang,
              "firstRowHeader": 'true',
-             "columns": columns, "textSeparator": ";", "textDelimiter": 'null'})
+             "columns": columns, "textSeparator": ";", "textDelimiter": '\"'})
 
         files = {'file': (
             'hehe.csv', csv, 'application/vnd.ms-excel', {}),

@@ -46,7 +46,7 @@ class Codelist:
         self.names = names
         self.des = des
         self.codes = self.get(init_data)
-        self.codes_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'])
+        self.codes_to_upload = pandas.DataFrame(columns=['Id', 'ParentCode', 'Name', 'Description'], dtype='string')
 
     def get(self, init_data):
         codes = {'id': [], 'parent': []}
@@ -116,14 +116,16 @@ class Codelist:
     def put(self, lang='es'):
         to_upload = len(self.codes_to_upload)
         if to_upload:
+            csv = self.codes_to_upload.drop_duplicates(subset='Id')
+            csv.to_csv(f'csv/{self.id}', index=False, sep=';')
+            to_upload = len(csv)
             self.logger.info('Se han detectado %s códigos para subir a la codelist con id %s', to_upload, self.id)
-            csv = self.codes_to_upload
             csv = csv.to_csv(sep=';', index=False, encoding='utf_8')
             columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                        "isDefault": -1}
             response = self.__upload_csv(csv, columns, lang=lang)
             self.__import_csv(response)
-            self.init_codes()
+            # self.init_codes()
             self.codes_to_upload = self.codes_to_upload[0:0]
 
             if self.configuracion['translate']:
@@ -153,7 +155,7 @@ class Codelist:
              "identity": {"ID": self.id, "Agency": self.agency_id, "Version": self.version},
              "lang": lang,
              "firstRowHeader": 'true',
-             "columns": columns, "textSeparator": ";", "textDelimiter": 'null'})
+             "columns": columns, "textSeparator": ";", "textDelimiter": '\"'})
 
         files = {'file': (
             'hehe.csv', csv, 'application/vnd.ms-excel', {}),
@@ -182,11 +184,12 @@ class Codelist:
     def __import_csv(self, json):
         try:
             self.logger.info('Importando códigos a la lista')
-            self.session.post(
+            response = self.session.post(
                 f'{self.configuracion["url_base"]}importFileCsvItem',
                 json=json)
-
+            response.raise_for_status()
         except Exception as e:
+            print(response.text)
             raise e
         self.logger.info('Códigos importados correctamente')
         ## Utilizar decoradores correctamente para los getters y setters sería clave.

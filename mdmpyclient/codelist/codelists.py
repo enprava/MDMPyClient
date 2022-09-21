@@ -156,8 +156,12 @@ class Codelists:
         except KeyError:
             pass
 
+    def init_codelists(self, init_data=False):
+        self.data = self.get(init_data)
+
     def put_all_data(self):
         for agency in self.data.values():
             for codelist in agency.values():
                 for version in codelist.values():
                     version.put()
+        self.init_codelists(True)

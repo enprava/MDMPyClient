@@ -144,8 +144,12 @@ class ConceptSchemes:
         except KeyError:
             pass
 
+    def init_concept_schemes(self, init_data=False):
+        self.data = self.get(init_data)
+
     def put_all_data(self):
         for agency in self.data.values():
             for scheme in agency.values():
                 for version in scheme.values():
                     version.put()
+        self.init_concept_schemes(True)
