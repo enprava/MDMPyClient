@@ -20,10 +20,7 @@ if __name__ == '__main__':
 
         controller = MDM(configuracion, traductor)
 
-        cl = controller.codelists.data['ESC01']['CL_CNAE09']['1.0']
-        csv = pd.read_csv('csv/CL_CNAE09.csv', sep=';', dtype='string')
-        print(len(csv))
-        cl.add_codes(csv)
-        print(len(cl.codes_to_upload))
-        cl.put()
+        # controller.concept_schemes.add_concept_scheme('ESC01', 'ASDADF', '1.0', {'es': 'pepe'}, None)
+        # controller.concept_schemes.put_all_concept_schemes()
+        controller.concept_schemes.put('ESC01', 'ASDADFAS', '1.0', {'es': 'pepe'}, None)
         controller.logout()

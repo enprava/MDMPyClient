@@ -108,10 +108,16 @@ class Codelist:
         if code_id.upper() not in self.codes.id.values:
             self.codes_to_upload.loc[len(self.codes_to_upload)] = [code_id.upper(), parent, name, des]
 
+    # def add_codes(self, codes):
+    #     codes.apply(
+    #         lambda codigos: self.add_code(codigos['ID'], codigos['PARENTCODE'], codigos['NAME'],
+    #                                       codigos['DESCRIPTION']), axis=1)
+    #
     def add_codes(self, codes):
-        codes.apply(
-            lambda codigos: self.add_code(codigos['ID'], codigos['PARENTCODE'], codigos['NAME'],
-                                          codigos['DESCRIPTION']), axis=1)
+        codes.columns = ['Id', 'Name', 'Description', 'ParentCode', 'ORDER']
+        codes = codes[['Id', 'Name', 'Description', 'ParentCode']]
+        codigos = codes[~codes['Id'].isin(self.codes['id'])]
+        self.codes_to_upload = pandas.concat([self.codes_to_upload, codigos], ignore_index=True)
 
     def put(self, lang='es'):
         to_upload = len(self.codes_to_upload)
