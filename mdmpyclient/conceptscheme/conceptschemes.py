@@ -148,6 +148,7 @@ class ConceptSchemes:
         self.data = self.get(init_data)
 
     def put_all_data(self):
+        self.logger.info('Realizando un put de todos los conceptos de cada esquema de conceptos')
         for agency in self.data.values():  # El nombre de la variable representa la clave que manejamos en el
             for scheme in agency.values():  # diccionario
                 for version in scheme.values():
@@ -156,18 +157,22 @@ class ConceptSchemes:
 
     def add_concept_scheme(self, agency, cs_id, version, names, des):
         try:
-            concept_scheme = self.data_to_upload[agency][cs_id][version]
+            concept_scheme = self.data[agency][cs_id][version]
         except KeyError:
-            if agency not in self.data_to_upload:
-                self.data_to_upload[agency] = {}
-            if cs_id not in self.data_to_upload[agency]:
-                self.data_to_upload[agency][cs_id] = {}
-            concept_scheme = ConceptScheme(self.session, self.configuracion, self.translator, self.translator_cache,
-                                           cs_id, agency, version, names, des, init_data=False)
-            self.data_to_upload[agency][cs_id][version] = concept_scheme
+            try:
+                concept_scheme = self.data_to_upload[agency][cs_id][version]
+            except KeyError:
+                if agency not in self.data_to_upload:
+                    self.data_to_upload[agency] = {}
+                if cs_id not in self.data_to_upload[agency]:
+                    self.data_to_upload[agency][cs_id] = {}
+                concept_scheme = ConceptScheme(self.session, self.configuracion, self.translator, self.translator_cache,
+                                               cs_id, agency, version, names, des, init_data=False)
+                self.data_to_upload[agency][cs_id][version] = concept_scheme
         return concept_scheme
 
     def put_all_concept_schemes(self):
+        self.logger.info('Realizando un put de todos los esquemas de concepto')
         for agency in self.data_to_upload.values():  # El nombre de la variable representa la clave que manejamos en el
             for scheme in agency.values():  # diccionario.
                 for version in scheme.values():

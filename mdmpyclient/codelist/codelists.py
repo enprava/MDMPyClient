@@ -161,6 +161,7 @@ class Codelists:
         self.data = self.get(init_data)
 
     def put_all_data(self):
+        self.logger.info('Realizando un put de todos los códigos de todas las codelist')
         for agency in self.data.values():
             for codelist in agency.values():
                 for version in codelist.values():
@@ -172,18 +173,22 @@ class Codelists:
 
     def add_codelist(self, agency, cl_id, version, names, des):
         try:
-            codelist = self.data_to_upload[agency][cl_id][version]
+            codelist = self.data[agency][cl_id][version]
         except KeyError:
-            if agency not in self.data_to_upload:
-                self.data_to_upload[agency] = {}
-            if cl_id not in self.data_to_upload[agency]:
-                self.data_to_upload[agency][cl_id] = {}
-            codelist = Codelist(self.session, self.configuracion, self.translator, self.translator_cache, cl_id,
-                                agency, version, names, des, init_data=False)
-            self.data_to_upload[agency][cl_id][version] = codelist
+            try:
+                codelist = self.data_to_upload[agency][cs_id][version]
+            except KeyError:
+                if agency not in self.data_to_upload:
+                    self.data_to_upload[agency] = {}
+                if cl_id not in self.data_to_upload[agency]:
+                    self.data_to_upload[agency][cl_id] = {}
+                codelist = Codelist(self.session, self.configuracion, self.translator, self.translator_cache, cl_id,
+                                    agency, version, names, des, init_data=False)
+                self.data_to_upload[agency][cl_id][version] = codelist
         return codelist
 
     def put_all_codelists(self):
+        self.logger.info('Realizando un put de todas las codelist')
         for agency in self.data_to_upload.values():
             for codelist in agency.values():
                 for version in codelist.values():
