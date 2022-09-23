@@ -126,8 +126,8 @@ class ConceptScheme:
                     response = self.__upload_csv(csv, columns, lang=language)
                     self.__import_csv(response)
                 self.init_concepts()
-            else:
-                self.logger.info('El esquema de conceptos con id %s está actualizado', self.id)
+        else:
+            self.logger.info('El esquema de conceptos con id %s está actualizado', self.id)
 
     def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()

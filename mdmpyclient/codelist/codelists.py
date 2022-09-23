@@ -92,7 +92,7 @@ class Codelists:
     def _put(self, codelist):
         if self.configuracion['translate']:
             codelist.names = self.translate(codelist.names, codelist.id)
-            codelist.des = self.translate(codelist.des, codelist.id) if descripciones else None
+            codelist.des = self.translate(codelist.des, codelist.id) if codelist.des else None
         json = {'data': {'codelists': [
             {'agencyID': codelist.agency_id, 'id': codelist.id, 'isFinal': 'true', 'names': codelist.names,
              'version': codelist.version}]},
@@ -176,7 +176,7 @@ class Codelists:
             codelist = self.data[agency][cl_id][version]
         except KeyError:
             try:
-                codelist = self.data_to_upload[agency][cs_id][version]
+                codelist = self.data_to_upload[agency][cl_id][version]
             except KeyError:
                 if agency not in self.data_to_upload:
                     self.data_to_upload[agency] = {}
