@@ -150,9 +150,9 @@ class Codelists:
     def delete_all(self, agency):
         try:  # Miramos que no este vacio self.data
             for codelist_id, dict_codelist in self.data[agency].items():
-                if codelist_id == 'OBS_STATUS':
-                    continue
                 for codelist in dict_codelist.values():
+                    if codelist_id == 'OBS_STATUS' or codelist_id == 'CL_SEXO':
+                        continue
                     codelist.delete()
         except KeyError:
             pass
