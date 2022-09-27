@@ -186,7 +186,9 @@ class CategoryScheme:
 
     def get_category_hierarchy(self, category):
         self.logger.info('Obteniendo jerarquía de la categoría %s', category)
-        return self._get_category_hierarchy(category, category)
+        hierarchy = self._get_category_hierarchy(category, category)
+        self.logger.info('La jerarquía obtenida es %s', hierarchy)
+        return hierarchy
 
     def _get_category_hierarchy(self, category, hierarchy):
         parent = self.categories.loc[self.categories['id'] == category].parent.item()
