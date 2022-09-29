@@ -34,6 +34,7 @@ class Codelists:
         self.translator_cache = translator_cache
 
         self.data = self.get(init_data)
+        self.data_to_upload = {}
 
     def get(self, init_data=True):
         codelists = {}
@@ -80,22 +81,24 @@ class Codelists:
         except Exception as e:
             raise e
 
-    def put(self, agencia, codelist_id, version, nombres, descripciones):
-        self.logger.info('Creando o actualizando codelist con id: %s', codelist_id)
+    def put(self, codelist):
+        self.logger.info('Creando o actualizando codelist con id: %s', codelist.id)
         try:
-            codelist = self.data[agencia][codelist_id][version]
+            codelist = self.data[codelist.agency_id][codelist.id][codelist.version]
             self.logger.info('La codelist con id %s ya se encuentra actualizada', codelist.id)
         except KeyError:
-            self._put(agencia, codelist_id, version, nombres, descripciones)
+            self._put(codelist)
 
-    def _put(self, agencia, codelist_id, version, nombres, descripciones):
+    def _put(self, codelist):
         if self.configuracion['translate']:
-            nombres = self.translate(nombres, codelist_id)
-            descripciones = self.translate(descripciones, codelist_id) if descripciones else None
+            codelist.names = self.translate(codelist.names, codelist.id)
+            codelist.des = self.translate(codelist.des, codelist.id) if codelist.des else None
         json = {'data': {'codelists': [
-            {'agencyID': agencia, 'id': codelist_id, 'isFinal': 'true', 'names': nombres, 'descriptions': descripciones,
-             'version': version}]},
+            {'agencyID': codelist.agency_id, 'id': codelist.id, 'isFinal': 'true', 'names': codelist.names,
+             'version': codelist.version}]},
             'meta': {}}
+        if codelist.des:
+            json['descriptions'] = codelist.des
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
             response.raise_for_status()
@@ -103,14 +106,12 @@ class Codelists:
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
         try:
-            self.data[agencia]
+            self.data[codelist.agency_id]
         except:
-            self.data[agencia] = {}
-        if codelist_id not in self.data[agencia]:
-            self.data[agencia][codelist_id] = {}
-        self.data[agencia][codelist_id][version] = Codelist(self.session, self.configuracion, self.translator,
-                                                            self.translator_cache, codelist_id, agencia,
-                                                            version, nombres, descripciones, init_data=False)
+            self.data[codelist.agency_id] = {}
+        if codelist.id not in self.data[codelist.agency_id]:
+            self.data[codelist.agency_id][codelist.id] = {}
+        self.data[codelist.agency_id][codelist.id][codelist.version] = codelist
 
     def translate(self, data, codelist_id):
         result = copy.deepcopy(data)
@@ -149,15 +150,47 @@ class Codelists:
     def delete_all(self, agency):
         try:  # Miramos que no este vacio self.data
             for codelist_id, dict_codelist in self.data[agency].items():
-                if codelist_id == 'OBS_STATUS':
-                    continue
                 for codelist in dict_codelist.values():
+                    if codelist_id == 'OBS_STATUS' or codelist_id == 'CL_SEXO':
+                        continue
                     codelist.delete()
         except KeyError:
             pass
 
+    def init_codelists(self, init_data=False):
+        self.data = self.get(init_data)
+
     def put_all_data(self):
+        self.logger.info('Realizando un put de todos los códigos de todas las codelist')
         for agency in self.data.values():
             for codelist in agency.values():
                 for version in codelist.values():
                     version.put()
+        self.init_codelists(True)
+
+    def init_codelist(self, init_data):
+        self.data = self.get(init_data)
+
+    def add_codelist(self, agency, cl_id, version, names, des):
+        try:
+            codelist = self.data[agency][cl_id][version]
+        except KeyError:
+            try:
+                codelist = self.data_to_upload[agency][cl_id][version]
+            except KeyError:
+                if agency not in self.data_to_upload:
+                    self.data_to_upload[agency] = {}
+                if cl_id not in self.data_to_upload[agency]:
+                    self.data_to_upload[agency][cl_id] = {}
+                codelist = Codelist(self.session, self.configuracion, self.translator, self.translator_cache, cl_id,
+                                    agency, version, names, des, init_data=False)
+                self.data_to_upload[agency][cl_id][version] = codelist
+        return codelist
+
+    def put_all_codelists(self):
+        self.logger.info('Realizando un put de todas las codelist')
+        for agency in self.data_to_upload.values():
+            for codelist in agency.values():
+                for version in codelist.values():
+                    self.put(version)
+        self.data_to_upload = {}

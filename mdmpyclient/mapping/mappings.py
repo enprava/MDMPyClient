@@ -55,7 +55,6 @@ class Mappings:
             if cube_id == mapping.cube_id:
                 return mapping.id
         self.logger.info('Se va a realizar un mapping del cubo con id %s', cube_id)
-        print('put-mapping',cube_id,self.data)
         if cube_id in self.data:
             self.logger.info('El Mapping ya se encuentra en la API. Con  %s', cube_id)
             return self.data[cube_id].id

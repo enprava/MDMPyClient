@@ -63,8 +63,9 @@ class Dataflows:
     def put(self, code, agency, version, names, des, columns, cube_id, dsd, category_scheme, category):
         self.logger.info('Creando dataflow con id %s', code)
         try:
+            dataflow = self.data[agency][code][version].id
             self.logger.info('El dataflow ya se encuentra en la API')
-            return self.data[agency][code][version].id
+            return dataflow
         except KeyError:
             self.logger.info('El dataflow no se encuentra en la API. Creando dataflow con id %s', code)
         hierarchy = category_scheme.get_category_hierarchy(category)

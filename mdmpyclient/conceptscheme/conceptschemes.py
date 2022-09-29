@@ -34,6 +34,7 @@ class ConceptSchemes:
         self.translator_cache = translator_cache
 
         self.data = self.get(init_data)
+        self.data_to_upload = {}
 
     def get(self, init_data=True):
         concept_schemes = {}
@@ -67,24 +68,27 @@ class ConceptSchemes:
                                                                     version, names, des, init_data=init_data)
         return concept_schemes
 
-    def put(self, agency, concepts_scheme_id, version, names, des):
-        self.logger.info('Obteniendo esquema de conceptos con id: %s', concepts_scheme_id)
+    def put(self, concept_scheme):
+        self.logger.info('Obteniendo esquema de conceptos con id: %s', concept_scheme.id)
         try:
-            concepts_scheme = self.data[agency][concepts_scheme_id][version]
+            concepts_scheme = self.data[concept_scheme.agency_id][concept_scheme.id][concept_scheme.version]
             self.logger.info('El esquema de conceptos con id %s ya se encuentra en la API', concepts_scheme.id)
         except KeyError:
-            self._put(agency, concepts_scheme_id, version, names, des)
+            self._put(concept_scheme)
 
-    def _put(self, agency, concepts_scheme_id, version, names, des):
+    def _put(self, concept_scheme):
         if self.configuracion['translate']:
-            self.logger.info('Traduciendo el esquema de concepto con id %s', concepts_scheme_id)
-            names = self.translate(names)
-            des = self.translate(des)
+            self.logger.info('Traduciendo el esquema de concepto con id %s', concept_scheme.id)
+            concept_scheme.names = self.translate(names)
+            concept_scheme.des = self.translate(des)
         json = {'data': {'conceptSchemes': [
-            {'agencyID': agency, 'id': concepts_scheme_id, 'isFinal': 'true', 'names': names, 'descriptions': des,
-             'version': str(version)}]},
+            {'agencyID': concept_scheme.agency_id, 'id': concept_scheme.id, 'isFinal': 'true',
+             'names': concept_scheme.names,
+             'version': concept_scheme.version}]},
             'meta': {}}
-        self.logger.info('Creando o actualizando esquema de conceptos con id %s', concepts_scheme_id)
+        if concept_scheme.des:
+            json['descriptions'] = des
+        self.logger.info('Creando o actualizando esquema de conceptos con id %s', concept_scheme.id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
 
@@ -92,15 +96,11 @@ class ConceptSchemes:
         except Exception as e:
             raise e
         self.logger.info('Esquema de conceptos creado o actualizado correctamente')
-        if agency not in self.data:
-            self.data[agency] = {}
-        if concepts_scheme_id not in self.data[agency].keys():
-            self.data[agency][concepts_scheme_id] = {}
-        self.data[agency][concepts_scheme_id][version] = ConceptScheme(self.session, self.configuracion,
-                                                                       self.translator,
-                                                                       self.translator_cache, concepts_scheme_id,
-                                                                       agency,
-                                                                       version, names, des, init_data=False)
+        if concept_scheme.agency_id not in self.data:
+            self.data[concept_scheme.agency_id] = {}
+        if concept_scheme.id not in self.data[concept_scheme.agency_id].keys():
+            self.data[concept_scheme.agency_id][concept_scheme.id] = {}
+        self.data[concept_scheme.agency_id][concept_scheme.id][concept_scheme.version] = concept_scheme
 
     def translate(self, data):
         result = copy.deepcopy(data)
@@ -144,8 +144,37 @@ class ConceptSchemes:
         except KeyError:
             pass
 
+    def init_concept_schemes(self, init_data=False):
+        self.data = self.get(init_data)
+
     def put_all_data(self):
-        for agency in self.data.values():
-            for scheme in agency.values():
+        self.logger.info('Realizando un put de todos los conceptos de cada esquema de conceptos')
+        for agency in self.data.values():  # El nombre de la variable representa la clave que manejamos en el
+            for scheme in agency.values():  # diccionario
                 for version in scheme.values():
                     version.put()
+        self.init_concept_schemes(True)
+
+    def add_concept_scheme(self, agency, cs_id, version, names, des):
+        try:
+            concept_scheme = self.data[agency][cs_id][version]
+        except KeyError:
+            try:
+                concept_scheme = self.data_to_upload[agency][cs_id][version]
+            except KeyError:
+                if agency not in self.data_to_upload:
+                    self.data_to_upload[agency] = {}
+                if cs_id not in self.data_to_upload[agency]:
+                    self.data_to_upload[agency][cs_id] = {}
+                concept_scheme = ConceptScheme(self.session, self.configuracion, self.translator, self.translator_cache,
+                                               cs_id, agency, version, names, des, init_data=False)
+                self.data_to_upload[agency][cs_id][version] = concept_scheme
+        return concept_scheme
+
+    def put_all_concept_schemes(self):
+        self.logger.info('Realizando un put de todos los esquemas de concepto')
+        for agency in self.data_to_upload.values():  # El nombre de la variable representa la clave que manejamos en el
+            for scheme in agency.values():  # diccionario.
+                for version in scheme.values():
+                    self.put(version)
+        self.data_to_upload = {}
