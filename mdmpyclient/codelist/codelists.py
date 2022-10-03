@@ -92,6 +92,7 @@ class Codelists:
 
     def _put(self, codelist):
         if self.configuracion['translate']:
+            self.logger.info('Traduciendo nombre y descripción de la codelist con id %s', codelist.id)
             codelist.names = self.translate(codelist.names, codelist.id)
             codelist.des = self.translate(codelist.des, codelist.id) if codelist.des else None
 
@@ -107,6 +108,7 @@ class Codelists:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:
+            print(response.text)
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
         try:
@@ -122,8 +124,7 @@ class Codelists:
         languages = copy.deepcopy(self.configuracion['languages'])
         to_translate_langs = list(set(languages) - set(result.keys()))
         value = list(result.values())[0]
-        if to_translate_langs:
-            self.logger.info('Traduciendo la codelist con id %s', codelist_id)
+        self.logger.info('Traduciendo nombre y descripción de la codelist con id  %s', codelist_id)
         for target_lang in to_translate_langs:
             if 'en' in target_lang:
                 target_lang = 'EN-GB'
@@ -198,3 +199,10 @@ class Codelists:
                 for version in codelist.values():
                     self.put(version)
         self.data_to_upload = {}
+
+    def translate_all_codelists(self):
+        self.logger.info('Iniciado proceso de traducción de todas las codelist')
+        for agency in self.data.values():
+            for codelist in agency.values():
+                for version in codelist.values():
+                    version.translate()

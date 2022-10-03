@@ -37,7 +37,7 @@ class DSDs:
             response = self.session.get(f'{self.configuracion["url_base"]}dsd')
             response_data = response.json()['data']['dataStructures']
         except KeyError:
-            self.logger.info('No se han extraído los DSDs debido a un error de conexión con el servidor')
+            self.logger.warning('No se han encontrado DSDs en la API')
             return dsd
         except Exception as e:
             raise e
@@ -105,6 +105,7 @@ class DSDs:
             response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:
+            self.logger.error(response.text)
             raise e
         self.logger.info('DSD creado correctamente')
 

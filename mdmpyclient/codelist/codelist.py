@@ -139,24 +139,6 @@ class Codelist:
             self.__import_csv(response)
             # self.init_codes()
             self.codes_to_upload = self.codes_to_upload[0:0]
-
-            if self.configuracion['translate']:
-                languages = copy.deepcopy(self.configuracion['languages'])
-                languages.remove(lang)
-
-                codes = self.translate(self.codes)
-                self.logger.info('Se va a subir la traducción de los códigos a la codelist con id: %s', self.id)
-                columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
-                           "isDefault": -1}
-                for language in languages:
-                    codes_to_upload = codes.copy(deep=True)
-                    codes_to_upload = codes_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
-                    codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
-                    csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
-
-                    response = self.__upload_csv(csv, columns, lang=language)
-                    self.__import_csv(response)
-                self.init_codes()
         else:
             self.logger.info('La codelist con id %s está actualizada', self.id)
 
@@ -213,7 +195,25 @@ class Codelist:
     def __repr__(self):
         return f'{self.agency_id} {self.id} {self.version}'
 
-    def translate(self, data):
+    def translate(self):
+        languages = copy.deepcopy(self.configuracion['languages'])
+
+        codes = self.__translate(self.codes)
+        columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                   "isDefault": -1}
+        n_translations = len(codes)
+        self.logger.info('Se han traducido %s códigos', n_translations)
+        if n_translations:
+            for language in languages:
+                codes_to_upload = codes[['id', 'parent', f'name_{language}', f'des_{language}']].copy(deep=True)
+                codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
+
+                response = self.__upload_csv(csv, columns, lang=language)
+                self.__import_csv(response)
+        self.codes = codes
+
+    def __translate(self, data):
         self.logger.info('Iniciando proceso de traducción para la codelist con id %s', self.id)
         columns = data.columns[2:]
         codes = data.copy()
@@ -239,9 +239,6 @@ class Codelist:
                 yaml.dump(self.translator_cache, file)
             codes_translated = pandas.concat(
                 [codes_translated, codes.iloc[to_be_translated_indexes]])  # Se guardan los codigos traducidos
-            self.logger.info('Se han traducido %s códigos de la columna %s al %s', indexes_size, column[:-3],
-                             target_language)
-        self.logger.info('Proceso de traducción finalizado')
         return codes_translated
 
     def __get_translate(self, value, target_language):
