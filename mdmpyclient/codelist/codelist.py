@@ -6,6 +6,9 @@ import pandas
 import requests.models
 import yaml
 
+from ftfy import fix_encoding
+
+
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
@@ -106,6 +109,10 @@ class Codelist:
 
     def add_code(self, code_id, parent, name, des):
         if code_id.upper() not in self.codes.id.values:
+            if name:
+                name = fix_encoding(name)
+            if des:
+                des = fix_encoding(des)
             self.codes_to_upload.loc[len(self.codes_to_upload)] = [code_id.upper(), parent, name, des]
 
     # def add_codes(self, codes):
@@ -166,10 +173,9 @@ class Codelist:
             'hehe.csv', csv, 'application/vnd.ms-excel', {}),
             'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
-        body = body.decode('utf-8')
+
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
-        body = body.encode()
         try:
             self.logger.info('Subiendo códigos a la API')
             response = self.session.post(
@@ -194,6 +200,7 @@ class Codelist:
                 json=json)
             response.raise_for_status()
         except Exception as e:
+            print(json)
             print(response.text)
             raise e
         self.logger.info('Códigos importados correctamente')

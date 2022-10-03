@@ -5,6 +5,7 @@ import sys
 import pandas
 import requests
 import yaml
+from ftfy import fix_encoding
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -90,6 +91,10 @@ class ConceptScheme:
 
     def add_concept(self, concept_id, parent, names, des):
         if concept_id.upper() not in self.concepts.id.values:
+            if names:
+                names = fix_encoding(names)
+            if des:
+                des = fix_encoding(des)
             self.concepts_to_upload.loc[len(self.concepts_to_upload)] = [concept_id.upper(), parent, names, des]
 
     def add_concepts(self, concepts):
@@ -142,7 +147,7 @@ class ConceptScheme:
             'hehe.csv', csv, 'application/vnd.ms-excel', {}),
             'CustomData': (None, custom_data)}
         body, content_type = requests.models.RequestEncodingMixin._encode_files(files, {})
-        body = body.decode('utf-8')
+
         upload_headers['Content-Type'] = content_type
         upload_headers['language'] = lang
         try:

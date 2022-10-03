@@ -3,6 +3,7 @@ import logging
 import sys
 
 import yaml
+from ftfy import fix_encoding
 
 from mdmpyclient.codelist.codelist import Codelist
 
@@ -93,6 +94,9 @@ class Codelists:
         if self.configuracion['translate']:
             codelist.names = self.translate(codelist.names, codelist.id)
             codelist.des = self.translate(codelist.des, codelist.id) if codelist.des else None
+
+        for language in codelist.names.keys():
+            codelist.names[language] = fix_encoding((codelist.names[language]))
         json = {'data': {'codelists': [
             {'agencyID': codelist.agency_id, 'id': codelist.id, 'isFinal': 'true', 'names': codelist.names,
              'version': codelist.version}]},
