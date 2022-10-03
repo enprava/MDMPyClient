@@ -61,7 +61,7 @@ class CategoryScheme:
                     f'{self.configuracion["url_base"]}categoryScheme/{self.id}/{self.agency_id}/{self.version}')
                 response_data = response.json()['data']['categorySchemes'][0]['categories']
                 response_dcs = self.session.get(f'{self.configuracion["url_base"]}dcs').json()
-
+                response.raise_for_status()
             except KeyError:
                 self.logger.error(
                     'Ha ocurrido un error mientras se cargaban los datos del esquema de categorías con id: %s', self.id)
@@ -69,8 +69,12 @@ class CategoryScheme:
                 return pandas.DataFrame(data=categories, dtype='string')
             except Exception as e:
                 raise e
-            self.logger.info('Esquema de categorías extraído correctamente')
-
+            if not 'errorCode' in response_dcs:
+                self.logger.info('Esquema de categorías extraído correctamente')
+            else:
+                self.logger.error(
+                    'Ha ocurrido un error en la extracción del sistema de categorías, pruebe a establecer un sistema de'
+                    ' categorías para los cubos')
             dcs = self.__dcs_to_dict(response_dcs)
             categories = self.__merge_categories(response_data, None, dcs, categories)
         return pandas.DataFrame(data=categories, dtype='string')
