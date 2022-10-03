@@ -99,25 +99,6 @@ class CategoryScheme:
             self.init_categories()
             self.categories_to_upload = self.categories_to_upload[0:0]
 
-            if self.configuracion['translate']:
-                languages = copy.deepcopy(self.configuracion['languages'])
-                languages.remove(lang)
-
-                categories = self.translate(self.categories)
-                self.logger.info('Se va a subir la traducción de las categorías al esquema de categorías con id: %s',
-                                 self.id)
-                columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
-                           "isDefault": -1}
-                for language in languages:
-                    categories_to_upload = categories.copy(deep=True)
-                    categories_to_upload = categories_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
-                    categories_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
-                    csv = categories_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
-
-                    response = self.__upload_csv(csv, columns, lang=language)
-                    self.__import_csv(response)
-                self.init_categories()
-
         else:
             self.logger.info('El esquema de categorías con id %s está actualizado', self.id)
 
@@ -274,7 +255,26 @@ class CategoryScheme:
             dcs[dc['CatCode']] = dc['IDCat']
         return dcs
 
-    def translate(self, data):
+    def translate(self):
+        languages = copy.deepcopy(self.configuracion['languages'])
+
+        categories = self.translate(self.categories)
+
+        columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
+                   "isDefault": -1}
+        n_translations = len(categories)
+        self.logger.info('Se han traducido %s categorías')
+        if n_translations:
+            for language in languages:
+                categories_to_upload = categories.copy(deep=True)
+                categories_to_upload = categories_to_upload[['id', 'parent', f'name_{language}', f'des_{language}']]
+                categories_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
+                csv = categories_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
+
+                response = self.__upload_csv(csv, columns, lang=language)
+                self.__export_csv(response)
+
+    def __translate(self, data):
         self.logger.info('Iniciando proceso de traducción para el esquema de categorías con id %s', self.id)
         columns = data.columns[3:]
         categories = data.copy()
@@ -300,8 +300,6 @@ class CategoryScheme:
                 yaml.dump(self.translator_cache, file)
             codes_translated = pandas.concat(
                 [codes_translated, categories.iloc[to_be_translated_indexes]])  # Se guardan los codigos traducidos
-            self.logger.info('Se han traducido %s categorías de la columna %s al %s', indexes_size, column[:-3],
-                             target_language)
         self.logger.info('Proceso de traducción finalizado')
         return codes_translated
 

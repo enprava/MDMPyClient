@@ -78,16 +78,16 @@ class ConceptSchemes:
 
     def _put(self, concept_scheme):
         if self.configuracion['translate']:
-            self.logger.info('Traduciendo el esquema de concepto con id %s', concept_scheme.id)
-            concept_scheme.names = self.translate(names)
-            concept_scheme.des = self.translate(des)
+            self.logger.info('Traduciendo nombre y descripción del esquema de concepto con id %s', concept_scheme.id)
+            concept_scheme.names = self.translate(concept_scheme.names)
+            concept_scheme.des = self.translate(concept_scheme.des)
         json = {'data': {'conceptSchemes': [
             {'agencyID': concept_scheme.agency_id, 'id': concept_scheme.id, 'isFinal': 'true',
              'names': concept_scheme.names,
              'version': concept_scheme.version}]},
             'meta': {}}
         if concept_scheme.des:
-            json['descriptions'] = des
+            json['descriptions'] = concept_scheme.des
         self.logger.info('Creando o actualizando esquema de conceptos con id %s', concept_scheme.id)
         try:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
@@ -178,3 +178,10 @@ class ConceptSchemes:
                 for version in scheme.values():
                     self.put(version)
         self.data_to_upload = {}
+
+    def translate_all_concept_schemes(self):
+        self.logger.info('Traduciendo todos los esquemas de concepto')
+        for agency in self.data.values():  # El nombre de la variable representa la clave que manejamos en el
+            for scheme in agency.values():  # diccionario.
+                for version in scheme.values():
+                    version.translate()
