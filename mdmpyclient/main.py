@@ -19,8 +19,6 @@ if __name__ == '__main__':
         traducciones = yaml.safe_load(traducciones)
 
         controller = MDM(configuracion, traductor)
-
         # controller.concept_schemes.add_concept_scheme('ESC01', 'ASDADF', '1.0', {'es': 'pepe'}, None)
         # controller.concept_schemes.put_all_concept_schemes()
-        controller.concept_schemes.put('ESC01', 'ASDADFAS', '1.0', {'es': 'pepe'}, None)
         controller.logout()
