@@ -75,7 +75,7 @@ class MDM:
 
         self.mappings = Mappings(self.session, self.configuracion)
 
-        self.dataflows = Dataflows(self.session, self.configuracion)
+        self.dataflows = Dataflows(self.session, self.configuracion, self.translator, self.translator_cache)
 
         # self.msds = MSDs(self.session, self.configuracion)
         #

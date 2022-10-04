@@ -154,9 +154,10 @@ class CategoryScheme:
                               "user-management", "users", "utilities"
                               ],
             "rules": ["AdminRole", "CanDeleteData", "CanDeleteStructuralMetadata", "CanIgnoreProductionFlag",
-                      "CanImportData", "CanImportStructures", "CanModifyStoreSettings",
+                      "CanImportData", "CanImportStructures", "CanManageWorkingAnnotation", "CanModifyStoreSettings",
                       "CanPerformInternalMappingConfig", "CanReadData", "CanReadStructuralMetadata", "CanUpdateData",
-                      "CanUpdateStructuralMetadata", "DataImporterRole", "DomainUserRole", "StructureImporterRole",
+                      "CanUpdateStructuralMetadata", "DataImporterRole", "DataImporterRole_U", "DataImporterRole_UD",
+                      "DomainUserRole", "StructureImporterRole", "StructureImporterRole_U", "StructureImporterRole_UD",
                       "WsUserRole"], "dataflow": [], "metadataFlow": [], "dataflowOwner": [],
             "metadataFlowOwner": [], "username": "admin", "email": None,
             "token": token,
@@ -257,8 +258,8 @@ class CategoryScheme:
 
     def translate(self):
         languages = copy.deepcopy(self.configuracion['languages'])
-
-        categories = self.translate(self.categories)
+        self.logger.info('Iniciando proceso de traducción para el esquema de categorías con id %s', self.id)
+        categories = self.__translate(self.categories)
 
         columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                    "isDefault": -1}
@@ -275,7 +276,6 @@ class CategoryScheme:
                 self.__export_csv(response)
 
     def __translate(self, data):
-        self.logger.info('Iniciando proceso de traducción para el esquema de categorías con id %s', self.id)
         columns = data.columns[3:]
         categories = data.copy()
         codes_translated = pandas.DataFrame(columns=categories.columns)

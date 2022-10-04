@@ -80,7 +80,7 @@ class ConceptSchemes:
         if self.configuracion['translate']:
             self.logger.info('Traduciendo nombre y descripción del esquema de concepto con id %s', concept_scheme.id)
             concept_scheme.names = self.translate(concept_scheme.names)
-            concept_scheme.des = self.translate(concept_scheme.des)
+            concept_scheme.des = self.translate(concept_scheme.des) if concept_scheme.des else None
         json = {'data': {'conceptSchemes': [
             {'agencyID': concept_scheme.agency_id, 'id': concept_scheme.id, 'isFinal': 'true',
              'names': concept_scheme.names,

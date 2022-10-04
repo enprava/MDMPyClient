@@ -1,5 +1,7 @@
 import logging
 import sys
+import copy
+import yaml
 
 from mdmpyclient.dataflow.dataflow import Dataflow
 
@@ -23,11 +25,13 @@ class Dataflows:
 
                """
 
-    def __init__(self, session, configuracion, init_data=False):
+    def __init__(self, session, configuracion, translator, translator_cache, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
         self.configuracion = configuracion
+        self.translator = translator
+        self.translator_cache = translator_cache
         self.data = self.get(init_data)
 
     def get(self, init_data=True):
@@ -68,20 +72,29 @@ class Dataflows:
             return dataflow
         except KeyError:
             self.logger.info('El dataflow no se encuentra en la API. Creando dataflow con id %s', code)
+
+        if self.configuracion['translate']:
+            self.logger.info('Traduciendo nombre y descripción del dataflow con id (code) %s', code)
+            names_translated = self.translate(names)
+            des_translated = self.translate(des) if des else None
+        else:
+            names_translated = names
+            des_translated = des
+
         hierarchy = category_scheme.get_category_hierarchy(category)
         json = {
-            "ddbDF": {"ID": code, "Agency": agency, "Version": version, "labels": names, "IDCube": cube_id,
+            "ddbDF": {"ID": code, "Agency": agency, "Version": version, "labels": names_translated, "IDCube": cube_id,
                       "DataflowColumns": columns,
                       "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}}, "msdbDF": {"meta": {}, "data": {
                 "dataflows": [
-                    {"id": code, "version": version, "agencyID": agency, "isFinal": True, "names": names,
+                    {"id": code, "version": version, "agencyID": agency, "isFinal": True, "names": names_translated,
                      "structure": f"urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure={dsd.agency_id}:{dsd.id}({dsd.version})"}]}},
             "msdbCat": {"meta": {}, "data": {"categorisations": [
                 {"id": f"CAT_{code}_{cube_id}", "version": version, "agencyID": agency, "names": {"en": f"CAT_{code}"},
                  "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{code}({version})",
                  "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}:{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
-        if des:
-            json['msdbDF']['data']['dataflows'][0]['descriptions'] = des
+        if des_translated:
+            json['msdbDF']['data']['dataflows'][0]['descriptions'] = des_translated
         try:
             response = self.session.post(f'{self.configuracion["url_base"]}createDDBDataflow', json=json)
             response.raise_for_status()
@@ -90,3 +103,35 @@ class Dataflows:
         self.logger.info('Dataflow creado correctamente')
         dataflow_id = int(response.text)
         return dataflow_id
+
+    def translate(self, data):
+        result = copy.deepcopy(data)
+        languages = copy.deepcopy(self.configuracion['languages'])
+        to_translate_langs = list(set(languages) - set(result.keys()))
+        value = list(result.values())[0]
+        for target_lang in to_translate_langs:
+            if 'en' in target_lang:
+                target_lang = 'EN-GB'
+            translate = self.__get_translate(value, target_lang)
+            if 'EN-GB' in target_lang:
+                target_lang = 'en'
+            result[target_lang] = translate
+        with open(f'{self.configuracion["cache"]}', 'w', encoding='utf=8') as file:
+            yaml.dump(self.translator_cache, file)
+        return result
+
+    def __get_translate(self, value, target_language):
+        if value in self.translator_cache:
+            self.logger.info('Valor encontrado en la caché de traducciones')
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            translation = self.translator_cache[value][target_language]
+        else:
+            self.logger.info('Realizando petición a deepl')
+            translation = str(self.translator.translate_text(value, target_lang=target_language))
+            self.translator_cache[value] = {}
+            if 'EN-GB' in target_language:
+                target_language = 'en'
+            self.translator_cache[value][target_language] = translation
+        self.logger.info('Se ha traducido el término %s como %s', value, translation)
+        return translation

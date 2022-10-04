@@ -93,8 +93,8 @@ class Codelists:
     def _put(self, codelist):
         if self.configuracion['translate']:
             self.logger.info('Traduciendo nombre y descripción de la codelist con id %s', codelist.id)
-            codelist.names = self.translate(codelist.names, codelist.id)
-            codelist.des = self.translate(codelist.des, codelist.id) if codelist.des else None
+            codelist.names = self.translate(codelist.names)
+            codelist.des = self.translate(codelist.des) if codelist.des else None
 
         for language in codelist.names.keys():
             codelist.names[language] = fix_encoding((codelist.names[language]))
@@ -119,12 +119,11 @@ class Codelists:
             self.data[codelist.agency_id][codelist.id] = {}
         self.data[codelist.agency_id][codelist.id][codelist.version] = codelist
 
-    def translate(self, data, codelist_id):
+    def translate(self, data):
         result = copy.deepcopy(data)
         languages = copy.deepcopy(self.configuracion['languages'])
         to_translate_langs = list(set(languages) - set(result.keys()))
         value = list(result.values())[0]
-        self.logger.info('Traduciendo nombre y descripción de la codelist con id  %s', codelist_id)
         for target_lang in to_translate_langs:
             if 'en' in target_lang:
                 target_lang = 'EN-GB'
@@ -205,4 +204,6 @@ class Codelists:
         for agency in self.data.values():
             for codelist in agency.values():
                 for version in codelist.values():
+                    if version.id == 'CL_ESTRATO_ASALARIADOS':
+                        continue
                     version.translate()
