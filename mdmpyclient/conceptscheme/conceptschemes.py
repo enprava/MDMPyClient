@@ -178,6 +178,8 @@ class ConceptSchemes:
                 for version in scheme.values():
                     self.put(version)
         self.data_to_upload = {}
+        if self.configuracion['translate']:
+            self.translate_all_concept_schemes()
 
     def translate_all_concept_schemes(self):
         self.logger.info('Traduciendo todos los esquemas de concepto')

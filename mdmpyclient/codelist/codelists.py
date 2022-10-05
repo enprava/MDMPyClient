@@ -198,6 +198,8 @@ class Codelists:
                 for version in codelist.values():
                     self.put(version)
         self.data_to_upload = {}
+        if self.configuracion['translate']:
+            self.translate_all_codelists()
 
     def translate_all_codelists(self):
         self.logger.info('Iniciado proceso de traducción de todas las codelist')
