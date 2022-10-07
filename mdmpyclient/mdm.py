@@ -77,11 +77,11 @@ class MDM:
 
         self.dataflows = Dataflows(self.session, self.configuracion, self.translator, self.translator_cache)
 
-        # self.msds = MSDs(self.session, self.configuracion)
-        #
-        # self.metadataflows = Metadataflows(self.session, self.configuracion)
-        #
-        # self.metadatasets = Metadatasets(self.session, self.configuracion)
+        self.msds = MSDs(self.session, self.configuracion)
+
+        self.metadataflows = Metadataflows(self.session, self.configuracion)
+
+        self.metadatasets = Metadatasets(self.session, self.configuracion, init_data)
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['languages'][0],
@@ -124,6 +124,8 @@ class MDM:
 
     def delete_all(self, agency, category_scheme_id, version):
         self.logger.info('Se van a borrar todo los datos')
+        self.metadatasets.delete_all()
+        self.metadataflows.delete_all()
         self.ddb_reset()
         cs = self.category_schemes.data[agency][category_scheme_id][version]
         cs.import_dcs()

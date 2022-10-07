@@ -54,3 +54,11 @@ class Metadataflow:
 
     def init_data(self):
         self.data = self.get()
+
+    def delete(self):
+        try:
+            response = self.session.delete(
+                f'{self.configuracion["url_base"]}artefact/Metadataflow/{self.id}/{self.agency_id}/{self.version}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e

@@ -29,7 +29,7 @@ class Metadataflows:
         self.session = session
         self.configuracion = configuracion
 
-        self.data, self.meta = self.get(init_data)
+        self.data = self.get(init_data)
 
     def get(self, init_data=True):
         data = {}
@@ -38,7 +38,9 @@ class Metadataflows:
         try:
             response = self.session.get(f'{self.configuracion["url_base"]}metadataflow')
             response_data = response.json()['data']['metadataflows']
-            response_meta = response.json()['meta']
+        except KeyError:
+            self.logger.warning('No se han encontrado metadataflows en la API')
+            return data
         except Exception as e:
             raise e
         self.logger.info('Metadataflows extraídos correctamente')
@@ -56,4 +58,30 @@ class Metadataflows:
                 data[agency][meta_id] = {}
             data[agency][meta_id][version] = Metadataflow(self.session, self.configuracion, meta_id, agency, version,
                                                           names, des, init_data)
-        return data, response_meta
+        return data
+
+    def put(self, agency, id, version, names, des):
+        self.logger.info('Obteniendo el MSD con id %s', id)
+        try:
+            msd = self.data[agency][id][version]
+            self.logger.info('El MSD ya se encuentra en la API')
+        except KeyError:
+            self.logger.info('El MSD no se encuentra en la API, realizando peticion para crearlo')
+            json = {"meta": {}, "data": {"metadataflows": [
+                {"id": id, "version": version, "agencyID": agency, "isFinal": True, "names": names, 'descriptions': des,
+                 "structure": f"urn:sdmx:org.sdmx.infomodel.metadatastructure.MetadataStructure={self.configuracion['msd']['agency']}:{self.configuracion['msd']['id']}({self.configuracion['msd']['version']})"}]}}
+            try:
+                response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
+                response.raise_for_status()
+            except Exception as e:
+                raise e
+            if response.text == 'true':
+                self.logger.info('El MSD se ha creado correctamente')
+            else:
+                self.logger.error('Ha ocurrido un error y no se ha creado el MSD')
+    def delete_all(self):
+        self.logger.info('Borrando todos los metadataflows y sus reportes')
+        for agency in self.data.values():
+            for id in agency.values():
+                for version in id.values():
+                    version.delete()

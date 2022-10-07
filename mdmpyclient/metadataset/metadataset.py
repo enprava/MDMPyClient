@@ -1,5 +1,8 @@
+import copy
 import logging
 import sys
+import pandas as pd
+import requests
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -29,20 +32,86 @@ class Metadataset:
         self.configuracion = configuracion
         self.id = meta_id
         self.names = names
-        self.reports = self.get() if init_data else None
+        self.reports = self.get(init_data)
 
-    def get(self):
-        try:
-            response = self.session.get(
-                f'{self.configuracion["url_base"]}api/RM/getJsonMetadataset/{self.id}'
-                f'/?excludeReport=false&withAttributes=false')
-            response_data = response.json()['data']['metadataSets'][0]['reports']
-        except KeyError:
-            self.logger.error('Ha ocurrido un error solicitando información del metadataset con id %s', self.id)
-            return None
-        except Exception as e:
-            raise e
-        return response_data
+    def get(self, init_data):
+        reports = {'id': [], 'code': [], 'published': []}
+        if init_data:
+            self.logger.info('Solicitando reportes del metadataset con id %s', self.id)
+            try:
+                response = self.session.get(
+                    f'{self.configuracion["url_base"]}api/RM/getJsonMetadataset/{self.id}'
+                    f'/?excludeReport=false&withAttributes=false')
+                response_data = response.json()['data']['metadataSets'][0]['reports']
+                response.raise_for_status()
+            except KeyError:
+                self.logger.error('Ha ocurrido un error solicitando información del metadataset')
+                return None
+            except Exception as e:
+                raise e
+
+            for report in response_data:
+                report_code = report['id']
+                report_id = report['annotations'][0]['text']
+                report_published = report['annotations'][3]['text']
+
+                reports['code'].append(report_code)
+                reports['id'].append(report_id)
+                reports['published'].append(report_published)
+
+        return pd.DataFrame(data=reports)
 
     def init_data(self):
         self.reports = self.get()
+
+    def put(self, path):
+        with open(path, 'rb') as file:
+            body = {'file': ('test.json', file, 'application/json', {})}
+            data, content_type = requests.models.RequestEncodingMixin._encode_files(body, {})
+            upload_headers = copy.deepcopy(self.session.headers)
+            upload_headers['Content-Type'] = content_type
+            try:
+                response = self.session.post(
+                    f'{self.configuracion["url_base"]}api/RM/checkFileJsonMetadataset/{self.id}', data=data,
+                    headers=upload_headers)
+                response_body = response.json()
+                response.raise_for_status()
+            except Exception as e:
+                raise e
+            self.logger.info('Reporte subido correctamente a la API, realizando importacion')
+            try:
+                response = self.session.post(f'{self.configuracion["url_base"]}api/RM/importFileJsonMetadataset/OLA',
+                                             json=response_body)
+            except Exception as e:
+                raise e
+
+    def publish(self, report):
+        body = {'newState': ('', 'PUBLISHED', None, ())}
+        data, content_type = requests.models.RequestEncodingMixin._encode_files(body, {})
+        upload_headers = copy.deepcopy(self.session.headers)
+        upload_headers['Content-Type'] = content_type
+        try:
+            response = self.session.post(
+                f'{self.configuracion["url_base"]}api/RM/updateStateMetReport/{self.id}/{report}',
+                headers=upload_headers, data=data)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+
+    def delete(self):
+        self.delete_all_reports()
+        try:
+            response = self.session.delete(f'{self.configuracion["url_base"]}api/RM/deleteGenericMetadataset/{self.id}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+
+    def delete_all_reports(self):
+        self.reports.apply(lambda x: self.delete_report(x.id), axis=1)
+
+    def delete_report(self, report):
+        try:
+            response = self.session.delete(f'{self.configuracion["url_base"]}api/RM/deleteReport/{report}')
+            response.raise_for_status()
+        except Exception as e:
+            raise e

@@ -28,7 +28,7 @@ class MSDs:
         self.session = session
         self.configuracion = configuracion
 
-        self.data, self.meta = self.get(init_data)
+        self.data = self.get(init_data)
 
     def get(self, init_data):
         msd = {}
@@ -37,9 +37,8 @@ class MSDs:
         try:
             response = self.session.get(f'{self.configuracion["url_base"]}msd')
             response_data = response.json()['data']['msds']
-            response_meta = response.json()['meta']
         except KeyError:
-            self.logger.info('No se han extraído los MSDs debido a un error de conexión con el servidor')
+            self.logger.warning('No se han encontrado MSDs en la API')
             return msd
         except Exception as e:
             raise e
@@ -58,4 +57,4 @@ class MSDs:
                 msd[agency][dsd_id] = {}
             msd[agency][dsd_id][version] = MSD(self.session, self.configuracion, dsd_id, agency, version, names,
                                                des, init_data)
-        return msd, response_meta
+        return msd
