@@ -18,7 +18,6 @@ if __name__ == '__main__':
         configuracion = yaml.safe_load(configuracion)
         traducciones = yaml.safe_load(traducciones)
 
-        controller = MDM(configuracion, traductor)
-        # controller.concept_schemes.add_concept_scheme('ESC01', 'ASDADF', '1.0', {'es': 'pepe'}, None)
-        # controller.concept_schemes.put_all_concept_schemes()
+        controller = MDM(configuracion, traductor, True)
+        controller.delete_all('ESC01', 'IECA_CAT_EN_ES', '1.0')
         controller.logout()

@@ -80,8 +80,10 @@ class Metadataflows:
             else:
                 self.logger.error('Ha ocurrido un error y no se ha creado el MSD')
     def delete_all(self):
-        self.logger.info('Borrando todos los metadataflows y sus reportes')
+        self.logger.info('Borrando todos los metadataflows')
         for agency in self.data.values():
             for id in agency.values():
                 for version in id.values():
+                    if version.id == 'ASDF':
+                        continue
                     version.delete()

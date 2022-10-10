@@ -80,8 +80,9 @@ class Metadataset:
                 raise e
             self.logger.info('Reporte subido correctamente a la API, realizando importacion')
             try:
-                response = self.session.post(f'{self.configuracion["url_base"]}api/RM/importFileJsonMetadataset/OLA',
+                response = self.session.post(f'{self.configuracion["url_base"]}api/RM/importFileJsonMetadataset/{self.id}',
                                              json=response_body)
+                response.raise_for_status()
             except Exception as e:
                 raise e
 

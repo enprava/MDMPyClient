@@ -90,6 +90,8 @@ class Metadatasets:
             self.data[id] = Metadataset(self.session, self.configuracion, id, names, False)
 
     def delete_all(self):
-        self.logger.info('Borrando todos los metadatasets')
+        self.logger.info('Borrando todos los metadatasets y sus reportes')
         for metadataset in self.data.values():
+            if metadataset.id == 'ASF':
+                continue
             metadataset.delete()
