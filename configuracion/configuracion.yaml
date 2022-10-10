@@ -6,3 +6,7 @@ languages:
 extractor_path: /home/prada/PycharmProjects/IECA-extractor/
 translate: False
 cache: configuracion/traducciones.yaml
+msd:
+  id: MSD_IECA
+  agency: ESC01
+  version: '1.0'

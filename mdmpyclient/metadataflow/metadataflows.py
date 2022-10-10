@@ -77,6 +77,13 @@ class Metadataflows:
                 raise e
             if response.text == 'true':
                 self.logger.info('El MSD se ha creado correctamente')
+                if agency not in self.data:
+                    self.data[agency] = {}
+                if id not in self.data[agency]:
+                    self.data[agency][id] = {}
+                self.data[agency][id][version] = Metadataflow(self.session, self.configuracion, id, agency,
+                                                              version,
+                                                              names, des, False)
             else:
                 self.logger.error('Ha ocurrido un error y no se ha creado el MSD')
 

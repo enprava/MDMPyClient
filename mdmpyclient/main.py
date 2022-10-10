@@ -19,5 +19,6 @@ if __name__ == '__main__':
         traducciones = yaml.safe_load(traducciones)
 
         controller = MDM(configuracion, traductor, True)
-        controller.delete_all('ESC01', 'IECA_CAT_EN_ES', '1.0')
+        controller.metadataflows.put('ESC01', 'FACILa2', '1.0', {'es': 'ola'}, None)
+        controller.metadatasets.put('ESC01','FASILITdfsaO', {'es':'andaslusia'},'FACILa2','1.0','IECA_CAT_EN_ES','DEMO_SOCIAL_STAT.LABOUR.EPA','1.0')
         controller.logout()

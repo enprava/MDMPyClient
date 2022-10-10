@@ -1,5 +1,6 @@
 import logging
 import sys
+from pprint import pprint
 
 from mdmpyclient.metadataset.metadataset import Metadataset
 
@@ -68,7 +69,7 @@ class Metadatasets:
                                                                 "texts": {"en": self.configuracion['msd']['agency']}},
                                                                {"id": "MSDVersion",
                                                                 "texts": {"en": self.configuracion['msd']['version']}},
-                                                               {"id": f"categorisation_[CAT_TESTO_{id}]", "texts": {
+                                                               {"id": f"categorisation_[CAT_{id}]", "texts": {
                                                                    "en": f"CAT_{id}+{agency}+{md_version}+urn:sdmx:org.sdmx."
                                                                          "infomodel.metadatastructure.Metadataflow="
                                                                          f"{agency}:{md_flow_id}({md_version})+urn:sdmx:org.sdmx.infomodel"
@@ -87,6 +88,7 @@ class Metadatasets:
                 response.raise_for_status()
             except Exception as e:
                 raise e
+            self.logger.info('Metadataset creado correctamente')
             self.data[id] = Metadataset(self.session, self.configuracion, id, names, False)
 
     def delete_all(self):

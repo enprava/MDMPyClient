@@ -100,6 +100,7 @@ class Metadataset:
             raise e
 
     def delete(self):
+        self.logger.info('Borrando el metadaset con id %s', self.id)
         self.delete_all_reports()
         try:
             response = self.session.delete(f'{self.configuracion["url_base"]}api/RM/deleteGenericMetadataset/{self.id}')
@@ -108,6 +109,7 @@ class Metadataset:
             raise e
 
     def delete_all_reports(self):
+        self.logger.info('Borrando reportes del metadataset')
         self.reports.apply(lambda x: self.delete_report(x.id), axis=1)
 
     def delete_report(self, report):

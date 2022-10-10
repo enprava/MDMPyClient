@@ -56,6 +56,7 @@ class Metadataflow:
         self.data = self.get()
 
     def delete(self):
+        self.logger.info('Borrando el metadataflow con id %s', self.id)
         try:
             response = self.session.delete(
                 f'{self.configuracion["url_base"]}artefact/Metadataflow/{self.id}/{self.agency_id}/{self.version}')
