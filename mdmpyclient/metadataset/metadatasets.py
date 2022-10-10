@@ -68,7 +68,7 @@ class Metadatasets:
                                                                 "texts": {"en": self.configuracion['msd']['agency']}},
                                                                {"id": "MSDVersion",
                                                                 "texts": {"en": self.configuracion['msd']['version']}},
-                                                               {"id": f"categorisation_[CAT_TESTO_{id}]", "texts": {
+                                                               {"id": f"categorisation_CAT_TESTO_{id}", "texts": {
                                                                    "en": f"CAT_{id}+{agency}+{md_version}+urn:sdmx:org.sdmx."
                                                                          "infomodel.metadatastructure.Metadataflow="
                                                                          f"{agency}:{md_flow_id}({md_version})+urn:sdmx:org.sdmx.infomodel"
