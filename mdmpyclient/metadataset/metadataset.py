@@ -62,7 +62,7 @@ class Metadataset:
         return pd.DataFrame(data=reports)
 
     def init_data(self):
-        self.reports = self.get()
+        self.reports = self.get(True)
 
     def put(self, path):
         with open(path, 'rb') as file:
@@ -80,14 +80,16 @@ class Metadataset:
                 raise e
             self.logger.info('Reporte subido correctamente a la API, realizando importacion')
             try:
-                response = self.session.post(f'{self.configuracion["url_base"]}api/RM/importFileJsonMetadataset/{self.id}',
-                                             json=response_body)
+                response = self.session.post(
+                    f'{self.configuracion["url_base"]}api/RM/importFileJsonMetadataset/{self.id}',
+                    json=response_body)
                 response.raise_for_status()
             except Exception as e:
                 raise e
 
     def publish(self, report):
-        body = {'newState': ('', 'PUBLISHED', None, ())}
+        self.logger.info('Publicando reporte %s', report)
+        body = {'newState': (None, 'PUBLISHED', None, ())}
         data, content_type = requests.models.RequestEncodingMixin._encode_files(body, {})
         upload_headers = copy.deepcopy(self.session.headers)
         upload_headers['Content-Type'] = content_type
@@ -98,6 +100,10 @@ class Metadataset:
             response.raise_for_status()
         except Exception as e:
             raise e
+
+    def publish_all(self):
+        self.logger.info('Publicando todos los reportes del metadaset con id %s', self.id)
+        self.reports.apply(lambda x: self.publish(x.code), axis=1)
 
     def delete(self):
         self.logger.info('Borrando el metadaset con id %s', self.id)
