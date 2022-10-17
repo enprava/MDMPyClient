@@ -52,7 +52,7 @@ class Dataflow:
             response = self.session.get(f'{self.configuracion["url_base"]}ddbDataflow/{self.id}')
             response_data = response.json()['DataflowColumns']
         except KeyError:
-            self.logger.error('Ha habido un error solicitando estruct   ura del dataflow con id %s', self.code)
+            self.logger.error('Ha habido un error solicitando estructura del dataflow con id %s', self.code)
             return pandas.DataFrame(data={})
         except Exception as e:
             raise e

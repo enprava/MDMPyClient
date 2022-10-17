@@ -3,7 +3,9 @@ import sys
 import deepl
 import pandas as pd
 import yaml
+from ckanapi import RemoteCKAN
 
+from mdmpyclient.ckan.resource import Resource
 from mdmpyclient.mdm import MDM
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
@@ -19,4 +21,11 @@ if __name__ == '__main__':
         traducciones = yaml.safe_load(traducciones)
 
         controller = MDM(configuracion, traductor, True)
+
+        ckan = RemoteCKAN('http://localhost:5000/',
+                          apikey='97c4de73-ce11-40f9-8da2-0bf7415d0a15')
+        res = Resource(ckan)
+        datillos = controller.dataflows.data['ESC01']['DF_APARTAMENTOS_TURISTICOS_67915']['1.0'].data
+        res.create(datillos)
+
         controller.logout()
