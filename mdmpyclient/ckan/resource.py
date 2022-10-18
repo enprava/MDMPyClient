@@ -7,7 +7,7 @@ class Resource:
 
     def create(self, data):
         to_upload = io.BytesIO(bytes(data.to_csv(index=False), 'utf-8'))
-        to_upload.name = 'dataflow.csvjaja'
+        to_upload.name = 'dataflow.csv'
         self.ckan.action.resource_create(
             package_id='my_dataset_name',
             format='csv',
