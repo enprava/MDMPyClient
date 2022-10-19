@@ -5,7 +5,9 @@ import pandas as pd
 import yaml
 from ckanapi import RemoteCKAN
 
+from mdmpyclient.ckan.organizations import Organizations
 from mdmpyclient.ckan.resource import Resource
+from mdmpyclient.ckan.dataset import Dataset
 from mdmpyclient.mdm import MDM
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
@@ -23,9 +25,13 @@ if __name__ == '__main__':
         controller = MDM(configuracion, traductor, True)
 
         ckan = RemoteCKAN('http://localhost:5000/',
-                          apikey='97c4de73-ce11-40f9-8da2-0bf7415d0a15')
+                          apikey='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjYxNzY4MTAsImp0aSI6InhfdDBFQmVOX2VvSEtMV2FQNGJyV29SdDlNcXN1QVp0VTlMWGNYZkxJZWNuSDRPS0VGSnNNUU5YUVNraE11Y09EYnpkeE9lbEZBMkx6SDF0In0.SrhY8b4w_XeeiEmLzgf1oDIVNAu2XWnRtX1gubYzAmA')
         res = Resource(ckan)
-        datillos = controller.dataflows.data['ESC01']['DF_APARTAMENTOS_TURISTICOS_67915']['1.0'].data
-        res.create(datillos)
-
+        orgs = Organizations(ckan)
+        datasets = Dataset(ckan)
+        # datasets.create('potato', orgs.orgs[1]['id'])
+        datillos = controller.dataflows.data['ESC01']['DF_INDICADORES_16861']['1.0'].data
+        res.create(datillos, 'DF_APARTAMENTOS_TURISTICOS_67915', 'csv',datasets.datasets[0])
+        # orgs.remove_all_orgs()
+        # orgs.create_orgs(controller.category_schemes.data['ESC01']['IECA_CAT_EN_ES']['1.0'].categories)
         controller.logout()

@@ -1,3 +1,5 @@
+import pandas as pd
+
 class Organizations:
     def __init__(self, ckan):
         self.ckan = ckan
@@ -5,18 +7,20 @@ class Organizations:
 
     def remove_all_orgs(self):
         for org in self.orgs:
-            self.ckan.call_action('organization_delete', {'id': org['id']})
+            self.ckan.call_action('organization_purge', {'id': org['id']})
+
+
 
     def create_org(self, id, name, parent=None):
-        if parent:
-            self.ckan.call_action('organization_create', {'name': id, 'title': name,
+        if not pd.isna(parent):
+            self.ckan.call_action('organization_create', {'name': id.lower(), 'title': name.lower(),
                                                           "groups":
                                                               [{
-                                                                  "name": parent
+                                                                  "name": parent.lower()
                                                               }]
                                                           })
         else:
-            self.ckan.call_action('organization_create', {'name': id, 'title': name,
+            self.ckan.call_action('organization_create', {'name': id.lower(), 'title': name.lower(),
                                                           "groups":
                                                               [{
                                                                   "name": "child-org"
@@ -24,4 +28,4 @@ class Organizations:
                                                           })
 
     def create_orgs(self, orgs):
-        orgs.apply(lambda x: self.create_org(x.id, x.name, x.parent), axis=1)
+        orgs.apply(lambda x: self.create_org(x.id, x.name_es, x.parent), axis=1)
