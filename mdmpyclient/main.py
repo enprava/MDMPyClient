@@ -1,5 +1,7 @@
 import logging
 import sys
+from pprint import pprint
+
 import deepl
 import pandas as pd
 import yaml
@@ -23,15 +25,14 @@ if __name__ == '__main__':
         configuracion = yaml.safe_load(configuracion)
         traducciones = yaml.safe_load(traducciones)
 
-        # controller = MDM(configuracion, traductor, True)
-        #
+        controller = MDM(configuracion, traductor, True)
         ckan = RemoteCKAN('http://localhost:5000/',
-                          apikey='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjYyNTQ2NjQsImp0aSI6Ikt1YkthdVlBVVItQjhDOTI1ODVobThCd28zZnhQcDVJQkVtNkhORkR5SkRldUVtamloTl9ROXUwaG5GRFlOS3ZWb0dNY2ZBRzRUU1FNUXNJIn0.8GgwvTYxOrB1v4GdJ_JbsgYml1BEoNwwizuqW-mlHeg')
+                          apikey=configuracion['api_ckan'])
         # res = Resource(ckan)
-        orgs = Organizations(ckan)
-        print(len(orgs.orgs))
-        print((orgs.orgs))
+        # orgs = Organizations(ckan)
+        # orgs.remove_all_orgs()
         # datasets = Datasets(ckan)
+        # datasets.remove_all_datasets()
         # datillos = controller.dataflows.data['ESC01']['DF_INDICADORES_16861']['1.0']
 
         # datasets.create(datillos.code.lower(), datillos.names['es'], orgs.orgs[0]['id'])
@@ -39,5 +40,6 @@ if __name__ == '__main__':
         # orgs.remove_all_orgs()
         # orgs.create_orgs(controller.category_schemes.data['ESC01']['IECA_CAT_EN_ES']['1.0'].categories)
 
+        controller.metadatasets.data['MDF_INDICADORES_16861'].download_report('REPORT_ODS_IDA')
 
-        # controller.logout()
+        controller.logout()

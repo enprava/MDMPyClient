@@ -1,8 +1,12 @@
 import copy
 import logging
 import sys
+import subprocess
+
 import pandas as pd
 import requests
+from selenium.webdriver.common.by import By
+from seleniumwire import webdriver
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -58,11 +62,30 @@ class Metadataset:
                 reports['code'].append(report_code)
                 reports['id'].append(report_id)
                 reports['published'].append(report_published)
-
         return pd.DataFrame(data=reports)
 
     def init_data(self):
         self.reports = self.get(True)
+
+    def download_report(self, report_id):
+        url = f'{self.configuracion["direccion_API_SDMX"]}/sdmx_172/client/static/referenceMetadata/template' \
+              f'/GenericMetadataTemplate.html?' \
+              f'nodeId={self.configuracion["nodeId"]}&metadataSetId={self.id}' \
+              f'&reportId={report_id}&lang=es&BaseUrlMDA=' \
+              f'{self.configuracion["metadata_api"]}'
+        options = webdriver.FirefoxOptions()
+        options.add_argument("--headless")
+        driver = webdriver.Firefox(options=options)
+        driver.implicitly_wait(10)
+        driver.get(url)
+        driver.find_element(By.ID, 'download-report-button').click()
+        driver.implicitly_wait(1)
+        subprocess.Popen(f"mv $HOME/Downloads/{report_id}.html {self.configuracion['directorio_metadatos_html']}",
+                         shell=True)
+        driver.close()
+
+    def download_all_reports(self):
+        self.reports.apply(lambda x: self.download_report(x.code), axis=1)
 
     def put(self, path):
         with open(path, 'rb') as file:

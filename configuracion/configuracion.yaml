@@ -1,4 +1,5 @@
-url_base: http://192.168.1.123/sdmx_172/ws/NODE_API/
+url_base: http://192.168.56.1/sdmx_172/ws/NODE_API/
+api_ckan: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjYzMzkwNzcsImp0aSI6IkYxLUhSSnd5aVFzZTRNM3JTN3NPNEdKbFBRUUE3SWZkclZibVpaVTFUczZNT2R1djZvOHFSSE54ZGhYTTVzRUFWOVhkdUltWHpYdnBPaGR6In0.Kr6hgHqe3RwdvQLLQ4mZlvJsBmO7OZNd1WkSd1al0NM
 nodeId: 'ESC01'
 languages:
   - en
@@ -10,3 +11,7 @@ msd:
   id: MSD_IECA
   agency: ESC01
   version: '1.0'
+direccion_API_SDMX: http://192.168.56.1
+metadata_api: http://192.168.56.1/sdmx_172/ws/METADATA_API
+directorio_metadatos_html: metadatos_html
+ckan_url: http://localhost:5000/

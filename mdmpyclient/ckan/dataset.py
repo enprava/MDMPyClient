@@ -15,3 +15,11 @@ class Datasets:
         self.logger.info('Creando dataset con id %s', id)
         self.ckan.call_action('package_create', {'name': id, 'private': False, 'title': title, 'owner_org': org_id})
         self.datasets.append(id)
+        self.logger.info('Dataset creado correctamente')
+
+    def remove_all_datasets(self):
+        self.logger.info('Se van a eliminar todos los datasets')
+        for dataset in self.datasets:
+            self.ckan.call_action('dataset_purge', {'id': dataset})
+        self.datasets = []
+        self.logger.info('Se han eliminado todos los datasets')

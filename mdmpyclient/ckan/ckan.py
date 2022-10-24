@@ -1,0 +1,15 @@
+from ckanapi import RemoteCKAN
+
+from mdmpyclient.ckan.dataset import Datasets
+from mdmpyclient.ckan.organizations import Organizations
+from mdmpyclient.ckan.resource import Resource
+
+
+class Ckan:
+    def __init__(self, configuracion):
+        self.configuracion = configuracion
+        self.ckan = RemoteCKAN(configuracion['ckan_url'],
+                               apikey=configuracion['api_ckan'])
+        self.orgs = Organizations(self.ckan)
+        self.datasets = Datasets(self.fckan)
+        self.resources = Resource(self.ckan)
