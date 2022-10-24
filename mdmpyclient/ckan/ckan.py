@@ -8,8 +8,8 @@ from mdmpyclient.ckan.resource import Resource
 class Ckan:
     def __init__(self, configuracion):
         self.configuracion = configuracion
-        self.ckan = RemoteCKAN(configuracion['ckan_url'],
+        self.ckan = RemoteCKAN(configuracion['url_ckan'],
                                apikey=configuracion['api_ckan'])
         self.orgs = Organizations(self.ckan)
-        self.datasets = Datasets(self.fckan)
+        self.datasets = Datasets(self.ckan)
         self.resources = Resource(self.ckan)

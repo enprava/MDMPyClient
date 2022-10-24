@@ -2,6 +2,7 @@ import copy
 import logging
 import sys
 import subprocess
+import time
 
 import pandas as pd
 import requests
@@ -76,8 +77,8 @@ class Metadataset:
         options = webdriver.FirefoxOptions()
         options.add_argument("--headless")
         driver = webdriver.Firefox(options=options)
-        driver.implicitly_wait(10)
         driver.get(url)
+        driver.implicitly_wait(10)
         driver.find_element(By.ID, 'download-report-button').click()
         driver.implicitly_wait(1)
         subprocess.Popen(f"mv $HOME/Downloads/{report_id}.html {self.configuracion['directorio_metadatos_html']}",
