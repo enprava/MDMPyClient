@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 import pandas
@@ -44,6 +45,20 @@ class Dataflow:
         self.names = names
         self.des = des
         self.data = self.get() if init_data else None
+
+    def get_sdmx(self, directory):
+        self.logger.info('Obteniendo dataflow con id %s en formato sdmx', self.code)
+        try:
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}downloadMetadati/dataflow/{self.code}/{self.agency_id}/{self.version}'
+                f'/structure/false/false/es')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.code + '.xml')
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+            file.close()
 
     def get(self):
         self.logger.info('Solicitando estructura del dataflow con id %s', self.code)

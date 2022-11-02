@@ -1,4 +1,5 @@
 import logging
+import os.path
 import sys
 
 from mdmpyclient.dsd.dsd import DSD
@@ -29,6 +30,13 @@ class DSDs:
         self.configuracion = configuracion
 
         self.data = self.get(init_data)
+
+    def get_all_sdmx(self, directory):
+        self.logger.info('Obteniendo fichero en formato sdmx de todos los DSDs')
+        for agency in self.data.values():
+            for dsd_id in agency.values():
+                for version in dsd_id.values():
+                    version.get_sdmx(directory)
 
     def get(self, init_data):
         dsd = {}
