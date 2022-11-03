@@ -48,10 +48,11 @@ class Dataflow:
 
     def get_sdmx(self, directory):
         self.logger.info('Obteniendo dataflow con id %s en formato sdmx', self.code)
+        json = {"Filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}, "SqlData": {"SelCols": None},
+                "iDDataflow": self.id, "iDCube": self.cube_id}
         try:
-            response = self.session.get(
-                f'{self.configuracion["url_base"]}downloadMetadati/dataflow/{self.code}/{self.agency_id}/{self.version}'
-                f'/structure/false/false/es')
+            response = self.session.post(
+                f'{self.configuracion["url_base"]}downloadDataflow/genericdata/false', json=json)
             response.raise_for_status()
         except Exception as e:
             raise e

@@ -44,7 +44,7 @@ class DSD:
         try:
             response = self.session.get(
                 f'{self.configuracion["url_base"]}downloadMetadati/dsd/{self.id}/{self.agency_id}/'
-                f'{self.version}/structure/false/false/es')
+                f'{self.version}/structure/true/false/es')
             response.raise_for_status()
         except Exception as e:
             raise e
