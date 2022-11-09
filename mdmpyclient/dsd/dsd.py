@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
@@ -37,6 +38,20 @@ class DSD:
         self.des = des
 
         self.data = self.get() if init_data else None
+
+    def get_sdmx(self, directory):
+        self.logger.info('Obteniendo DSD con id %s en formato sdmx', self.id)
+        try:
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}downloadMetadati/dsd/{self.id}/{self.agency_id}/'
+                f'{self.version}/structure/true/false/es')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.id + '.xml')
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+            file.close()
 
     def get(self):
         data = {}

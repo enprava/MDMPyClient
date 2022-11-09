@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 import pandas
@@ -44,6 +45,21 @@ class Dataflow:
         self.names = names
         self.des = des
         self.data = self.get() if init_data else None
+
+    def get_sdmx(self, directory):
+        self.logger.info('Obteniendo dataflow con id %s en formato sdmx', self.code)
+        json = {"Filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}, "SqlData": {"SelCols": None},
+                "iDDataflow": self.id, "iDCube": self.cube_id}
+        try:
+            response = self.session.post(
+                f'{self.configuracion["url_base"]}downloadDataflow/genericdata/false', json=json)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.code + '.xml')
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+            file.close()
 
     def get(self):
         self.logger.info('Solicitando estructura del dataflow con id %s', self.code)

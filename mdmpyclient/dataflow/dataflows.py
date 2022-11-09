@@ -34,6 +34,13 @@ class Dataflows:
         self.translator_cache = translator_cache
         self.data = self.get(init_data)
 
+    def get_all_sdmx(self, directory):
+        self.logger.info('Obteniendo todos los dataflows en formato sdmx')
+        for agency in self.data.values():
+            for dataflow_id in agency.values():
+                for version in dataflow_id.values():
+                    version.get_sdmx(directory)
+
     def get(self, init_data=True):
         data = {}
         self.logger.info('Solicitando información de los dataflows')
