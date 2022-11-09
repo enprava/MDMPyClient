@@ -13,47 +13,47 @@ Bienvenido a la documentación de MDMPyClient!
 
 Modulos
 =======
-.. automodule:: src.mdmpyclient.mdm
+.. automodule:: mdmpyclient.mdm
    :members:
-.. automodule:: src.mdmpyclient.codelist
+.. automodule:: mdmpyclient.codelist.codelist
    :members:
-.. automodule:: src.mdmpyclient.codelists
+.. automodule:: mdmpyclient.codelist.codelists
    :members:
-.. automodule:: src.mdmpyclient.conceptscheme
+.. automodule:: mdmpyclient.conceptscheme.conceptscheme
    :members:
-.. automodule:: src.mdmpyclient.conceptschemes
+.. automodule:: mdmpyclient.conceptscheme.conceptschemes
    :members:
-.. automodule:: src.mdmpyclient.categoryscheme
+.. automodule:: mdmpyclient.categoryscheme.categoryscheme
    :members:
-.. automodule:: src.mdmpyclient.categoryschemes
+.. automodule:: mdmpyclient.categoryscheme.categoryschemes
    :members:
-.. automodule:: src.mdmpyclient.dsd
+.. automodule:: mdmpyclient.dsd.dsd
    :members:
-.. automodule:: src.mdmpyclient.dsds
+.. automodule:: mdmpyclient.dsd.dsds
    :members:
-.. automodule:: src.mdmpyclient.cube
+.. automodule:: mdmpyclient.cube.cube
    :members:
-.. automodule:: src.mdmpyclient.cubes
+.. automodule:: mdmpyclient.cube.cubes
    :members:
-.. automodule:: src.mdmpyclient.mapping
+.. automodule:: mdmpyclient.mapping.mapping
    :members:
-.. automodule:: src.mdmpyclient.mappings
+.. automodule:: mdmpyclient.mapping.mappings
    :members:
-.. automodule:: src.mdmpyclient.dataflow
+.. automodule:: mdmpyclient.dataflow.dataflow
    :members:
-.. automodule:: src.mdmpyclient.dataflows
+.. automodule:: mdmpyclient.dataflow.dataflows
    :members:
-.. automodule:: src.mdmpyclient.msd
+.. automodule:: mdmpyclient.msd.msd
    :members:
-.. automodule:: src.mdmpyclient.msds
+.. automodule:: mdmpyclient.msd.msds
    :members:
-.. automodule:: src.mdmpyclient.metadataflow
+.. automodule:: mdmpyclient.metadataflow.metadataflow
    :members:
-.. automodule:: src.mdmpyclient.metadataflows
+.. automodule:: mdmpyclientmetadataflow..metadataflows
    :members:
-.. automodule:: src.mdmpyclient.metadataset
+.. automodule:: mdmpyclient.metadataset.metadataset
    :members:
-.. automodule:: src.mdmpyclient.metadatasets
+.. automodule:: mdmpyclient.metadatasets
    :members:
 
 

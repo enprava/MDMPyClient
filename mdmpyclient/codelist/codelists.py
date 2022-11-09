@@ -23,7 +23,7 @@ class Codelists:
          False para no traerlos. Por defecto toma el valor False.
 
     Attributes:
-        data (:obj:`Dicconario`) Diccionario con todas las codelists
+        data (:obj:`Dicconario`): Diccionario con todas las codelists
 
     """
 
@@ -108,7 +108,6 @@ class Codelists:
             response = self.session.put(f'{self.configuracion["url_base"]}updateArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:
-            print(response.text)
             raise e
         self.logger.info('Codelist creada o actualizada correctamente')
         try:
