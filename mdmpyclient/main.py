@@ -7,7 +7,11 @@ import pandas as pd
 import yaml
 from ckanapi import RemoteCKAN
 import requests
+
 from mdmpyclient.ckan.ckan import Ckan
+from mdmpyclient.ckan.organizations import Organizations
+from mdmpyclient.ckan.resource import Resource
+from mdmpyclient.ckan.dataset import Datasets
 from mdmpyclient.mdm import MDM
 from bs4 import BeautifulSoup
 
@@ -23,17 +27,7 @@ if __name__ == '__main__':
         configuracion = yaml.safe_load(configuracion)
         traducciones = yaml.safe_load(traducciones)
 
-        controller = MDM(configuracion, traductor)
-        # ckan = Ckan(configuracion)
-        # ckan.orgs.create_orgs(controller.category_schemes.data['ESC01']['IECA_CAT_EN_ES']['1.0'].categories)
-
-        # datasets.create(datillos.code.lower(), datillos.names['es'], orgs.orgs[0]['id'])
-        # res.create(datillos.data, 'DF_APARTAMENTOS_TURISTICOS_67915', 'csv', datasets.datasets[0])
-        # orgs.remove_all_orgs()
-        # ckan.orgs.create_orgs(controller.category_schemes.data['ESC01']['IECA_CAT_EN_ES']['1.0'].categories)
-
-        # controller.metadatasets.data['MDF_INDICADORES_16861'].download_report('REPORT_ODS_IDA')
-
-        # controller.dsds.get_all_sdmx('sdmx/dsds')
-        controller.dataflows.get_all_sdmx('sdmx/dataflows')
-        controller.logout()
+        # controller = MDM(configuracion, traductor, True)
+        ckan = Ckan(configuracion)
+        print(ckan.groups.test())
+        # controller.logout()
