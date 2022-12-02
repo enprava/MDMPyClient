@@ -19,7 +19,7 @@ class Mappings:
                 False para no traerlos. Por defecto toma el valor False.
 
            Attributes:
-               data (:obj:`Dicconario`) Diccionario con todos los mappings
+               data (:obj:`Dicconario`): Diccionario con todos los mappings
 
            """
 

@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-import os
+#import os
 import yaml
 
 from mdmpyclient.conceptscheme.conceptscheme import ConceptScheme
@@ -22,7 +22,7 @@ class ConceptSchemes:
           False para no traerlos. Por defecto toma el valor False.
 
      Attributes:
-         data (:obj:`Dicconario`) Diccionario con todos los esquemas de conceptos
+         data (:obj:`Diccionario`): Diccionario con todos los esquemas de conceptos
      """
 
     def __init__(self, session, configuracion, translator, translator_cache, init_data=False):

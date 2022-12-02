@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-import os
+#import os
 import yaml
 from ftfy import fix_encoding
 
@@ -23,7 +23,7 @@ class Codelists:
          False para no traerlos. Por defecto toma el valor False.
 
     Attributes:
-        data (:obj:`Dicconario`): Diccionario con todas las codelists
+        data (:obj:`Diccionario`): Diccionario con todas las codelists
 
     """
 

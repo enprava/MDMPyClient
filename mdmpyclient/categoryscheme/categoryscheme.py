@@ -29,7 +29,7 @@ class CategoryScheme:
          categorías, False para traer solo id, agencia y versión. Por defecto toma el valor False.
 
     Attributes:
-        categories (obj: `DataFrame`): DataFrame con todas las categorías del esquema
+        categories (:obj:`DataFrame`): DataFrame con todas las categorías del esquema
 
     """
 

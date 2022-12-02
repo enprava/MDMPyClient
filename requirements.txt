@@ -5,6 +5,6 @@ pandas==1.4.4
 ckanapi
 bs4
 selenium
-seleniumwire
+selenium-wire
 deepl
 ftfy

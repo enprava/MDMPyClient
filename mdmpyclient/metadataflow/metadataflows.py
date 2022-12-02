@@ -19,7 +19,7 @@ class Metadataflows:
                      traerlos. Por defecto toma el valor False.
 
                 Attributes:
-                    data (:obj:`Dicconario`) Diccionario con todos los metadataflows
+                    data (:obj:`Diccionario`): Diccionario con todos los metadataflows
 
                 """
 
@@ -63,7 +63,7 @@ class Metadataflows:
     def put(self, agency, id_msd, version, names, des):
         self.logger.info('Obteniendo el MSD con id %s', id_msd)
         try:
-            if(self.data[agency][id_msd][version]):
+            if (self.data[agency][id_msd][version]):
                 self.logger.info('El MSD ya se encuentra en la API')
         except KeyError:
             self.logger.info('El MSD no se encuentra en la API, realizando peticion para crearlo')

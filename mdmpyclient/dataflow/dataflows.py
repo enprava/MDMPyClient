@@ -21,7 +21,7 @@ class Dataflows:
                     traerlos. Por defecto toma el valor False.
 
                Attributes:
-                   data (:obj:`Dicconario`) Diccionario con todos los dataflows
+                   data (:obj:`Diccionario`): Diccionario con todos los dataflows
 
                """
 

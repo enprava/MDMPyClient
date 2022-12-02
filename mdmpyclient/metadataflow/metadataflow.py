@@ -23,7 +23,7 @@ class Metadataflow:
                 False para no traerlos. Por defecto toma el valor False.
 
            Attributes:
-               data (:obj:`List`) Lista con todos los datos del metadataflow.
+               data (:obj:`List`): Lista con todos los datos del metadataflow.
            """
 
     def __init__(self, session, configuracion, meta_id, agency_id, version, names, des, init_data=False):

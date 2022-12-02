@@ -27,7 +27,7 @@ class Metadataset:
                     False para no traerlos. Por defecto toma el valor False.
 
                Attributes:
-                   data (:obj:`Diccionario`) Diccionario con todos los datos del metadataset.
+                   data (:obj:`Diccionario`): Diccionario con todos los datos del metadataset.
                """
 
     def __init__(self, session, configuracion, meta_id, names, init_data=False):

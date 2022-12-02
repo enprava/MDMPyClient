@@ -28,7 +28,7 @@ class Dataflow:
                 False para no traerlos. Por defecto toma el valor False.
 
            Attributes:
-               data (:obj:`List`) Lista con todos los datos del dataflow.
+               data (:obj:`List`): Lista con todos los datos del dataflow.
            """
 
     def __init__(self, session, configuracion, code, agency_id, version, dataflow_id, cube_id, names, des,

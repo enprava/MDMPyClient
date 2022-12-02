@@ -53,7 +53,7 @@ class Metadatasets:
         try:
             self.logger.info('Obteniendo metadataset con id %s', md_set_id)
 
-            if(self.data[md_set_id]):
+            if (self.data[md_set_id]):
                 self.logger.info('El metadataset ya se encuentra en la API')
         except KeyError:
             self.logger.info('El metadataset no se encuentra en la API, creando metadataset')

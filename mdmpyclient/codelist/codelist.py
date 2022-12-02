@@ -31,7 +31,7 @@ class Codelist:
 
     Attributes:
 
-        codes (:obj:`DataFrame`) DataFrame con todos los códigos de la lista
+        codes (:obj:`DataFrame`): DataFrame con todos los códigos de la lista
 
     """
 

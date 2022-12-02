@@ -1,7 +1,7 @@
 import logging
 import sys
 import os
-from requests import Request
+#from requests import Request
 import copy
 import requests
 
@@ -23,7 +23,7 @@ class CategorySchemes:
             False para no traerlas. Por defecto toma el valor False.
 
        Attributes:
-           data (:obj:`Dicconario`) Diccionario con todas las codelists
+           data (:obj:`Diccionario`): Diccionario con todas las codelists
 
        """
 

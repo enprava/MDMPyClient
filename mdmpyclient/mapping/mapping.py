@@ -22,7 +22,7 @@ class Mapping:
             False para no traerlos. Por defecto toma el valor False.
 
        Attributes:
-           components (:obj:`List`) Lista con todos los componentes del mapping.
+           components (:obj:`List`): Lista con todos los componentes del mapping.
        """
 
     def __init__(self, session, configuracion, mapping_id, cube_id, name, des, init_data=False):

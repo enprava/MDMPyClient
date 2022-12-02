@@ -23,7 +23,7 @@ class DSD:
              False para traer solo id, agencia y versión. Por defecto toma el valor False.
 
         Attributes:
-            data (:obj:`DataFrame`) DataFrame con todos los datos del DSD
+            data (:obj:`DataFrame`): DataFrame con todos los datos del DSD
         """
 
     def __init__(self, session, configuracion, dsd_id, agency_id, version, names, des, init_data=False):

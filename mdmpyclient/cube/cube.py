@@ -23,7 +23,7 @@ class Cube:
                init_data (class: `Boolean`): True para traer todos los datos del cubo,
                 False para traer solo id, agencia y versión. Por defecto toma el valor False.
 
-           Attributes:
+
 
 
            """

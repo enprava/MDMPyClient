@@ -22,7 +22,7 @@ class DSDs:
               Por defecto toma el valor False.
 
          Attributes:
-             data (:obj:`Dicconario`) Diccionario con todos los DSDs
+             data (:obj:`Diccionario`): Diccionario con todos los DSDs
          """
 
     def __init__(self, session, configuracion, init_data=False):

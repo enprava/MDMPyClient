@@ -22,7 +22,7 @@ class MSD:
                   False para no traerlos. Por defecto toma el valor False.
 
              Attributes:
-                 data (:obj:`Diccionario`) Diccionario con todos los datos del MSD.
+                 data (:obj:`Diccionario`): Diccionario con todos los datos del MSD.
              """
 
     def __init__(self, session, configuracion, msd_id, agency_id, version, names, des, init_data=False):

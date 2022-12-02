@@ -19,7 +19,7 @@ class MSDs:
                  Por defecto toma el valor False.
 
             Attributes:
-                data (:obj:`Dicconario`) Diccionario con todos los MSDs
+                data (:obj:`Diccionario`): Diccionario con todos los MSDs
             """
 
     def __init__(self, session, configuracion, init_data=False):

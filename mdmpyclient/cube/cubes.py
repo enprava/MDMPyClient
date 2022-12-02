@@ -20,7 +20,7 @@ class Cubes:
             False para no traerlos. Por defecto toma el valor False.
 
        Attributes:
-           data (:obj:`Dicconario`): Diccionario con todos los cubes
+           data (:obj:`Diccionario`): Diccionario con todos los cubes
 
        """
 
