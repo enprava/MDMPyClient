@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+MDMPyClient.egg-info/PKG-INFO
+MDMPyClient.egg-info/SOURCES.txt
+MDMPyClient.egg-info/dependency_links.txt
+MDMPyClient.egg-info/top_level.txt
+mdmpyclient/__init__.py
+mdmpyclient/main.py
+mdmpyclient/mdm.py

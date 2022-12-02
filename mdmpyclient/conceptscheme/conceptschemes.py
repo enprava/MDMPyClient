@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-
+import os
 import yaml
 
 from mdmpyclient.conceptscheme.conceptscheme import ConceptScheme
@@ -51,7 +51,7 @@ class ConceptSchemes:
         except Exception as e:
             raise e
         self.logger.info('Esquemas de concepto extraídos correctamente')
-
+        self.conceptscheme_list = []
         for cs in response_data:
             agency = cs['agencyID']
             cs_id = cs['id']
@@ -63,10 +63,19 @@ class ConceptSchemes:
                 concept_schemes[agency] = {}
             if cs_id not in concept_schemes[agency].keys():
                 concept_schemes[agency][cs_id] = {}
-            concept_schemes[agency][cs_id][version] = ConceptScheme(self.session, self.configuracion, self.translator,
+            concept_sch = ConceptScheme(self.session, self.configuracion, self.translator,
                                                                     self.translator_cache, cs_id, agency,
                                                                     version, names, des, init_data=init_data)
+            concept_schemes[agency][cs_id][version] = concept_sch
+            self.conceptscheme_list.append(concept_sch)
         return concept_schemes
+
+
+
+    def get_all_sdmx(self, directory):
+        self.logger.info('Obteniendo todos los esquemas conceptuales en formato sdmx')
+        for cs in self.conceptscheme_list:
+            cs.get_sdmx(directory)
 
     def put(self, concept_scheme):
         self.logger.info('Obteniendo esquema de conceptos con id: %s', concept_scheme.id)

@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-
+import os
 import yaml
 from ftfy import fix_encoding
 
@@ -50,7 +50,7 @@ class Codelists:
         except Exception as e:
             raise e
         self.logger.info('Codelist extraídas correctamente')
-
+        self.codelist_list = []
         for codelist in response:
             agency = codelist['agencyID']
             codelist_id = codelist['id']
@@ -61,10 +61,18 @@ class Codelists:
                 codelists[agency] = {}
             if codelist_id not in codelists[agency]:
                 codelists[agency][codelist_id] = {}
-            codelists[agency][codelist_id][version] = Codelist(self.session, self.configuracion, self.translator,
+
+            cl = Codelist(self.session, self.configuracion, self.translator,
                                                                self.translator_cache, codelist_id, agency,
                                                                version, names, des, init_data=init_data)
+            codelists[agency][codelist_id][version] = cl
+            self.codelist_list.append(cl)
         return codelists
+
+    def get_all_sdmx(self, directory):
+        self.logger.info('Obteniendo todos los dataflows en formato sdmx')
+        for cl in self.codelist_list:
+            cl.get_sdmx(directory)
 
     def create(self, agencia, codelist_id, version, nombres, descripciones):
         json = {'data': {'codelists': [
@@ -112,7 +120,7 @@ class Codelists:
         self.logger.info('Codelist creada o actualizada correctamente')
         try:
             self.data[codelist.agency_id]
-        except:
+        except Exception:
             self.data[codelist.agency_id] = {}
         if codelist.id not in self.data[codelist.agency_id]:
             self.data[codelist.agency_id][codelist.id] = {}
@@ -154,7 +162,7 @@ class Codelists:
         try:  # Miramos que no este vacio self.data
             for codelist_id, dict_codelist in self.data[agency].items():
                 for codelist in dict_codelist.values():
-                    if codelist_id == 'OBS_STATUS' or codelist_id == 'CL_SEXO':
+                    if codelist_id in ('OBS_STATUS','CL_SEXO'):
                         continue
                     codelist.delete()
         except KeyError:

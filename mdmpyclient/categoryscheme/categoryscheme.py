@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-
+import os
 import pandas
 import requests
 import yaml
@@ -69,7 +69,7 @@ class CategoryScheme:
                 return pandas.DataFrame(data=categories, dtype='string')
             except Exception as e:
                 raise e
-            if not 'errorCode' in response_dcs:
+            if 'errorCode' not in response_dcs:
                 self.logger.info('Esquema de categorías extraído correctamente')
             else:
                 self.logger.error(
@@ -78,6 +78,25 @@ class CategoryScheme:
             dcs = self.__dcs_to_dict(response_dcs)
             categories = self.__merge_categories(response_data, None, dcs, categories)
         return pandas.DataFrame(data=categories, dtype='string')
+
+    def get_sdmx(self, directory):
+        self.logger.info('Obteniendo esquema de categoría con id %s en formato sdmx', self.id)
+        try:
+
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}downloadMetadati/categoryScheme/{self.id}/{self.agency_id}/'
+                f'{self.version}/structure/true/false/es')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.id + '.xml')
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+            file.close()
+
+
+
+
 
     def add_category(self, category_id, parent, name, des):
         if category_id.upper() not in self.categories_to_upload.Id.values:
@@ -102,9 +121,9 @@ class CategoryScheme:
         else:
             self.logger.info('El esquema de categorías con id %s está actualizado', self.id)
 
-    def create_cube_category(self, id, parent, names):
-        if id not in self.categories.id.values:
-            json = {"catCode": id, "parCode": parent, "ord": None, "labels": names}
+    def create_cube_category(self, cube_id, parent, names):
+        if cube_id not in self.categories.id.values:
+            json = {"catCode": cube_id, "parCode": parent, "ord": None, "labels": names}
             try:
                 response = self.session.post(f'{self.configuracion["url_base"]}InsertDCS', json=json)
                 response.raise_for_status()
@@ -180,8 +199,7 @@ class CategoryScheme:
         parent = self.categories.loc[self.categories['id'] == category].parent.item()
         if pandas.isnull(parent):
             return hierarchy
-        else:
-            return self._get_category_hierarchy(parent, f'{parent}.{hierarchy}')
+        return self._get_category_hierarchy(parent, f'{parent}.{hierarchy}')
 
     def __upload_csv(self, csv, columns, lang='es'):
         upload_headers = self.session.headers.copy()

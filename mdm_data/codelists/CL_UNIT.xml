@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF103</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T12:18:11.8059834+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Codelists>
+      <structure:Codelist id="CL_UNIT" agencyID="ESC01" version="1.0" isFinal="true">
+        <common:Name xml:lang="es">Unidades de Medida (Indicadores)</common:Name>
+        <common:Name xml:lang="en">Measurement units (Indicators)</common:Name>
+        <structure:Code id="INDI_CIFR_NEGO">
+          <common:Name xml:lang="es">Índice Cifra de Negocio</common:Name>
+        </structure:Code>
+        <structure:Code id="INDI_CIFR_NEGO_TASA_INTE">
+          <common:Name xml:lang="es">Índice Cifra de Negocio. Tasa interanual</common:Name>
+        </structure:Code>
+        <structure:Code id="INDI_CIFR_NEGO_TASA_ACUM">
+          <common:Name xml:lang="es">Índice Cifra de Negocio. Tasa acumulada</common:Name>
+        </structure:Code>
+        <structure:Code id="INDICE_EMPLEO">
+          <common:Name xml:lang="es">Índice Empleo</common:Name>
+        </structure:Code>
+        <structure:Code id="INDI_EMPL_TASA_INTE">
+          <common:Name xml:lang="es">Índice Empleo. Tasa interanual</common:Name>
+        </structure:Code>
+        <structure:Code id="INDI_EMPL_TASA_ACUM">
+          <common:Name xml:lang="es">Índice Empleo. Tasa acumulada</common:Name>
+        </structure:Code>
+        <structure:Code id="INDICE_VAB">
+          <common:Name xml:lang="es">Índice VAB</common:Name>
+        </structure:Code>
+        <structure:Code id="INDI_VAB_TASA_INTE">
+          <common:Name xml:lang="es">Índice VAB. Tasa interanual</common:Name>
+        </structure:Code>
+        <structure:Code id="INDI_VAB_TASA_ACUM">
+          <common:Name xml:lang="es">Índice VAB. Tasa acumulada</common:Name>
+        </structure:Code>
+        <structure:Code id="INX">
+          <common:Name xml:lang="es">Índice</common:Name>
+        </structure:Code>
+        <structure:Code id="TASA_VARI_INTE">
+          <common:Name xml:lang="es">Tasa de variación intermensual</common:Name>
+        </structure:Code>
+        <structure:Code id="TASA_VARI_INTE_DEL_MES">
+          <common:Name xml:lang="es">Tasa de variación interanual (del mes)</common:Name>
+        </structure:Code>
+        <structure:Code id="TASA_VARI_LA_MEDI_LO_QUE_VA_ANO">
+          <common:Name xml:lang="es">Tasa de variación de la media de lo que va de año</common:Name>
+        </structure:Code>
+      </structure:Codelist>
+    </structure:Codelists>
+  </message:Structures>
+</message:Structure>

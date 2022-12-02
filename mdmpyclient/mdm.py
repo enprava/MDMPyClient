@@ -1,6 +1,7 @@
 import logging
 import sys
-
+import os
+import copy
 import requests
 import yaml
 
@@ -134,3 +135,63 @@ class MDM:
         self.concept_schemes.delete_all(agency)
         self.codelists.delete_all(agency)
         self.initialize(True)
+
+
+    def put(self,directory):
+
+        path = os.path.join(directory, "origin")
+        self.put_all_sdmx(path)
+        path = os.path.join(directory, "categoryschemes")
+        self.put_all_sdmx(path)
+        path = os.path.join(directory, "dsds")
+        self.put_all_sdmx(path)
+        path = os.path.join(directory, "conceptschemes")
+        self.put_all_sdmx(path)
+        path = os.path.join(directory, "codelists")
+        self.put_all_sdmx(path)
+        path = os.path.join(directory, "dataflows")
+        self.put_all_sdmx(path)
+
+
+
+    def put_all_sdmx(self, directory):
+
+        for filename in os.scandir(directory):
+            path = os.path.join(directory, filename.name)
+            imported_items = []
+            importData = False
+            with open(path, 'rb') as file:
+                body = {'file': ('test.xml', file, 'application/xml', {})}
+                data, content_type = requests.models.RequestEncodingMixin._encode_files(body, {})
+                upload_headers = copy.deepcopy(self.session.headers)
+                upload_headers['Content-Type'] = content_type
+                try:
+                    response = self.session.post(
+                        f'{self.configuracion["url_base"]}checkImportedFileXmlSdmxObjects', data=data,
+                        headers=upload_headers)
+                    response_body = response.json()
+                    imported_items = response_body["importedItem"]
+                    response.raise_for_status()
+                except Exception as e:
+                    raise e
+                self.logger.info('Reporte subido correctamente a la API, realizando importacion')
+
+                request_post_body = {"hashImport": response_body["hashImport"] , "importedItem" : []}
+                for importedItem in imported_items:
+
+                    if importedItem["isOk"]:
+                        importData = True
+                        request_post_body["importedItem"].append(importedItem)
+                if importData:
+                    try:
+                        response = self.session.post(
+                            f'{self.configuracion["url_base"]}importFileXmlSdmxObjects',
+                            json=request_post_body)
+                        response.raise_for_status()
+                    except Exception as e:
+                        raise e
+
+
+
+
+

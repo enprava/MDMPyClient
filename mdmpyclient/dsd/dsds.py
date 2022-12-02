@@ -1,6 +1,8 @@
 import logging
-import os.path
 import sys
+import os
+import requests
+import copy
 
 from mdmpyclient.dsd.dsd import DSD
 
@@ -37,6 +39,32 @@ class DSDs:
             for dsd_id in agency.values():
                 for version in dsd_id.values():
                     version.get_sdmx(directory)
+
+    def put_all_sdmx(self, directory, m_session):
+
+        for filename in os.scandir(directory):
+            path = os.path.join(directory, filename.name)
+            with open(path, 'rb') as file:
+                body = {'file': ('test.xml', file, 'application/xml', {})}
+                data, content_type = requests.models.RequestEncodingMixin._encode_files(body, {})
+                upload_headers = copy.deepcopy(self.session.headers)
+                upload_headers['Content-Type'] = content_type
+                try:
+                    response = self.session.post(
+                        f'{self.configuracion["url_base"]}checkImportedFileXmlSdmxObjects', data=data,
+                        headers=upload_headers)
+                    response_body = response.json()
+                    response.raise_for_status()
+                except Exception as e:
+                    raise e
+                self.logger.info('Reporte subido correctamente a la API, realizando importacion')
+                try:
+                    response = self.session.post(
+                        f'{self.configuracion["url_base"]}importFileXmlSdmxObjects',
+                        json=response_body)
+                    response.raise_for_status()
+                except Exception as e:
+                    raise e
 
     def get(self, init_data):
         dsd = {}
@@ -81,34 +109,39 @@ class DSDs:
                     names, "description": des, "isFinal": "true", "dataStructureComponents": {
                     "measureList": {"id": "MeasureDescriptor", "primaryMeasure":
                         {"id": "OBS_VALUE", "conceptIdentity":
-                            "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_VALUE"}}
+                            "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
+                            "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_VALUE"}}
                     , "dimensionList": {"id": "DimensionDescriptor",
                                         "dimensions": format_dimensions + [
                                             {"id": "FREQ", "position": len(format_dimensions) + 1,
                                              "conceptIdentity":
-                                                 "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).FREQ",
+                                                 "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
+                                                  "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).FREQ",
                                              "type": "Dimension"}, {"id": "INDICATOR",
-                                                                    "position": len(format_dimensions),
-                                                                    "type": "Dimension",
-                                                                    "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).INDICATOR",
-                                                                    "localRepresentation": {
-                                                                        "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ESC01:CL_UNIT(1.0)"}}]
+                                                     "position": len(format_dimensions),
+                                                     "type": "Dimension",
+                                                     "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme" + \
+                                                        ".Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).INDICATOR",
+                                                     "localRepresentation": {
+                                                         "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Code" + \
+                                                         "list=ESC01:CL_UNIT(1.0)"}}]
                         , "measureDimensions": [], "timeDimensions": [{"id": "TIME_PERIOD",
-                                                                       "position": len(format_dimensions) + 2,
-                                                                       "type": "TimeDimension",
-                                                                       "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).TIME_PERIOD",
-                                                                       "localRepresentation": {"textFormat": {
-                                                                           "textType": "ObservationalTimePeriod",
-                                                                           "isSequence": False,
-                                                                           "isMultiLingual": False}}}]},
+                                    "position": len(format_dimensions) + 2,
+                                    "type": "TimeDimension",
+                                    "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:" + \
+                                                       "CROSS_DOMAIN_CONCEPTS(2.0).TIME_PERIOD",
+                                    "localRepresentation": {"textFormat": {
+                                    "textType": "ObservationalTimePeriod",
+                                    "isSequence": False,
+                                    "isMultiLingual": False}}}]},
                     "attributeList": {"id": "AttributeDescriptor",
-                                      "attributes": [{"id": "OBS_STATUS",
-                                                      "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_STATUS",
-                                                      "localRepresentation": {
-                                                          "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=estat:CL_OBS_STATUS(2.2)"},
-                                                      "assignmentStatus": "Conditional",
-                                                      "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
-                                                      "assignmentStatus": "Conditional"}]}}}]}}
+                            "attributes": [{"id": "OBS_STATUS",
+                            "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
+                                                         "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_STATUS",
+                            "localRepresentation": {
+                            "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=estat:CL_OBS_STATUS(2.2)"},
+                            "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
+                            "assignmentStatus": "Conditional"}]}}}]}}
         try:
             response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
             response.raise_for_status()
@@ -120,11 +153,11 @@ class DSDs:
     def format_dimensions(self, dimensions):
         result = []
         i = 0
-        for id, values in dimensions.items():
+        for dsd_id, values in dimensions.items():
             dimension = {}
             concept_scheme = values['concept_scheme']
             codelist = values['codelist']
-            dimension['id'] = id
+            dimension['id'] = dsd_id
             dimension['position'] = i
             i += 1
             dimension['type'] = 'Dimension'

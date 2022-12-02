@@ -46,13 +46,28 @@ class Dataflow:
         self.des = des
         self.data = self.get() if init_data else None
 
-    def get_sdmx(self, directory):
+    def get_sdmx_struval(self, directory):
         self.logger.info('Obteniendo dataflow con id %s en formato sdmx', self.code)
         json = {"Filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}, "SqlData": {"SelCols": None},
                 "iDDataflow": self.id, "iDCube": self.cube_id}
         try:
             response = self.session.post(
                 f'{self.configuracion["url_base"]}downloadDataflow/genericdata/false', json=json)
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.code + '.xml')
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+            file.close()
+
+    def get_sdmx(self, directory):
+        self.logger.info('Obteniendo flujo de datos con id %s en formato sdmx', self.code)
+        try:
+
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}downloadMetadati/dataflow/{self.code}/{self.agency_id}/'
+                f'{self.version}/structure/true/false/es')
             response.raise_for_status()
         except Exception as e:
             raise e
@@ -113,7 +128,7 @@ class Dataflow:
         try:
             response = self.session.get(f'{self.configuracion["url_base"]}CreateMappingSetForDataflow/{self.id}')
             response.raise_for_status()
-        except Exception as e:
+        except Exception:
             self.logger.info('')
 
         if response.text == 'true':

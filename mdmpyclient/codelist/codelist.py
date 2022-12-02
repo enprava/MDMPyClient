@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-
+import os
 import pandas
 import requests.models
 import yaml
@@ -107,6 +107,20 @@ class Codelist:
         else:
             self.logger.info('La codelist no ha sido eliminada debido a un error en el servidor')
 
+    def get_sdmx(self, directory):
+        self.logger.info('Obteniendo codelist con id %s en formato sdmx', self.id)
+        try:
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}downloadMetadati/codelist/{self.id}/{self.agency_id}/'
+                f'{self.version}/structure/true/false/es')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.id + '.xml')
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+            file.close()
+
     def add_code(self, code_id, parent, name, des):
         if code_id.upper() not in self.codes.id.values:
             if name:
@@ -182,7 +196,7 @@ class Codelist:
                 json=json)
             response.raise_for_status()
         except Exception as e:
-            print(json)
+            #print(json)
             print(response.text)
             raise e
         self.logger.info('Códigos importados correctamente')

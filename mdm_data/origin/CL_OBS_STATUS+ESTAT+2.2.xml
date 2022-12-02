@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF8</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-09-15T11:36:20.4364705+02:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Codelists>
+      <structure:Codelist id="CL_OBS_STATUS" agencyID="ESTAT" version="2.2" isFinal="true">
+        <common:Name xml:lang="en">Observation status</common:Name>
+        <structure:Code id="A">
+          <common:Name xml:lang="en">Normal</common:Name>
+          <common:Description xml:lang="en">To be used as default value if no value is provided or when no special coded qualification is assumed. Usually, it can be assumed that the source agency assigns sufficient confidence to the provided observation and/or the value is not expected to be drama</common:Description>
+        </structure:Code>
+        <structure:Code id="B">
+          <common:Name xml:lang="en">Time series break</common:Name>
+          <common:Description xml:lang="en">Observations are characterised as such when different content exists or a different methodology has been applied to this observation as compared with the preceding one (the one given for the previous period).</common:Description>
+        </structure:Code>
+        <structure:Code id="D">
+          <common:Name xml:lang="en">Definition differs</common:Name>
+          <common:Description xml:lang="en">Used to indicate slight deviations from the established methodology (footnote-type information); these divergences do not imply a break in time series.</common:Description>
+        </structure:Code>
+        <structure:Code id="E">
+          <common:Name xml:lang="en">Estimated value</common:Name>
+          <common:Description xml:lang="en">Observation obtained through an estimation methodology (e.g. to produce back-casts) or based on the use of a limited amount of data or ad hoc sampling and through additional calculations (e.g. to produce a value at an early stage of the production stage while not all data are available). It may also be used in case of experimental data (e.g. in the context of a pilot ahead of a full scale production process) or in case of data of (anticipated/assessed) low quality. If needed, additional information can be provided through free text using the COMMENT_OBS attribute at the observation level or at a higher level .</common:Description>
+        </structure:Code>
+        <structure:Code id="F">
+          <common:Name xml:lang="en">Forecast value</common:Name>
+          <common:Description xml:lang="en">Value deemed to assess the magnitude which a quantity will assume at some future point of time (as distinct from "estimated value" which attempts to assess the magnitude of an already existent quantity).</common:Description>
+        </structure:Code>
+        <structure:Code id="G">
+          <common:Name xml:lang="en">Experimental value</common:Name>
+          <common:Description xml:lang="en">Data collected on the basis of definitions or (alternative) collection methods under development. Data not of guaranteed quality as normally expected from provider.</common:Description>
+        </structure:Code>
+        <structure:Code id="H">
+          <common:Name xml:lang="en">Missing value; holiday or weekend</common:Name>
+          <common:Description xml:lang="en">Used in some daily data flows.</common:Description>
+        </structure:Code>
+        <structure:Code id="I">
+          <common:Name xml:lang="en">Imputed value (CCSA definition)</common:Name>
+          <common:Description xml:lang="en">Observation imputed by international organisations to replace or fill gaps in national data series, in line with the recommendations of the United Nations Committee for the Coordination of Statistical Activities (CCSA).</common:Description>
+        </structure:Code>
+        <structure:Code id="J">
+          <common:Name xml:lang="en">Derogation</common:Name>
+          <common:Description xml:lang="en">Clause in an agreement (e.g. legal act, gentlemen’s agreement) stating that some provisions in the agreement are not to be implemented by designated parties; these derogations may affect the observation or cause a missing value. In general, derogations are limited in time.</common:Description>
+        </structure:Code>
+        <structure:Code id="K">
+          <common:Name xml:lang="en">Data included in another category</common:Name>
+          <common:Description xml:lang="en">This code is used when data for a given category are missing and are included in another category, sub-total or total. Generally where code “K” is used there should be a corresponding code "W - Includes data from another category" assigned to the over-covered category. Implementers and data reporters should use the COMMENT_OBS observation-level attribute to specify under which category the data are included.</common:Description>
+        </structure:Code>
+        <structure:Code id="L">
+          <common:Name xml:lang="en">Missing value; data exist but were not collected</common:Name>
+          <common:Description xml:lang="en">Used, for example, when some data are not reported/disseminated because they are below a certain threshold.</common:Description>
+        </structure:Code>
+        <structure:Code id="M">
+          <common:Name xml:lang="en">Missing value; data cannot exist</common:Name>
+          <common:Description xml:lang="en">Used to denote empty cells resulting from the impossibility to collect a statistical value (e.g. a particular education level or type of institution may be not applicable to a given country's education system).</common:Description>
+        </structure:Code>
+        <structure:Code id="N">
+          <common:Name xml:lang="en">Not significant</common:Name>
+          <common:Description xml:lang="en">Used to indicate a value which is not a "real" zero (e.g. a result of 0.0004 rounded to zero).</common:Description>
+        </structure:Code>
+        <structure:Code id="O">
+          <common:Name xml:lang="en">Missing value</common:Name>
+          <common:Description xml:lang="en">This code is to be used when no breakdown is made between the reasons why data are missing. Data can be missing due to many reasons: data cannot exist, data exist but are not collected (e.g. because they are below a certain threshold or subject to a derogation clause), data are unreliable, etc.</common:Description>
+        </structure:Code>
+        <structure:Code id="P">
+          <common:Name xml:lang="en">Provisional value</common:Name>
+          <common:Description xml:lang="en">An observation is characterised as "provisional" when the source agency – while it bases its calculations on its standard production methodology – considers that the data, almost certainly, are expected to be revised.</common:Description>
+        </structure:Code>
+        <structure:Code id="Q">
+          <common:Name xml:lang="en">Missing value; suppressed</common:Name>
+          <common:Description xml:lang="en">Used, for example, when data are suppressed due to statistical confidentiality considerations.</common:Description>
+        </structure:Code>
+        <structure:Code id="R">
+          <common:Name xml:lang="en">Revised value</common:Name>
+          <common:Description xml:lang="en">An observation is marked as revised when previously transmitted data are changed to inform the users that there has been a change. An additional comment (e.g. through the COMMENT_OBS attribute) may provide information on the change.</common:Description>
+        </structure:Code>
+        <structure:Code id="S">
+          <common:Name xml:lang="en">Strike and other special events</common:Name>
+          <common:Description xml:lang="en">Special circumstances (e.g. strike) affecting the observation or causing a missing value.</common:Description>
+        </structure:Code>
+        <structure:Code id="U">
+          <common:Name xml:lang="en">Low reliability</common:Name>
+          <common:Description xml:lang="en">This indicates existing observations, but for which the user should also be aware of the low quality assigned.</common:Description>
+        </structure:Code>
+        <structure:Code id="V">
+          <common:Name xml:lang="en">Unvalidated value</common:Name>
+          <common:Description xml:lang="en">Observation as received from the respondent without further evaluation of data quality.</common:Description>
+        </structure:Code>
+      </structure:Codelist>
+    </structure:Codelists>
+  </message:Structures>
+</message:Structure>

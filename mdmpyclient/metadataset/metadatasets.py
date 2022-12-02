@@ -1,6 +1,5 @@
 import logging
 import sys
-from pprint import pprint
 
 from mdmpyclient.metadataset.metadataset import Metadataset
 
@@ -50,46 +49,48 @@ class Metadatasets:
             data[meta_id] = Metadataset(self.session, self.configuracion, meta_id, names, init_data)
         return data
 
-    def put(self, agency, id, names, md_flow_id, md_version, category_scheme_id, hierarchy, cat_version):
+    def put(self, agency, md_set_id, names, md_flow_id, md_version, category_scheme_id, hierarchy, cat_version):
         try:
-            self.logger.info('Obteniendo metadataset con id %s', id)
-            metadataset = self.data[id]
-            self.logger.info('El metadataset ya se encuentra en la API')
+            self.logger.info('Obteniendo metadataset con id %s', md_set_id)
+
+            if(self.data[md_set_id]):
+                self.logger.info('El metadataset ya se encuentra en la API')
         except KeyError:
             self.logger.info('El metadataset no se encuentra en la API, creando metadataset')
-            json = {"meta": {}, "data": {"metadataSets": [{"id": id, "names": names,
-                                                           "annotations": [
-                                                               {"id": "MetadataflowId", "texts": {"en": md_flow_id}},
-                                                               {"id": "MetadataflowAgency", "texts": {"en": agency}},
-                                                               {"id": "MetadataflowVersion",
-                                                                "texts": {"en": md_version}},
-                                                               {"id": "MSDId",
-                                                                "texts": {"en": self.configuracion['msd']['id']}},
-                                                               {"id": "MSDAgency",
-                                                                "texts": {"en": self.configuracion['msd']['agency']}},
-                                                               {"id": "MSDVersion",
-                                                                "texts": {"en": self.configuracion['msd']['version']}},
-                                                               {"id": f"categorisation_[CAT_{id}]", "texts": {
-                                                                   "en": f"CAT_{id}+{agency}+{md_version}+urn:sdmx:org.sdmx."
-                                                                         "infomodel.metadatastructure.Metadataflow="
-                                                                         f"{agency}:{md_flow_id}({md_version})+urn:sdmx:org.sdmx.infomodel"
-                                                                         f".categoryscheme.Category={agency}:"
-                                                                         f"{category_scheme_id}({cat_version}).{hierarchy}"},
-                                                                'text': f"CAT_{id}+{agency}+{md_version}+urn:sdmx:org.sdmx."
-                                                                        "infomodel.metadatastructure.Metadataflow="
-                                                                        f"{agency}:{md_flow_id}({md_version})+urn:sdmx:org.sdmx.infomodel"
-                                                                        f".categoryscheme.Category={agency}:"
-                                                                        f"{category_scheme_id}({cat_version}).{hierarchy}"}],
-                                                           "links": [{"rel": "msd",
-                                                                      "urn": "urn:sdmx:org.sdmx.infomodel.metadatastructure"
-                                                                             f".MetadataStructure={self.configuracion['msd']['agency']}:{self.configuracion['msd']['id']}({self.configuracion['msd']['version']})"}]}]}}
+            json = {"meta": {}, "data": {"metadataSets": [{"id": md_set_id, "names": names,
+                        "annotations": [
+                            {"id": "MetadataflowId", "texts": {"en": md_flow_id}},
+                            {"id": "MetadataflowAgency", "texts": {"en": agency}},
+                            {"id": "MetadataflowVersion",
+                            "texts": {"en": md_version}},
+                            {"id": "MSDId",
+                            "texts": {"en": self.configuracion['msd']['id']}},
+                            {"id": "MSDAgency",
+                            "texts": {"en": self.configuracion['msd']['agency']}},
+                            {"id": "MSDVersion",
+                            "texts": {"en": self.configuracion['msd']['version']}},
+                            {"id": f"categorisation_[CAT_{md_set_id}]", "texts": {
+                            "en": f"CAT_{md_set_id}+{agency}+{md_version}+urn:sdmx:org.sdmx."
+                                "infomodel.metadatastructure.Metadataflow="
+                                f"{agency}:{md_flow_id}({md_version})+urn:sdmx:org.sdmx.infomodel"
+                                f".categoryscheme.Category={agency}:"
+                                f"{category_scheme_id}({cat_version}).{hierarchy}"},
+                                'text': f"CAT_{md_set_id}+{agency}+{md_version}+urn:sdmx:org.sdmx."
+                                "infomodel.metadatastructure.Metadataflow="
+                                f"{agency}:{md_flow_id}({md_version})+urn:sdmx:org.sdmx.infomodel"
+                                f".categoryscheme.Category={agency}:"
+                                f"{category_scheme_id}({cat_version}).{hierarchy}"}],
+                                "links": [{"rel": "msd",
+                                    "urn": "urn:sdmx:org.sdmx.infomodel.metadatastructure"
+                                    f".MetadataStructure={self.configuracion['msd']['agency']}"
+                                    f":{self.configuracion['msd']['id']}({self.configuracion['msd']['version']})"}]}]}}
             try:
                 response = self.session.post(f'{self.configuracion["url_base"]}api/RM/upsertJsonMetadataSet', json=json)
                 response.raise_for_status()
             except Exception as e:
                 raise e
             self.logger.info('Metadataset creado correctamente')
-            self.data[id] = Metadataset(self.session, self.configuracion, id, names, False)
+            self.data[md_set_id] = Metadataset(self.session, self.configuracion, md_set_id, names, False)
 
     def delete_all(self):
         self.logger.info('Borrando todos los metadatasets y sus reportes')

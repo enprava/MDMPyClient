@@ -11,23 +11,24 @@ class Resource:
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
         self.ckan = ckan
 
-    def create(self, data, name, format, dataset_id):
+    def create(self, data, name, res_format, dataset_id):
         self.logger.info('Creando recurso con nombre %s para el dataset con id %s', name, dataset_id)
         to_upload = BytesIO(bytes(data.to_csv(index=False), 'utf-8'))
-        to_upload.name = f'{name}.{format}'
+        to_upload.name = f'{name}.{res_format}'
         self.ckan.action.resource_create(
             package_id=dataset_id,
-            format=format,
+            format=res_format,
             name=name,
             upload=to_upload)
         self.logger.info('Recurso creado satisfactoriamente')
 
-    def create_from_file(self, path, name, format, dataset_id):
+    def create_from_file(self, path, name, res_format, dataset_id):
         self.logger.info('Creando recurso con nombre %s para el dataset con id %s', name, dataset_id)
-        to_upload = open(path, 'r')
+        with open(path, 'r', encoding='utf=8') as o_upload:
+            to_upload =o_upload
         self.ckan.action.resource_create(
             package_id=dataset_id,
-            format=format,
+            format=res_format,
             name=name,
             upload=to_upload)
         self.logger.info('Recurso creado satisfactoriamente')

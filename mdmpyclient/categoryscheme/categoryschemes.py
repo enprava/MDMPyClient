@@ -1,5 +1,9 @@
 import logging
 import sys
+import os
+from requests import Request
+import copy
+import requests
 
 from mdmpyclient.categoryscheme.categoryscheme import CategoryScheme
 
@@ -47,6 +51,7 @@ class CategorySchemes:
         except Exception as e:
             raise e
         self.logger.info('Esquemas de categoría extraídos correctamente')
+        self.categoryscheme_list = []
         for category_scheme in response_data:
             category_scheme_id = category_scheme['id']
             agency = category_scheme['agencyID']
@@ -58,13 +63,43 @@ class CategorySchemes:
                 category_schemes[agency] = {}
             if category_scheme_id not in category_schemes[agency].keys():
                 category_schemes[agency][category_scheme_id] = {}
-            category_schemes[agency][category_scheme_id][version] = CategoryScheme(self.session, self.configuracion,
-                                                                                   self.translator,
-                                                                                   self.translator_cache,
-                                                                                   category_scheme_id, agency,
-                                                                                   version,
-                                                                                   names, des, init_data=init_data)
+            cs = CategoryScheme(self.session, self.configuracion,self.translator,
+                                self.translator_cache,category_scheme_id, agency,
+                                version,names, des, init_data=init_data)
+            category_schemes[agency][category_scheme_id][version] = cs
+            self.categoryscheme_list.append(cs)
         return category_schemes
+
+    def get_all_sdmx(self, directory):
+        self.logger.info('Obteniendo todos los esquemas de categoría en formato sdmx')
+        for cs in self.categoryscheme_list:
+            cs.get_sdmx(directory)
+
+    def put_all_sdmx(self, directory,m_session):
+
+        for filename in os.scandir(directory):
+            path = os.path.join(directory, filename.name)
+            with open(path, 'rb') as file:
+                body = {'file': ('test.xml', file, 'application/xml', {})}
+                data, content_type = requests.models.RequestEncodingMixin._encode_files(body, {})
+                upload_headers = copy.deepcopy(self.session.headers)
+                upload_headers['Content-Type'] = content_type
+                try:
+                    response = self.session.post(
+                        f'{self.configuracion["url_base"]}checkImportedFileXmlSdmxObjects', data=data,
+                        headers=upload_headers)
+                    response_body = response.json()
+                    response.raise_for_status()
+                except Exception as e:
+                    raise e
+                self.logger.info('Reporte subido correctamente a la API, realizando importacion')
+                try:
+                    response = self.session.post(
+                        f'{self.configuracion["url_base"]}importFileXmlSdmxObjects',
+                        json=response_body)
+                    response.raise_for_status()
+                except Exception as e:
+                    raise e
 
     def put(self, agencia, cat_id, version, descripciones, nombres):
         json = {'data': {'categorySchemes': [

@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-
+import os
 import pandas
 import requests
 import yaml
@@ -88,6 +88,21 @@ class ConceptScheme:
                     except Exception:
                         column.append(None)
         return pandas.DataFrame(data=concepts, dtype='string')
+
+
+    def get_sdmx(self, directory):
+        self.logger.info('Obteniendo esquema conceptual con id %s en formato sdmx', self.id)
+        try:
+            response = self.session.get(
+                f'{self.configuracion["url_base"]}downloadMetadati/conceptScheme/{self.id}/{self.agency_id}/'
+                f'{self.version}/structure/true/false/es')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.id + '.xml')
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+            file.close()
 
     def add_concept(self, concept_id, parent, names, des):
         if concept_id.upper() not in self.concepts.id.values:

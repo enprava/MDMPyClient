@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF102</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T12:18:11.7899502+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Codelists>
+      <structure:Codelist id="CL_TIPOVENTAS" agencyID="ESC01" version="1.0" isFinal="true">
+        <common:Name xml:lang="es">Tipo de ventas</common:Name>
+        <structure:Code id="61753">
+          <common:Name xml:lang="es">Índice General</common:Name>
+          <common:Description xml:lang="es">(01) Índice General</common:Description>
+        </structure:Code>
+        <structure:Code id="61754">
+          <common:Name xml:lang="es">Comercio</common:Name>
+          <common:Description xml:lang="es">(02) Comercio</common:Description>
+        </structure:Code>
+        <structure:Code id="61755">
+          <common:Name xml:lang="es">Otros Servicios</common:Name>
+          <common:Description xml:lang="es">(03) Otros Servicios</common:Description>
+        </structure:Code>
+        <structure:Code id="61756">
+          <common:Name xml:lang="es">Transportes y Almacenamiento</common:Name>
+          <common:Description xml:lang="es">(04) Transportes y Almacenamiento</common:Description>
+        </structure:Code>
+        <structure:Code id="61757">
+          <common:Name xml:lang="es">Hostelería</common:Name>
+          <common:Description xml:lang="es">(05) Hostelería</common:Description>
+        </structure:Code>
+        <structure:Code id="61758">
+          <common:Name xml:lang="es">Información y Comunicaciones</common:Name>
+          <common:Description xml:lang="es">(06) Información y Comunicaciones</common:Description>
+        </structure:Code>
+        <structure:Code id="61759">
+          <common:Name xml:lang="es">Actividades profesionales, científicas y técnicas</common:Name>
+          <common:Description xml:lang="es">(07) Actividades profesionales, científicas y técnicas</common:Description>
+        </structure:Code>
+        <structure:Code id="61760">
+          <common:Name xml:lang="es">Actividades administrativas y servicios auxiliares</common:Name>
+          <common:Description xml:lang="es">(08) Actividades administrativas y servicios auxiliares</common:Description>
+        </structure:Code>
+        <structure:Code id="_Z">
+          <common:Name xml:lang="es">No aplica</common:Name>
+          <common:Description xml:lang="es">No aplica</common:Description>
+        </structure:Code>
+        <structure:Code id="277789">
+          <common:Name xml:lang="es">Ventas Total</common:Name>
+          <common:Description xml:lang="es">(01) Ventas Total</common:Description>
+        </structure:Code>
+        <structure:Code id="277790">
+          <common:Name xml:lang="es">Ventas Alimentación</common:Name>
+          <common:Description xml:lang="es">(02) Ventas Alimentación</common:Description>
+        </structure:Code>
+        <structure:Code id="277791">
+          <common:Name xml:lang="es">Ventas Resto de Productos</common:Name>
+          <common:Description xml:lang="es">(03) Ventas Resto de Productos</common:Description>
+        </structure:Code>
+        <structure:Code id="277792">
+          <common:Name xml:lang="es">Ventas Total Deflactadas</common:Name>
+          <common:Description xml:lang="es">(04) Ventas Total Deflactadas</common:Description>
+        </structure:Code>
+        <structure:Code id="277793">
+          <common:Name xml:lang="es">Ventas Alimentación Deflactadas</common:Name>
+          <common:Description xml:lang="es">(05) Ventas Alimentación Deflactadas</common:Description>
+        </structure:Code>
+        <structure:Code id="277794">
+          <common:Name xml:lang="es">Ventas Resto Deflactadas</common:Name>
+          <common:Description xml:lang="es">(06) Ventas Resto Deflactadas</common:Description>
+        </structure:Code>
+      </structure:Codelist>
+    </structure:Codelists>
+  </message:Structures>
+</message:Structure>

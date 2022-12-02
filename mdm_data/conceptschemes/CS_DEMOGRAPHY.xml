@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF109</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T12:18:11.9207086+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Concepts>
+      <structure:ConceptScheme id="CS_DEMOGRAPHY" agencyID="ESTAT" version="1.2">
+        <common:Name xml:lang="en">Concept Scheme for Demography Domain</common:Name>
+        <structure:Concept id="FREQ">
+          <common:Name xml:lang="en">Frequency</common:Name>
+        </structure:Concept>
+        <structure:Concept id="GEO">
+          <common:Name xml:lang="en">Geographical area</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGE">
+          <common:Name xml:lang="en">Age</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGI">
+          <common:Name xml:lang="en">Age at death of the infant</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGB">
+          <common:Name xml:lang="en">Age of the bride or similar categories</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGF">
+          <common:Name xml:lang="en">Age of the father</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGG">
+          <common:Name xml:lang="en">Age of the groom or similar categories</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGL">
+          <common:Name xml:lang="en">Age for life table</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGM">
+          <common:Name xml:lang="en">Age of the mother</common:Name>
+        </structure:Concept>
+        <structure:Concept id="AGS">
+          <common:Name xml:lang="en">Age of first-time marrying person</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CUS">
+          <common:Name xml:lang="en">Consensual union status</common:Name>
+        </structure:Concept>
+        <structure:Concept id="COB">
+          <common:Name xml:lang="en">Country of birth</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CBM">
+          <common:Name xml:lang="en">Country of birth of the man or similar categories</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CBW">
+          <common:Name xml:lang="en">Country of birth of the woman or similar categories</common:Name>
+        </structure:Concept>
+        <structure:Concept id="COC">
+          <common:Name xml:lang="en">(Country of) citizenship</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CCM">
+          <common:Name xml:lang="en">(Country of) citizenship of the man or similar categories</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CCW">
+          <common:Name xml:lang="en">(Country of) citizenship of the woman or similar categories</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CNE">
+          <common:Name xml:lang="en">Country of next usual residence</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CPR">
+          <common:Name xml:lang="en">Country of previous usual residence</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CST">
+          <common:Name xml:lang="en">Circularity status</common:Name>
+        </structure:Concept>
+        <structure:Concept id="DEB">
+          <common:Name xml:lang="en">Demographic balance - DEMOBAL (list)</common:Name>
+        </structure:Concept>
+        <structure:Concept id="DRU">
+          <common:Name xml:lang="en">Degree of urbanization – DEGURBA</common:Name>
+        </structure:Concept>
+        <structure:Concept id="DCH">
+          <common:Name xml:lang="en">Dependent children</common:Name>
+        </structure:Concept>
+        <structure:Concept id="DGE">
+          <common:Name xml:lang="en">Duration of gestation</common:Name>
+        </structure:Concept>
+        <structure:Concept id="DMA">
+          <common:Name xml:lang="en">Duration of the marriage</common:Name>
+        </structure:Concept>
+        <structure:Concept id="EDU">
+          <common:Name xml:lang="en">Educational attainment (ISCED 2011)</common:Name>
+        </structure:Concept>
+        <structure:Concept id="EDF">
+          <common:Name xml:lang="en">Educational attainment (ISCED 2011) of the father</common:Name>
+        </structure:Concept>
+        <structure:Concept id="EDM">
+          <common:Name xml:lang="en">Educational attainment (ISCED 2011) of the mother</common:Name>
+        </structure:Concept>
+        <structure:Concept id="ESM">
+          <common:Name xml:lang="en">Employment status of the mother</common:Name>
+        </structure:Concept>
+        <structure:Concept id="LMS">
+          <common:Name xml:lang="en">Legal marital status</common:Name>
+        </structure:Concept>
+        <structure:Concept id="LMM">
+          <common:Name xml:lang="en">Legal marital status of the mother</common:Name>
+        </structure:Concept>
+        <structure:Concept id="LUS">
+          <common:Name xml:lang="en">Legal union status</common:Name>
+        </structure:Concept>
+        <structure:Concept id="LBO">
+          <common:Name xml:lang="en">Live birth order (biological)</common:Name>
+        </structure:Concept>
+        <structure:Concept id="LFT">
+          <common:Name xml:lang="en">Life table (list)</common:Name>
+        </structure:Concept>
+        <structure:Concept id="MIC">
+          <common:Name xml:lang="en">Migration circularity</common:Name>
+        </structure:Concept>
+        <structure:Concept id="MOC">
+          <common:Name xml:lang="en">Month of occurrence</common:Name>
+        </structure:Concept>
+        <structure:Concept id="MST">
+          <common:Name xml:lang="en">Migration status</common:Name>
+        </structure:Concept>
+        <structure:Concept id="NOW">
+          <common:Name xml:lang="en">Latest monthly events - NOWCAST (list)</common:Name>
+        </structure:Concept>
+        <structure:Concept id="PAR">
+          <common:Name xml:lang="en">Parity</common:Name>
+        </structure:Concept>
+        <structure:Concept id="PLU">
+          <common:Name xml:lang="en">Plurality</common:Name>
+        </structure:Concept>
+        <structure:Concept id="LMB">
+          <common:Name xml:lang="en">Previous legal marital status of the bride</common:Name>
+        </structure:Concept>
+        <structure:Concept id="LMG">
+          <common:Name xml:lang="en">Previous legal marital status of the groom</common:Name>
+        </structure:Concept>
+        <structure:Concept id="PUT">
+          <common:Name xml:lang="en">Purpose of travel</common:Name>
+        </structure:Concept>
+        <structure:Concept id="RDE">
+          <common:Name xml:lang="en">Region of destination</common:Name>
+        </structure:Concept>
+        <structure:Concept id="ROR">
+          <common:Name xml:lang="en">Region of origin</common:Name>
+        </structure:Concept>
+        <structure:Concept id="RUR">
+          <common:Name xml:lang="en">Rural or urban area</common:Name>
+        </structure:Concept>
+        <structure:Concept id="SEX">
+          <common:Name xml:lang="en">Sex</common:Name>
+        </structure:Concept>
+        <structure:Concept id="ARE">
+          <common:Name xml:lang="en">Surface area</common:Name>
+        </structure:Concept>
+        <structure:Concept id="WAB">
+          <common:Name xml:lang="en">Weight at birth</common:Name>
+        </structure:Concept>
+        <structure:Concept id="YOB">
+          <common:Name xml:lang="en">Year of birth</common:Name>
+        </structure:Concept>
+        <structure:Concept id="YBM">
+          <common:Name xml:lang="en">Year of birth of the mother</common:Name>
+        </structure:Concept>
+        <structure:Concept id="YBS">
+          <common:Name xml:lang="en">Year of birth of first-time marrying persons</common:Name>
+        </structure:Concept>
+        <structure:Concept id="YMA">
+          <common:Name xml:lang="en">Year of marriage or similar categories</common:Name>
+        </structure:Concept>
+        <structure:Concept id="TIME_PERIOD">
+          <common:Name xml:lang="en">Reference period</common:Name>
+        </structure:Concept>
+        <structure:Concept id="OBS_VALUE">
+          <common:Name xml:lang="en">Primary measure</common:Name>
+        </structure:Concept>
+        <structure:Concept id="OBS_STATUS1">
+          <common:Name xml:lang="en">Observation status 1</common:Name>
+        </structure:Concept>
+        <structure:Concept id="OBS_STATUS2">
+          <common:Name xml:lang="en">Observation status 2</common:Name>
+        </structure:Concept>
+        <structure:Concept id="OBS_STATUS3">
+          <common:Name xml:lang="en">Observation status 3</common:Name>
+        </structure:Concept>
+        <structure:Concept id="OBS_STATUS4">
+          <common:Name xml:lang="en">Observation status 4</common:Name>
+        </structure:Concept>
+        <structure:Concept id="COMMENT_OBS">
+          <common:Name xml:lang="en">Observation comment</common:Name>
+        </structure:Concept>
+        <structure:Concept id="DECIMALS">
+          <common:Name xml:lang="en">Number of decimals</common:Name>
+        </structure:Concept>
+        <structure:Concept id="CONF_STATUS">
+          <common:Name xml:lang="en">Confidentiality Status</common:Name>
+        </structure:Concept>
+        <structure:Concept id="UNIT">
+          <common:Name xml:lang="en">Unit</common:Name>
+        </structure:Concept>
+        <structure:Concept id="OBS_PRE_BREAK_VALUE">
+          <common:Name xml:lang="en">Pre-break observation value</common:Name>
+        </structure:Concept>
+      </structure:ConceptScheme>
+    </structure:Concepts>
+  </message:Structures>
+</message:Structure>

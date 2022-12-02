@@ -76,14 +76,20 @@ class Mapping:
             response.raise_for_status()
         except Exception as e:
             raise e
+        print("response text -> ", response.text)
+
         path = response.text.replace('\\\\','%5C').replace('"','')
+
+        print("path -> ", path)
 
         self.logger.info('Archivo con datos subido a la API. Volcando los datos en el cubo')
 
         try:
-            # print( f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/{self.cube_id}/{self.id}?filePath='+path+'&checkFiltAttributes=true')
+            # print( f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/{self.cube_id}" + \
+            # f"/{self.id}?filePath='+path+'&checkFiltAttributes=true')
             response = self.session.get(
-                f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/{self.cube_id}/{self.id}?filePath='+path+'&checkFiltAttributes=true')
+                f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/'
+                f'{self.cube_id}/{self.id}?filePath='+path+'&checkFiltAttributes=true')
             response_info = response.json()
             response.raise_for_status()
         except Exception as e:

@@ -60,16 +60,18 @@ class Metadataflows:
                                                           names, des, init_data)
         return data
 
-    def put(self, agency, id, version, names, des):
-        self.logger.info('Obteniendo el MSD con id %s', id)
+    def put(self, agency, id_msd, version, names, des):
+        self.logger.info('Obteniendo el MSD con id %s', id_msd)
         try:
-            msd = self.data[agency][id][version]
-            self.logger.info('El MSD ya se encuentra en la API')
+            if(self.data[agency][id_msd][version]):
+                self.logger.info('El MSD ya se encuentra en la API')
         except KeyError:
             self.logger.info('El MSD no se encuentra en la API, realizando peticion para crearlo')
             json = {"meta": {}, "data": {"metadataflows": [
-                {"id": id, "version": version, "agencyID": agency, "isFinal": True, "names": names, 'descriptions': des,
-                 "structure": f"urn:sdmx:org.sdmx.infomodel.metadatastructure.MetadataStructure={self.configuracion['msd']['agency']}:{self.configuracion['msd']['id']}({self.configuracion['msd']['version']})"}]}}
+            {"id": id_msd, "version": version, "agencyID": agency, "isFinal": True, "names": names, 'descriptions': des,
+                 "structure": "urn:sdmx:org.sdmx.infomodel.metadatastructure.MetadataStructure=" + \
+                    f"{self.configuracion['msd']['agency']}:{self.configuracion['msd']['id']}" + \
+                    f"({self.configuracion['msd']['version']})"}]}}
             try:
                 response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
                 response.raise_for_status()
@@ -79,9 +81,9 @@ class Metadataflows:
                 self.logger.info('El MSD se ha creado correctamente')
                 if agency not in self.data:
                     self.data[agency] = {}
-                if id not in self.data[agency]:
-                    self.data[agency][id] = {}
-                self.data[agency][id][version] = Metadataflow(self.session, self.configuracion, id, agency,
+                if id_msd not in self.data[agency]:
+                    self.data[agency][id_msd] = {}
+                self.data[agency][id_msd][version] = Metadataflow(self.session, self.configuracion, id_msd, agency,
                                                               version,
                                                               names, des, False)
             else:
@@ -90,8 +92,8 @@ class Metadataflows:
     def delete_all(self):
         self.logger.info('Borrando todos los metadataflows')
         for agency in self.data.values():
-            for id in agency.values():
-                for version in id.values():
+            for id_ag in agency.values():
+                for version in id_ag.values():
                     if version.id == 'ASDF':
                         continue
                     version.delete()

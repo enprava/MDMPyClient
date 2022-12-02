@@ -2,10 +2,10 @@ import copy
 import logging
 import sys
 import subprocess
-import time
 
 import pandas as pd
 import requests
+
 from selenium.webdriver.common.by import By
 from seleniumwire import webdriver
 
@@ -81,9 +81,9 @@ class Metadataset:
         driver.implicitly_wait(10)
         driver.find_element(By.ID, 'download-report-button').click()
         driver.implicitly_wait(1)
-        subprocess.Popen(f"mv $HOME/Downloads/{report_id}.html {self.configuracion['directorio_metadatos_html']}",
-                         shell=True)
-        driver.close()
+        with subprocess.Popen(f"mv $HOME/Downloads/{report_id}.html {self.configuracion['directorio_metadatos_html']}",
+                         shell=True):
+            driver.close()
 
     def download_all_reports(self):
         self.reports.apply(lambda x: self.download_report(x.code), axis=1)

@@ -1,13 +1,13 @@
 from mdmpyclient.mdm import MDM
 
 from mock import patch
-
-config = {'url_base': 'http://test.com', 'nodeId': 'ESC01', 'languages': ['en', 'es']}
+import deepl
+config = {'url_base': 'http://test.com', 'nodeId': 'ESC01', 'languages': ['en', 'es'],'cache': "configuracion/traducciones.yaml"}
 
 
 @patch('requests.session')
 def test_init(mock_requests_session):
-    client = MDM(config)
+    client = MDM(config,None)
     assert mock_requests_session.call_count == 1
     assert client.configuracion
     assert client.session['Authorization']

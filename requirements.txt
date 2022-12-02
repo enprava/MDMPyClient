@@ -2,5 +2,9 @@ setuptools
 requests
 pyyaml
 pandas==1.4.4
+ckanapi
+bs4
+selenium
+seleniumwire
 deepl
 ftfy

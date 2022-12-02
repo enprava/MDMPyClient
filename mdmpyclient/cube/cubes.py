@@ -8,6 +8,22 @@ logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class Cubes:
+
+    """ Clase que representa el conjunto de cubes del M&D Manager.
+
+       Args:
+           session (:class:`requests.session.Session`): Sesión autenticada en la API.
+           configuracion (:class:`Diccionario`): Diccionario del que se obtienen algunos
+            parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+            fichero de configuración configuracion/configuracion.yaml.
+           init_data (:class:`Boolean`): True para traer todos los cubes,
+            False para no traerlos. Por defecto toma el valor False.
+
+       Attributes:
+           data (:obj:`Dicconario`): Diccionario con todos los cubes
+
+       """
+
     def __init__(self, session, configuracion, init_data=False):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 

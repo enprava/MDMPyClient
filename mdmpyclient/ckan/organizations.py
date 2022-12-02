@@ -14,22 +14,22 @@ class Organizations:
 
     def remove_all_orgs(self):
         self.logger.info('Se van a eliminar todas las organizaciones')
-        for org in self.orgs:
-            self.ckan.call_action('organization_purge', {'id': self.orgs[org]})
+        for org in self.orgs.items():
+            self.ckan.call_action('organization_purge', {'id': org[1]})
         self.orgs = {}
         self.logger.info('Se han eliminado todas las organizaciones')
 
-    def create_org(self, id, name, parent=None):
-        self.logger.info('Creando organizacion con id %s', id)
+    def create_org(self, org_id, name, parent=None):
+        self.logger.info('Creando organizacion con id %s', org_id)
         if not pd.isna(parent):
-            self.ckan.call_action('organization_create', {'name': id.lower(), 'title': name.lower(),
+            self.ckan.call_action('organization_create', {'name': org_id.lower(), 'title': name.lower(),
                                                           "groups":
                                                               [{
                                                                   "name": parent.lower()
                                                               }]
                                                           })
         else:
-            self.ckan.call_action('organization_create', {'name': id.lower(), 'title': name.lower(),
+            self.ckan.call_action('organization_create', {'name': org_id.lower(), 'title': name.lower(),
                                                           "groups":
                                                               [{
                                                                   "name": "child-org"
