@@ -102,6 +102,15 @@ class DSDs:
             self.logger.info('Creando DSD con ID %s', dsd_id)
             self._put(agency, dsd_id, version, names, des, dimensions)
 
+            if agency not in self.data:
+                self.data[agency] = {}
+            if dsd_id not in self.data[agency]:
+                self.data[agency][dsd_id] = {}
+            self.data[agency][dsd_id][version] = DSD(self.session, self.configuracion, dsd_id, agency, version, names,
+                                                     des, False)
+            dsd = self.data[agency][dsd_id][version]
+        return dsd
+
     def _put(self, agency, dsd_id, version, names, des, dimensions):
         format_dimensions = self.format_dimensions(dimensions)
         json = {"meta": {},
@@ -116,32 +125,32 @@ class DSDs:
                                             {"id": "FREQ", "position": len(format_dimensions) + 1,
                                              "conceptIdentity":
                                                  "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
-                                                  "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).FREQ",
+                                                 "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).FREQ",
                                              "type": "Dimension"}, {"id": "INDICATOR",
-                                                     "position": len(format_dimensions),
-                                                     "type": "Dimension",
-                                                     "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme" + \
-                                                        ".Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).INDICATOR",
-                                                     "localRepresentation": {
-                                                         "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Code" + \
-                                                         "list=ESC01:CL_UNIT(1.0)"}}]
+                                                                    "position": len(format_dimensions),
+                                                                    "type": "Dimension",
+                                                                    "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme" + \
+                                                                                       ".Concept=SDMX:CROSS_DOMAIN_CONCEPTS(2.0).INDICATOR",
+                                                                    "localRepresentation": {
+                                                                        "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Code" + \
+                                                                                       "list=ESC01:CL_UNIT(1.0)"}}]
                         , "measureDimensions": [], "timeDimensions": [{"id": "TIME_PERIOD",
-                                    "position": len(format_dimensions) + 2,
-                                    "type": "TimeDimension",
-                                    "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:" + \
-                                                       "CROSS_DOMAIN_CONCEPTS(2.0).TIME_PERIOD",
-                                    "localRepresentation": {"textFormat": {
-                                    "textType": "ObservationalTimePeriod",
-                                    "isSequence": False,
-                                    "isMultiLingual": False}}}]},
+                                                                       "position": len(format_dimensions) + 2,
+                                                                       "type": "TimeDimension",
+                                                                       "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:" + \
+                                                                                          "CROSS_DOMAIN_CONCEPTS(2.0).TIME_PERIOD",
+                                                                       "localRepresentation": {"textFormat": {
+                                                                           "textType": "ObservationalTimePeriod",
+                                                                           "isSequence": False,
+                                                                           "isMultiLingual": False}}}]},
                     "attributeList": {"id": "AttributeDescriptor",
-                            "attributes": [{"id": "OBS_STATUS",
-                            "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
-                                                         "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_STATUS",
-                            "localRepresentation": {
-                            "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=estat:CL_OBS_STATUS(2.2)"},
-                            "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
-                            "assignmentStatus": "Conditional"}]}}}]}}
+                                      "attributes": [{"id": "OBS_STATUS",
+                                                      "conceptIdentity": "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
+                                                                         "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).OBS_STATUS",
+                                                      "localRepresentation": {
+                                                          "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=estat:CL_OBS_STATUS(2.2)"},
+                                                      "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
+                                                      "assignmentStatus": "Conditional"}]}}}]}}
         try:
             response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
             response.raise_for_status()
