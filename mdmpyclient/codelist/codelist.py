@@ -8,7 +8,6 @@ import yaml
 
 from ftfy import fix_encoding
 
-
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
@@ -135,7 +134,10 @@ class Codelist:
     #                                       codigos['DESCRIPTION']), axis=1)
     #
     def add_codes(self, codes):
-        codes.columns = ['Id', 'Name', 'Description', 'ParentCode', 'ORDER']
+        try:  # SOLUCION TEMPORAL QUE HABRA QUE CAMBIAR
+            codes.columns = ['Id', 'Name', 'Description', 'ParentCode', 'ORDER']
+        except:
+            codes.columns = ['Id', 'Name', 'Description', 'ParentCode']
         codes = codes[['Id', 'Name', 'Description', 'ParentCode']]
         codigos = codes[~codes['Id'].isin(self.codes['id'])]
         self.codes_to_upload = pandas.concat([self.codes_to_upload, codigos], ignore_index=True)
@@ -196,7 +198,7 @@ class Codelist:
                 json=json)
             response.raise_for_status()
         except Exception as e:
-            #print(json)
+            # print(json)
             print(response.text)
             raise e
         self.logger.info('Códigos importados correctamente')
