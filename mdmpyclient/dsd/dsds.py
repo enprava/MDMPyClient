@@ -162,11 +162,11 @@ class DSDs:
     def format_dimensions(self, dimensions):
         result = []
         i = 0
-        for dsd_id, values in dimensions.items():
+        for dim_id, values in dimensions.items():
             dimension = {}
             concept_scheme = values['concept_scheme']
             codelist = values['codelist']
-            dimension['id'] = dsd_id
+            dimension['id'] = values['nombre_dimension']
             dimension['position'] = i
             i += 1
             dimension['type'] = 'Dimension'
