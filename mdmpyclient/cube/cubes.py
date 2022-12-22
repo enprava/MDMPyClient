@@ -98,7 +98,7 @@ class Cubes:
 
         for dimension in dimensiones:
             codelist = dimensiones[dimension]['codelist']
-            json['Dimensions'].append({"Code": dimension,
+            json['Dimensions'].append({"Code": dimensiones[dimension]['nombre_dimension'],
                                        "CodelistCode": codelist['id'] + '+' + codelist['agency'] + '+' + codelist[
                                            'version'], "IsTimeSeriesDim": False})
 

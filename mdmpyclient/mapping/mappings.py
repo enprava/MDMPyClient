@@ -47,7 +47,7 @@ class Mappings:
             name = mapping['Name']
             des = mapping['Description'] if 'Description' in mapping else None
             data[cube_id] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, des,
-                                       init_data=init_data)
+                                    init_data=init_data)
         return data
 
     def put(self, columns, cube_id, name):
@@ -59,8 +59,8 @@ class Mappings:
             self.logger.info('El Mapping ya se encuentra en la API. Con  %s', cube_id)
             return self.data[cube_id].id
         components = []
-        for col in columns:
-            dim = col if 'TEMPORAL' not in col else 'TIME_PERIOD'
+        for col, dim in columns.items():
+            dim = 'TIME_PERIOD' if 'TEMPORAL' in col else dim
             dim_type = 'Dimension'
             if 'OBS_STATUS' in dim:
                 dim_type = 'Attribute'
@@ -81,4 +81,7 @@ class Mappings:
             raise e
         mapping_id = int(response.text)
         self.logger.info('Mapping creado correctamente con id %s', mapping_id)
+
+        self.data[cube_id] = Mapping(self.session, self.configuracion, mapping_id, cube_id, name, name, False)
+
         return mapping_id

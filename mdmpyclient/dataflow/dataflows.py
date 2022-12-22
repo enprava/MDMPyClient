@@ -34,7 +34,6 @@ class Dataflows:
         self.translator_cache = translator_cache
         self.data = self.get(init_data)
 
-
     def get_all_sdmx(self, directory):
         self.logger.info('Obteniendo todos los dataflows en formato sdmx')
         for df in self.dataflow_list:
@@ -68,13 +67,13 @@ class Dataflows:
                 data[agency_id][code] = {}
 
             df = Dataflow(self.session, self.configuracion, code, agency_id, version,
-                                                      dataflow_id, cube_id, names, des, init_data)
+                          dataflow_id, cube_id, names, des, init_data)
             data[agency_id][code][version] = df
             self.dataflow_list.append(df)
 
         return data
 
-    #comentario-tox: partir la funcion en dos
+    # comentario-tox: partir la funcion en dos
     def put(self, code, agency, version, names, des, columns, cube_id, dsd, category_scheme, category):
 
         self.logger.info('Creando dataflow con id %s', code)
@@ -87,10 +86,10 @@ class Dataflows:
 
         if self.configuracion['translate']:
             self.logger.info('Traduciendo nombre y descripción del dataflow con id (code) %s', code)
-            info_translated = [self.traslate(names),self.translate(des) if des else None]
+            info_translated = [self.traslate(names), self.translate(des) if des else None]
 
         else:
-            info_translated = [names,des]
+            info_translated = [names, des]
 
         hierarchy = category_scheme.get_category_hierarchy(category)
 
@@ -108,12 +107,19 @@ class Dataflows:
                  "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}" + \
                            f":{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
 
+        dataflow_id = self.translate_json(info_translated[1], json)
 
-        return self.translate_json(info_translated[1],json)
+        df = Dataflow(self.session, self.configuracion, code, agency, version,
+                      dataflow_id, cube_id, info_translated[0], info_translated[1],
+                      False)
+        if agency not in self.data:
+            self.data[agency] = {}
+        if code not in self.data[agency]:
+            self.data[agency][code] = {}
+        self.data[agency][code][version] = df
+        return df
 
-
-
-    def translate_json(self,des_translated,json):
+    def translate_json(self, des_translated, json):
 
         if des_translated:
             json['msdbDF']['data']['dataflows'][0]['descriptions'] = des_translated
@@ -125,8 +131,6 @@ class Dataflows:
         self.logger.info('Dataflow creado correctamente')
         dataflow_id = int(response.text)
         return dataflow_id
-
-
 
     def translate(self, data):
         result = copy.deepcopy(data)
