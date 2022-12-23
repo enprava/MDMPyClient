@@ -125,7 +125,9 @@ class DSDs:
                                             {"id": "FREQ", "position": len(format_dimensions) + 1,
                                              "conceptIdentity":
                                                  "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
-                                                 "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).FREQ",
+                                                 "SDMX:CROSS_DOMAIN_CONCEPTS(2.0).FREQ","localRepresentation": {
+                                                                        "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Code" + \
+                                                                                       "list=SDMX:CL_FREQ(2.1)"},
                                              "type": "Dimension"}, {"id": "INDICATOR",
                                                                     "position": len(format_dimensions),
                                                                     "type": "Dimension",

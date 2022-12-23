@@ -76,11 +76,8 @@ class Mapping:
             response.raise_for_status()
         except Exception as e:
             raise e
-        print("response text -> ", response.text)
 
         path = response.text.replace('\\\\','%5C').replace('"','')
-
-        print("path -> ", path)
 
         self.logger.info('Archivo con datos subido a la API. Volcando los datos en el cubo')
 

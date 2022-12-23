@@ -154,7 +154,6 @@ class ConceptScheme:
             response = self.session.post(
                 f'{self.configuracion["url_base"]}CheckImportedFileCsvItem', headers=upload_headers,
                 data=body)
-
             response.raise_for_status()
 
         except Exception as e:
