@@ -78,7 +78,7 @@ class Dataflows:
 
         self.logger.info('Creando dataflow con id %s', code)
         try:
-            dataflow = self.data[agency][code][version].id
+            dataflow = self.data[agency][code][version]
             self.logger.info('El dataflow ya se encuentra en la API')
             return dataflow
         except KeyError:
