@@ -1,7 +1,6 @@
 from mdmpyclient.mdm import MDM
 
 from mock import patch
-import deepl
 config = {'url_base': 'http://test.com', 'nodeId': 'ESC01', 'languages': ['en', 'es'],'cache': "configuracion/traducciones.yaml"}
 
 
@@ -21,5 +20,4 @@ def test_init(mock_requests_session):
     assert client.msds
     assert client.metadataflows
     assert client.metadatasets
-    return client
 
