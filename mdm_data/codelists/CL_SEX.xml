@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF105</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T12:18:11.8388601+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Codelists>
+      <structure:Codelist id="CL_SEX" agencyID="SDMX" version="2.1" isFinal="true">
+        <common:Name xml:lang="es">SEXO</common:Name>
+        <common:Description xml:lang="es">Sexo</common:Description>
+        <structure:Code id="_T">
+          <common:Name xml:lang="es">(00) Ambos sexos</common:Name>
+          <common:Description xml:lang="es">Ambos sexos</common:Description>
+        </structure:Code>
+        <structure:Code id="M">
+          <common:Name xml:lang="es">(01) Hombres</common:Name>
+          <common:Description xml:lang="es">Hombres</common:Description>
+          <structure:Parent>
+            <Ref id="_T" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="F">
+          <common:Name xml:lang="es">(06) Mujeres</common:Name>
+          <common:Description xml:lang="es">Mujeres</common:Description>
+          <structure:Parent>
+            <Ref id="_T" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="_U">
+          <common:Name xml:lang="es">(NC) No consta</common:Name>
+          <common:Description xml:lang="es">No consta</common:Description>
+          <structure:Parent>
+            <Ref id="_T" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="_Z">
+          <common:Name xml:lang="es">No aplica</common:Name>
+        </structure:Code>
+      </structure:Codelist>
+    </structure:Codelists>
+  </message:Structures>
+</message:Structure>

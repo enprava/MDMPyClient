@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF750</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T10:31:08.3776557+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Codelists>
+      <structure:Codelist id="CL_TIPINDOCUPAC" agencyID="ESC01" version="1.0" isFinal="true">
+        <common:Name xml:lang="es">Tipo de índice de ocupación</common:Name>
+        <structure:Code id="61596">
+          <common:Name xml:lang="es">Empleo general</common:Name>
+          <common:Description xml:lang="es">(01) Empleo general</common:Description>
+        </structure:Code>
+        <structure:Code id="61597">
+          <common:Name xml:lang="es">Empleo sin estaciones de servicio</common:Name>
+          <common:Description xml:lang="es">(02) Empleo sin estaciones de servicio</common:Description>
+        </structure:Code>
+        <structure:Code id="_Z">
+          <common:Name xml:lang="es">No aplica</common:Name>
+          <common:Description xml:lang="es">No aplica</common:Description>
+        </structure:Code>
+      </structure:Codelist>
+    </structure:Codelists>
+  </message:Structures>
+</message:Structure>

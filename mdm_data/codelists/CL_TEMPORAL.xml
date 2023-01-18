@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF99</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T12:18:11.7404772+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Codelists>
+      <structure:Codelist id="CL_TEMPORAL" agencyID="ESC01" version="1.0" isFinal="true">
+        <common:Name xml:lang="es">Anual</common:Name>
+        <structure:Code id="2014">
+          <common:Name xml:lang="es">2005</common:Name>
+          <common:Description xml:lang="es">(2005) 2005</common:Description>
+        </structure:Code>
+        <structure:Code id="2015">
+          <common:Name xml:lang="es">2006-Enero</common:Name>
+          <common:Description xml:lang="es">(200601) 2006-Enero</common:Description>
+        </structure:Code>
+        <structure:Code id="2016">
+          <common:Name xml:lang="es">2006-Febrero</common:Name>
+          <common:Description xml:lang="es">(200602) 2006-Febrero</common:Description>
+        </structure:Code>
+        <structure:Code id="2017">
+          <common:Name xml:lang="es">2006-Marzo</common:Name>
+          <common:Description xml:lang="es">(200603) 2006-Marzo</common:Description>
+        </structure:Code>
+        <structure:Code id="2019">
+          <common:Name xml:lang="es">2006-Abril</common:Name>
+          <common:Description xml:lang="es">(200604) 2006-Abril</common:Description>
+        </structure:Code>
+        <structure:Code id="2020">
+          <common:Name xml:lang="es">2006-Mayo</common:Name>
+          <common:Description xml:lang="es">(200605) 2006-Mayo</common:Description>
+        </structure:Code>
+        <structure:Code id="2021">
+          <common:Name xml:lang="es">2006-Junio</common:Name>
+          <common:Description xml:lang="es">(200606) 2006-Junio</common:Description>
+        </structure:Code>
+        <structure:Code id="1996">
+          <common:Name xml:lang="es">2005-Enero</common:Name>
+          <common:Description xml:lang="es">(200501) 2005-Enero</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="1997">
+          <common:Name xml:lang="es">2005-Febrero</common:Name>
+          <common:Description xml:lang="es">(200502) 2005-Febrero</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="1998">
+          <common:Name xml:lang="es">2005-Marzo</common:Name>
+          <common:Description xml:lang="es">(200503) 2005-Marzo</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2000">
+          <common:Name xml:lang="es">2005-Abril</common:Name>
+          <common:Description xml:lang="es">(200504) 2005-Abril</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2001">
+          <common:Name xml:lang="es">2005-Mayo</common:Name>
+          <common:Description xml:lang="es">(200505) 2005-Mayo</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2002">
+          <common:Name xml:lang="es">2005-Junio</common:Name>
+          <common:Description xml:lang="es">(200506) 2005-Junio</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2005">
+          <common:Name xml:lang="es">2005-Julio</common:Name>
+          <common:Description xml:lang="es">(200507) 2005-Julio</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2006">
+          <common:Name xml:lang="es">2005-Agosto</common:Name>
+          <common:Description xml:lang="es">(200508) 2005-Agosto</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2007">
+          <common:Name xml:lang="es">2005-Septiembre</common:Name>
+          <common:Description xml:lang="es">(200509) 2005-Septiembre</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2009">
+          <common:Name xml:lang="es">2005-Octubre</common:Name>
+          <common:Description xml:lang="es">(200510) 2005-Octubre</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2010">
+          <common:Name xml:lang="es">2005-Noviembre</common:Name>
+          <common:Description xml:lang="es">(200511) 2005-Noviembre</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="2011">
+          <common:Name xml:lang="es">2005-Diciembre</common:Name>
+          <common:Description xml:lang="es">(200512) 2005-Diciembre</common:Description>
+          <structure:Parent>
+            <Ref id="2014" />
+          </structure:Parent>
+        </structure:Code>
+        <structure:Code id="_Z">
+          <common:Name xml:lang="es">No aplica</common:Name>
+          <common:Description xml:lang="es">No aplica</common:Description>
+        </structure:Code>
+      </structure:Codelist>
+    </structure:Codelists>
+  </message:Structures>
+</message:Structure>

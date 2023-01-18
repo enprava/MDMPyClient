@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido a la documentación de MDMPyClient! &mdash; MDMPyClient  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> MDMPyClient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Bienvenido a la documentación de MDMPyClient!</a></li>
+<li><a class="reference internal" href="#module-mdmpyclient.mdm">Modulos</a><ul>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM"><code class="docutils literal notranslate"><span class="pre">MDM</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.codelists"><code class="docutils literal notranslate"><span class="pre">MDM.codelists</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.concept_schemes"><code class="docutils literal notranslate"><span class="pre">MDM.concept_schemes</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.category_schemes"><code class="docutils literal notranslate"><span class="pre">MDM.category_schemes</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.dsds"><code class="docutils literal notranslate"><span class="pre">MDM.dsds</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.cubes"><code class="docutils literal notranslate"><span class="pre">MDM.cubes</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.mappings"><code class="docutils literal notranslate"><span class="pre">MDM.mappings</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.dataflows"><code class="docutils literal notranslate"><span class="pre">MDM.dataflows</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.msds"><code class="docutils literal notranslate"><span class="pre">MDM.msds</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.metadataflows"><code class="docutils literal notranslate"><span class="pre">MDM.metadataflows</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.mdm.MDM.metadatasets"><code class="docutils literal notranslate"><span class="pre">MDM.metadatasets</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.codelist.codelist.Codelist"><code class="docutils literal notranslate"><span class="pre">Codelist</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.codelist.codelist.Codelist.codes"><code class="docutils literal notranslate"><span class="pre">Codelist.codes</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.codelist.codelists.Codelists"><code class="docutils literal notranslate"><span class="pre">Codelists</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.codelist.codelists.Codelists.data"><code class="docutils literal notranslate"><span class="pre">Codelists.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.conceptscheme.conceptscheme.ConceptScheme"><code class="docutils literal notranslate"><span class="pre">ConceptScheme</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.conceptscheme.conceptscheme.ConceptScheme.concepts"><code class="docutils literal notranslate"><span class="pre">ConceptScheme.concepts</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.conceptscheme.conceptschemes.ConceptSchemes"><code class="docutils literal notranslate"><span class="pre">ConceptSchemes</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.conceptscheme.conceptschemes.ConceptSchemes.data"><code class="docutils literal notranslate"><span class="pre">ConceptSchemes.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.categoryscheme.categoryscheme.CategoryScheme"><code class="docutils literal notranslate"><span class="pre">CategoryScheme</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.categoryscheme.categoryscheme.CategoryScheme.categories"><code class="docutils literal notranslate"><span class="pre">CategoryScheme.categories</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.categoryscheme.categoryschemes.CategorySchemes"><code class="docutils literal notranslate"><span class="pre">CategorySchemes</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.categoryscheme.categoryschemes.CategorySchemes.data"><code class="docutils literal notranslate"><span class="pre">CategorySchemes.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.dsd.dsd.DSD"><code class="docutils literal notranslate"><span class="pre">DSD</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.dsd.dsd.DSD.data"><code class="docutils literal notranslate"><span class="pre">DSD.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.dsd.dsds.DSDs"><code class="docutils literal notranslate"><span class="pre">DSDs</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.dsd.dsds.DSDs.data"><code class="docutils literal notranslate"><span class="pre">DSDs.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.cube.cube.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a></li>
+<li><a class="reference internal" href="#mdmpyclient.cube.cubes.Cubes"><code class="docutils literal notranslate"><span class="pre">Cubes</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.cube.cubes.Cubes.data"><code class="docutils literal notranslate"><span class="pre">Cubes.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.mapping.mapping.Mapping"><code class="docutils literal notranslate"><span class="pre">Mapping</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.mapping.mapping.Mapping.components"><code class="docutils literal notranslate"><span class="pre">Mapping.components</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.mapping.mappings.Mappings"><code class="docutils literal notranslate"><span class="pre">Mappings</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.mapping.mappings.Mappings.data"><code class="docutils literal notranslate"><span class="pre">Mappings.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.dataflow.dataflow.Dataflow"><code class="docutils literal notranslate"><span class="pre">Dataflow</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.dataflow.dataflow.Dataflow.data"><code class="docutils literal notranslate"><span class="pre">Dataflow.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.dataflow.dataflows.Dataflows"><code class="docutils literal notranslate"><span class="pre">Dataflows</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.dataflow.dataflows.Dataflows.data"><code class="docutils literal notranslate"><span class="pre">Dataflows.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.msd.msd.MSD"><code class="docutils literal notranslate"><span class="pre">MSD</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.msd.msd.MSD.data"><code class="docutils literal notranslate"><span class="pre">MSD.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.msd.msds.MSDs"><code class="docutils literal notranslate"><span class="pre">MSDs</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.msd.msds.MSDs.data"><code class="docutils literal notranslate"><span class="pre">MSDs.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.metadataflow.metadataflow.Metadataflow"><code class="docutils literal notranslate"><span class="pre">Metadataflow</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.metadataflow.metadataflow.Metadataflow.data"><code class="docutils literal notranslate"><span class="pre">Metadataflow.data</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mdmpyclient.metadataset.metadataset.Metadataset"><code class="docutils literal notranslate"><span class="pre">Metadataset</span></code></a><ul>
+<li><a class="reference internal" href="#mdmpyclient.metadataset.metadataset.Metadataset.data"><code class="docutils literal notranslate"><span class="pre">Metadataset.data</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">MDMPyClient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Bienvenido a la documentación de MDMPyClient!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>sphinx-quickstart on Sun Feb 14 11:12:22 2021.
+You can adapt this file completely to your liking, but it should at least
+contain the root <cite>toctree</cite> directive.</p>
+<section id="bienvenido-a-la-documentacion-de-mdmpyclient">
+<h1>Bienvenido a la documentación de MDMPyClient!<a class="headerlink" href="#bienvenido-a-la-documentacion-de-mdmpyclient" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="module-mdmpyclient.mdm">
+<span id="modulos"></span><h1>Modulos<a class="headerlink" href="#module-mdmpyclient.mdm" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MDM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.mdm.MDM" title="Permalink to this definition"></a></dt>
+<dd><p>Clase encargada de gestionar todas las peticiones a la API del M&amp;D Manager.
+Hace uso del fichero de configuración configuracion/configuracion.yaml</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.codelists">
+<span class="sig-name descname"><span class="pre">codelists</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.codelists" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos las codelist
+de la API y encargado de gestionarlas</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Codelists</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.concept_schemes">
+<span class="sig-name descname"><span class="pre">concept_schemes</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.concept_schemes" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los esquemas de
+conceptos de la API y encargado de gestionarlos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConceptSchemes</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.category_schemes">
+<span class="sig-name descname"><span class="pre">category_schemes</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.category_schemes" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los esquemas de
+categorías de la API y encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">CategorySchemes</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.dsds">
+<span class="sig-name descname"><span class="pre">dsds</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.dsds" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los DSDs de la API y encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSDs</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.cubes">
+<span class="sig-name descname"><span class="pre">cubes</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.cubes" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los cubos de la API y encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cubes</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.mappings">
+<span class="sig-name descname"><span class="pre">mappings</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.mappings" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los mappings de la API y
+encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mappings</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.dataflows">
+<span class="sig-name descname"><span class="pre">dataflows</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.dataflows" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los dataflows de la API
+y encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dataflows</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.msds">
+<span class="sig-name descname"><span class="pre">msds</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.msds" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los MSDs de la API y encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">MSDs</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.metadataflows">
+<span class="sig-name descname"><span class="pre">metadataflows</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.metadataflows" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los metadataflows de la API
+y encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Metadataflows</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mdm.MDM.metadatasets">
+<span class="sig-name descname"><span class="pre">metadatasets</span></span><a class="headerlink" href="#mdmpyclient.mdm.MDM.metadatasets" title="Permalink to this definition"></a></dt>
+<dd><p>Objeto que contiene todos los metatatasets de la API
+y encargado de gestionarlos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Metadatasets</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.codelist.codelist"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.codelist.codelist.Codelist">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Codelist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codelist_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.codelist.codelist.Codelist" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa una codelist del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificador de la codelist.</p></li>
+<li><p><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Versión de la codelist.</p></li>
+<li><p><strong>agency_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Agencia vinculada a la codelist.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>des</em>) – <cite>Diccionario</cite>): Diccionario con los nombres de la codelist en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Diccionario con las descripciones de la codelist en varios idiomas.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos de la codelist,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.codelist.codelist.Codelist.codes">
+<span class="sig-name descname"><span class="pre">codes</span></span><a class="headerlink" href="#mdmpyclient.codelist.codelist.Codelist.codes" title="Permalink to this definition"></a></dt>
+<dd><p>DataFrame con todos los códigos de la lista</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.codelist.codelists"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.codelist.codelists.Codelists">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Codelists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.codelist.codelists.Codelists" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de codelists del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los códigos de las listas,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.codelist.codelists.Codelists.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.codelist.codelists.Codelists.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todas las codelists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.conceptscheme.conceptscheme"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.conceptscheme.conceptscheme.ConceptScheme">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConceptScheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.conceptscheme.conceptscheme.ConceptScheme" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un esquema de conceptos del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>init_data</em>) – ‘String’): Identificador del esquema de conceptos.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Identificador de la agencia vinculada.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Version del esquema de conceptos.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Diccionario</cite>): Diccionario con los nombres del esquema de conceptos
+en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Diccionario con las descripciones del esquema de conceptos
+en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Boolean</cite>): True para traer todos los datos del esquema de
+conceptos, False para traer solo id, agencia y versión. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.conceptscheme.conceptscheme.ConceptScheme.concepts">
+<span class="sig-name descname"><span class="pre">concepts</span></span><a class="headerlink" href="#mdmpyclient.conceptscheme.conceptscheme.ConceptScheme.concepts" title="Permalink to this definition"></a></dt>
+<dd><p>DataFrame con todos los conceptos del esquema</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.conceptscheme.conceptschemes"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.conceptscheme.conceptschemes.ConceptSchemes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConceptSchemes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.conceptscheme.conceptschemes.ConceptSchemes" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de esquemas de conceptos del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los conceptos de los esquemas,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.conceptscheme.conceptschemes.ConceptSchemes.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.conceptscheme.conceptschemes.ConceptSchemes.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los esquemas de conceptos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.categoryscheme.categoryscheme"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.categoryscheme.categoryscheme.CategoryScheme">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CategoryScheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_scheme_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.categoryscheme.categoryscheme.CategoryScheme" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un esquema de conceptos del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>init_data</em>) – <cite>String</cite>): Identificador del esquema de categorías.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Identificador de la agencia vinculada.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Versión del esquema de categorías.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Diccionario</cite>): Diccionario con los nombres del esquema de categorías
+en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Diccionario con las descripciones del esquema de categorías
+en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Boolean</cite>): True para traer todos los datos del esquema de
+categorías, False para traer solo id, agencia y versión. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.categoryscheme.categoryscheme.CategoryScheme.categories">
+<span class="sig-name descname"><span class="pre">categories</span></span><a class="headerlink" href="#mdmpyclient.categoryscheme.categoryscheme.CategoryScheme.categories" title="Permalink to this definition"></a></dt>
+<dd><p>DataFrame con todas las categorías del esquema</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.categoryscheme.categoryschemes"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.categoryscheme.categoryschemes.CategorySchemes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CategorySchemes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.categoryscheme.categoryschemes.CategorySchemes" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de esquemas de categorías del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todas las categorías de los esquemas,
+False para no traerlas. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.categoryscheme.categoryschemes.CategorySchemes.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.categoryscheme.categoryschemes.CategorySchemes.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todas las codelists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.dsd.dsd"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.dsd.dsd.DSD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsd_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.dsd.dsd.DSD" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un DSD del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>init_data</em>) – ‘String’): Identificador del DSD.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Identificador de la agencia vinculada.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Version del DSD.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Diccionario</cite>): Diccionario con los nombres del DSD en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Diccionario con las descripciones del DSD en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Boolean</cite>): True para traer todos los datos del DSD,
+False para traer solo id, agencia y versión. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.dsd.dsd.DSD.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.dsd.dsd.DSD.data" title="Permalink to this definition"></a></dt>
+<dd><p>DataFrame con todos los datos del DSD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.dsd.dsds"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.dsd.dsds.DSDs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DSDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.dsd.dsds.DSDs" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de DSDs del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los DSDs, False para no traerlos.
+Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.dsd.dsds.DSDs.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.dsd.dsds.DSDs.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los DSDs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.cube.cube"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.cube.cube.Cube">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsd_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.cube.cube.Cube" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un Cubo del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>init_data</em>) – ‘Integer’): Identificador del cubo.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>String</cite>): Código del cubo. Coincide con el ID que se le da cuando
+se crea desde el cliente</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Integer</cite>): ID de la categoría a la que pertenece el cubo. La categoría
+perteneciente al esquema de categorías de los cubos en la api se refieren a estas como
+como ‘dcs’.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Diccionario</cite>): Diccionario con los nombres del cubo en varios idiomas.</p></li>
+<li><p><strong>(</strong><strong>class</strong> – <cite>Boolean</cite>): True para traer todos los datos del cubo,
+False para traer solo id, agencia y versión. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.cube.cubes"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.cube.cubes.Cubes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cubes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.cube.cubes.Cubes" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de cubes del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los cubes,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.cube.cubes.Cubes.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.cube.cubes.Cubes.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los cubes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.mapping.mapping"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.mapping.mapping.Mapping">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.mapping.mapping.Mapping" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un mapping del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Integer</span></code>) – Identificador del mapping.</p></li>
+<li><p><strong>cube_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Integer</span></code>) – Identificador del cubo al que pertenece el mapping.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Nombre del mapping.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>des</em>) – <cite>String</cite>): Descripción del mapping.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos del mapping,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mapping.mapping.Mapping.components">
+<span class="sig-name descname"><span class="pre">components</span></span><a class="headerlink" href="#mdmpyclient.mapping.mapping.Mapping.components" title="Permalink to this definition"></a></dt>
+<dd><p>Lista con todos los componentes del mapping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.mapping.mappings"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.mapping.mappings.Mappings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Mappings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.mapping.mappings.Mappings" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de mappings del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos de los mappings,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.mapping.mappings.Mappings.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.mapping.mappings.Mappings.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los mappings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dicconario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.dataflow.dataflow"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.dataflow.dataflow.Dataflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dataflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataflow_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.dataflow.dataflow.Dataflow" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un dataflow del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>code</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificador del dataflow.</p></li>
+<li><p><strong>agency_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificador de la agencia asociada al dataflow.</p></li>
+<li><p><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Versión del dataflow.</p></li>
+<li><p><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Integer</span></code>) – Identificador numérico del dataflow.</p></li>
+<li><p><strong>cube_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Integer</span></code>) – Identificador del cubo al que asociado al dataflow.</p></li>
+<li><p><strong>filter</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Filtros del dataflow.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Nombres del dataflow.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>des</em>) – <cite>Diccionario</cite>): Descripciones del dataflow.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos del dataflow,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.dataflow.dataflow.Dataflow.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.dataflow.dataflow.Dataflow.data" title="Permalink to this definition"></a></dt>
+<dd><p>Lista con todos los datos del dataflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.dataflow.dataflows"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.dataflow.dataflows.Dataflows">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dataflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translator_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.dataflow.dataflows.Dataflows" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de dataflows del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos dataflows, False para no
+traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.dataflow.dataflows.Dataflows.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.dataflow.dataflows.Dataflows.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los dataflows</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.msd.msd"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.msd.msd.MSD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msd_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.msd.msd.MSD" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un MSD del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>msd_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificador del MSD.</p></li>
+<li><p><strong>agency_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificador de la agencia asociada al MSD.</p></li>
+<li><p><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Versión del MSD.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Nombres del MSD.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>des</em>) – <cite>Diccionario</cite>): Descripciones del MSD.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos del MSD,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.msd.msd.MSD.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.msd.msd.MSD.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los datos del MSD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.msd.msds"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.msd.msds.MSDs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MSDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.msd.msds.MSDs" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa el conjunto de MSDs del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los MSDs, False para no traerlos.
+Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.msd.msds.MSDs.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.msd.msds.MSDs.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los MSDs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.metadataflow.metadataflow"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.metadataflow.metadataflow.Metadataflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Metadataflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">des</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.metadataflow.metadataflow.Metadataflow" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un metadataflow del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>meta_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificadordel metadataflow.</p></li>
+<li><p><strong>agency_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificador de la agencia asociada al
+metadataflow.</p></li>
+<li><p><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Versión del metadataflow.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Nombres del metadataflow.</p></li>
+<li><p><strong>(</strong><strong>class</strong> (<em>des</em>) – <cite>Diccionario</cite>): Descripciones del metadataflow.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos del metadataflow,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.metadataflow.metadataflow.Metadataflow.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.metadataflow.metadataflow.Metadataflow.data" title="Permalink to this definition"></a></dt>
+<dd><p>Lista con todos los datos del metadataflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mdmpyclient.metadataset.metadataset"></span><dl class="py class">
+<dt class="sig sig-object py" id="mdmpyclient.metadataset.metadataset.Metadataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Metadataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuracion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mdmpyclient.metadataset.metadataset.Metadataset" title="Permalink to this definition"></a></dt>
+<dd><p>Clase que representa un metadataset del M&amp;D Manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.session.Session</span></code>) – Sesión autenticada en la API.</p></li>
+<li><p><strong>configuracion</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Diccionario del que se obtienen algunos
+parámetros necesarios como la url de la API. Debe ser inicializado a partir del
+fichero de configuración configuracion/configuracion.yaml.</p></li>
+<li><p><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">String</span></code>) – Identificadordel metadataset</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Diccionario</span></code>) – Nombres del metadataset.</p></li>
+<li><p><strong>init_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Boolean</span></code>) – True para traer todos los datos del metadataset,
+False para no traerlos. Por defecto toma el valor False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mdmpyclient.metadataset.metadataset.Metadataset.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mdmpyclient.metadataset.metadataset.Metadataset.data" title="Permalink to this definition"></a></dt>
+<dd><p>Diccionario con todos los datos del metadataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diccionario</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, enprava.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

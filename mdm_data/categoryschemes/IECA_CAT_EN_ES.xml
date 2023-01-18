@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF111</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T12:18:12.0216019+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:CategorySchemes>
+      <structure:CategoryScheme id="IECA_CAT_EN_ES" agencyID="ESC01" version="1.0">
+        <common:Annotations>
+          <common:Annotation>
+            <common:AnnotationType>REFERENCE_SOURCE</common:AnnotationType>
+            <common:AnnotationText xml:lang="en">United Nations Economic Commission for Europe. This classification of statistical subject-matter domains is based on that used in the Database of International Statistical Activities (DISA - http://unece.unog.ch/disa/ ). The DISA classification includes two additional domains covering statistical methodology and strategic managerial issues, which do not relate directly to data or metadata, so are not considered relevant for SDMX purposes.</common:AnnotationText>
+          </common:Annotation>
+        </common:Annotations>
+        <common:Name xml:lang="en">SDMX Statistical Subject-Matter Domains</common:Name>
+        <common:Description xml:lang="en">This is the canonical representation of the SDMX Content Guidelines for Statistical Subject-Matter Domains. Within SDMX, the list of Statistical Subject-Matter Domains (aligned to the Classification of International Statistical Activities maintained by the Conference of European Statisticians of the United Nations Economic Commission for Europe, UNECE) is a standard reference list against which the categorisation schemes of various participants in exchange arrangements can be mapped to facilitate data and metadata exchange.</common:Description>
+        <structure:Category id="DEMO_SOCIAL_STAT">
+          <common:Annotations>
+            <common:Annotation>
+              <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+              <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+              <common:AnnotationText xml:lang="en">1</common:AnnotationText>
+            </common:Annotation>
+          </common:Annotations>
+          <common:Name xml:lang="en">Demographic and social statistics</common:Name>
+          <structure:Category id="POP_MIGRATION">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Population and migration - covers work in population and demographic statistics, topics like demography, vital statistics, population structures and growth, demographic projections, families and households (marriages, divorces, household size), migration, refugees and asylum seekers. 
+Excludes
+- causes of death (1.4 - Health)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.1</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Population and migration</common:Name>
+          </structure:Category>
+          <structure:Category id="LABOUR">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Labour -  covers statistics on labour force, labour market, employment and unemployment; the more detailed topics include economically active population, labour conditions, health and safety at work (accidents at work, occupational injuries and diseases, work-related health problems), working time and other working conditions, strikes and lockouts, job vacancies, job creation. 
+Excludes 
+- migrant workers (1.1 - Population and migration)
+- unemployment insurance and unemployment benefits (1.6 - Social protection)
+- trade union membership (1.10 - Political and other community activities)
+- unpaid work (1.11 - Time use)
+- statistics on earnings, wages and salaries (2.8 - Labour cost)
+- labour cost (2.8 - Labour cost)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.2</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Labour</common:Name>
+          </structure:Category>
+          <structure:Category id="EDUCATION">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Education - includes educational participation, illiteracy, educational institutions and systems, human and financial resources invested in education, lifelong learning, vocational training and adult learning, impact of education, assessments of student performance, etc.</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.3</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Education</common:Name>
+          </structure:Category>
+          <structure:Category id="HEALTH">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Health - covers the health and mortality related statistical activities, including topics like life expectancy, health status, health and safety, health determinants (including lifestyle, nutrition, smoking, alcohol abuse), health resources and expenditure, health care systems, morbidity and mortality (including infant and child mortality), hospital admission, causes of illness and death, specific diseases (e.g. AIDS), disabilities, pharmaceutical consumption and sales, health personnel, remuneration of health professions, environmental health status, health inequality, health accounts.
+Excludes 
+- work related health and safety (1.2 - Labour) 
+- victimisation from criminal behaviour (1.8 - Justice and crime)
+- traffic accidents and injuries (2.4.4 - Transport)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.4</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Health</common:Name>
+          </structure:Category>
+          <structure:Category id="INCOME_CONSUMP">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Income and consumption - covers statistics on household income and expenditures from household viewpoint (all types of income and expenditure), including topics like distribution of incomes, in-kind income, income transfers received and paid, income- or expenditure-based measures of poverty, consumer protection, consumption patterns, consumer goods and durables, household wealth and debts.
+Excludes 
+- social protection schemes against various risks (1.6 - Social protection)
+- tax schemes (2.5 - Government finance, fiscal and public sector statistics)
+- poverty in a multidimensional sense (3.3.1 - Living conditions, poverty and cross-cutting social issues) 
+- living conditions (3.3.1- Living conditions, poverty and cross-cutting social issues)
+- social inclusion/exclusion (3.3.1- Living conditions, poverty and cross-cutting social issues)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.5</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Income and consumption</common:Name>
+          </structure:Category>
+          <structure:Category id="SOCIAL_PROTECT">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Social protection - deals with statistics on measures to protect people against the risks of inadequate incomes associated with unemployment, ill health, invalidity, old age, parental responsibilities, or inadequate income following the loss of a spouse or parent, etc., includes statistics on pension beneficiaries, social security schemes, social protection expenditure, etc.
+Excludes 
+- insurance companies as economic actors (2.4.6 - Banking, insurance, financial statistics)
+- pension funds as actors in financial markets (2.4.6 - Banking, insurance, financial statistics)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.6</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Social protection</common:Name>
+          </structure:Category>
+          <structure:Category id="HOUSING">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Human settlements and housing - covers statistical activities on housing, dwellings and human settlements.
+Excludes 
+- rents (2.7 - Prices)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.7</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Human settlements and housing</common:Name>
+          </structure:Category>
+          <structure:Category id="JUSTICE_CRIME">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Justice and crime - activities including crime, convictions, operation of criminal justice systems, justice, safety, victims, clear-up rates, prison population, illicit drug production, trafficking and use, etc.</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.8</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Justice and crime</common:Name>
+          </structure:Category>
+          <structure:Category id="CULTURE">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Culture - statistics dealing with cultural activities in society, like theatre, cinemas, museums, libraries, mass media, book production, sports, etc., including expenditure and financing of culture.</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.9</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Culture</common:Name>
+          </structure:Category>
+          <structure:Category id="COMMUNITY_ACTIVITIES">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Political and other community activities - statistics on voting turnout, participation in political and other community activities, trade union membership, social dialogue, civil society, social capital, etc.</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.10</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Political and other community activities</common:Name>
+          </structure:Category>
+          <structure:Category id="TIME_USE">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Time-use - statistics on the use of time by individuals, often related to work-life balance (reconciling family responsibilities and paid work); unpaid work. 
+Excludes 
+- working time (1.2 - Labour)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">1.11</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Time use</common:Name>
+          </structure:Category>
+        </structure:Category>
+        <structure:Category id="ECO_STAT">
+          <common:Annotations>
+            <common:Annotation>
+              <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+              <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+              <common:AnnotationText xml:lang="en">2</common:AnnotationText>
+            </common:Annotation>
+          </common:Annotations>
+          <common:Name xml:lang="en">Economic statistics</common:Name>
+          <structure:Category id="MACROECO_STAT">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Macroeconomic statistics - all activities that are dealing with economy wide statistics at macro level that go beyond, or are different from National Accounts, whether annual, quarterly or monthly. Examples are macroeconomic databases that combine national accounts and other macroeconomic indicators like Main Economic Indicators (OECD), Principal European Economic Indicators (Eurostat), etc. ; business tendency and consumer opinion surveys, economic growth, stability and structural adjustment, cyclical indicators, statistics for business cycle analysis.
+Excludes: 
+- methodology and frameworks of national accounts (2.2 - Economic accounts)
+- collection and dissemination of national accounts and productivity data not linked to other macroeconomic statistics (2.2 - Economic accounts)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.1</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Macroeconomic statistics</common:Name>
+          </structure:Category>
+          <structure:Category id="ECO_ACCOUNTS">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Economic accounts - covers work on National Accounts in both current and constant prices, dealing with topics like implementation of the 1993 System of National Accounts (1993 SNA), update of the 1993 SNA, European System of Accounts (ESA95), Gross Domestic Product (GDP), Gross National Income (GNI), non-observed and informal economy, measurement of capital, input-output tables, balance sheets, etc.
+Excludes 
+- agricultural economic accounts (2.4.1 - Agriculture, forestry, fisheries)
+- tourism satellite accounts (2.4.5 - Tourism)
+- detailed general government accounts (2.5 - Government finance, fiscal and public sector statistics)
+- financial accounts (2.5 - Government finance, fiscal and public sector statistics)
+- price statistics (2.7 - Prices)
+- environmental accounts (3.1 - Environment)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.2</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Economic accounts</common:Name>
+          </structure:Category>
+          <structure:Category id="BUSINESS_STAT">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Business statistics - economy wide statistics on the activities of enterprises, covers work on economic statistics across different sectors (as opposed to 2.4 (Sectoral statistics) that deals with specific individual sectors), deals with topics like statistics on economic activities of enterprises, business demography, business investment, business services, demand for services, industrial performance, enterprises by size class, industrial production, commodities, structure of sales and services, outputs of the service industries, non-profit institutions.
+Excludes:
+- business tendency surveys (2.1 - Macroeconomic statistics)
+- international trade (2.6 - International trade and balance of payments)
+- prices (2.7 - Prices)
+- labour cost (2.8 - Labour cost)
+- science and technology (2.9 - Science, technology and innovation)
+- ICT (3.3.3 - Information society)
+- activities of foreign affiliates and multinational companies (3.3.4 - Globalisation)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.3</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Business statistics</common:Name>
+            <structure:Category id="IVGSA">
+              <common:Name xml:lang="es">Índice de Ventas en Grandes Superficies de Andalucía</common:Name>
+            </structure:Category>
+          </structure:Category>
+          <structure:Category id="SECTORAL_STAT">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Sectoral statistics - statistical activities dealing with one of the specific branches of industry or services mentioned at the three digit level of the classification.
+Excludes: 
+- education (1.3 - Education) 
+- health (1.4 - Health)
+- social security (1.6 - Social protection)
+- culture (1.9 - Culture)
+- statistics covering the whole industrial sector (2.3 - Business statistics)
+- statistics covering the whole service or market service sector (2.3 - Business statistics)
+- distributive trade (2.3 - Business statistics)
+- government and public sector statistics (2.5 - Government finance, fiscal and public sector statistics)
+- research and development (2.9 - Science, technology and innovation) 
+- telecommunication statistics (3.3.3 - Information society)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.4</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Sectoral statistics</common:Name>
+            <structure:Category id="AGRI_FOREST_FISH">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Agriculture, forestry, fisheries - includes all agriculture, forestry and fishery related statistics, e.g. agricultural monetary statistics (agricultural economic accounts), agricultural structures (farm structure), trade in agricultural products, agricultural labour input, crop and animal production, agricultural commodities, agro-industry statistics (including food production and safety), organic farming and organic food, government expenditure for agriculture, fishing and forestry, products source and use tables, forest and forest product statistics, forest resource assessment and forest fire, trade in forest products, fisheries.
+Excludes 
+- agricultural and similar prices (2.7 - Prices)
+- rural development (3.2 - Regional and small area statistics)</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">2.4.1</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Agriculture, forestry, fisheries</common:Name>
+            </structure:Category>
+            <structure:Category id="ENERGY">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Energy - energy supply, energy use, energy balances, security of supply, energy markets, trade in energy, energy efficiency, renewable energy sources, government expenditure on energy.
+Excludes
+- energy prices (2.7 - Prices)</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">2.4.2</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Energy</common:Name>
+            </structure:Category>
+            <structure:Category id="MINING_MANUFACT_CONSTRUCT">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Mining, manufacturing, construction - statistics on specific industrial activities, e.g. steel, shipbuilding, and on construction, trade in specific products related to mining, manufacturing and construction.
+Excludes
+- prices of manufactured products (2.7 - Prices)
+- construction prices (2.7 - Prices)</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">2.4.3</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Mining, manufacturing, construction</common:Name>
+            </structure:Category>
+            <structure:Category id="TRANSPORT">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Transport - covers statistics on all modes of transport (air, rail, road, inland waterways, sea), includes topics like transport infrastructure, equipment, traffic flows, personal mobility, safety, energy consumption, transport enterprises, passengers and freight transport, transport sector trends, road traffic accidents.
+Excludes
+- transport prices (2.7 - Prices)</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">2.4.4</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Transport</common:Name>
+            </structure:Category>
+            <structure:Category id="TOURISM">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Tourism - covers statistics regarding visitor activity (such as arrivals/departures, overnight stays, expenditures, purpose of the visit, etc.) associated to different forms of tourism (inbound, domestic and outbound), tourism industries activity and infrastructure, employment and tourism satellite accounts. 
+Excludes
+- prices for tourist services (2.7 - Prices)
+- environmental impacts (3.1 - Environment)</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">2.4.5</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Tourism</common:Name>
+              <structure:Category id="ECTA">
+                <common:Name xml:lang="en">Andalusia Tourism Situation Survey</common:Name>
+                <common:Name xml:lang="es">Encuesta de Coyuntura Turística de Andalucía</common:Name>
+                <structure:Category id="MOV">
+                  <common:Name xml:lang="en">Tourist movement</common:Name>
+                  <common:Name xml:lang="es">Movimiento turístico</common:Name>
+                </structure:Category>
+                <structure:Category id="ESTANCIA_MEDIA">
+                  <common:Name xml:lang="en">Average stay of tourists</common:Name>
+                  <common:Name xml:lang="es">Estancia media de los turistas</common:Name>
+                </structure:Category>
+                <structure:Category id="GASTO">
+                  <common:Name xml:lang="en">Tourism expenditure</common:Name>
+                  <common:Name xml:lang="es">Gasto turístico</common:Name>
+                </structure:Category>
+              </structure:Category>
+              <structure:Category id="EOATR">
+                <common:Name xml:lang="en">Rural Tourism Accommodation Occupancy Survey</common:Name>
+                <common:Name xml:lang="es">Encuesta de Ocupación en Alojamientos de Turismo Rural</common:Name>
+                <structure:Category id="VPEM">
+                  <common:Name xml:lang="en">Travelers, overnight stays and average length of stay</common:Name>
+                  <common:Name xml:lang="es">Viajeros, pernoctaciones y estancia media</common:Name>
+                </structure:Category>
+                <structure:Category id="VARIOS">
+                  <common:Name xml:lang="en">Staff employed, establishments open, estimated vacancies, estimated plots, occupied plots and occupancy rate</common:Name>
+                  <common:Name xml:lang="es">Personal empleado, establecimientos abiertos, plazas estimadas, parcelas estimadas, parcelas ocupadas y grado de ocupación</common:Name>
+                </structure:Category>
+              </structure:Category>
+              <structure:Category id="EOC">
+                <common:Name xml:lang="en">EOC</common:Name>
+              </structure:Category>
+            </structure:Category>
+            <structure:Category id="BANK_INSURANCE_FINANCE">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Banking, insurance, financial statistics - money, banking and financial market statistics, including financial accounts, money supply, interest rates, exchange rates, stock market indicators, securities, bank profitability, private sector insurance and pension fund statistics, Financial Soundness Indicators. 
+Excludes 
+- beneficiaries of private pension funds (1.6 - Social protection) 
+- financing of state pension and of other state social security schemes (2.5 - Government finance, fiscal and public sector statistics)</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">2.4.6</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Banking, insurance, financial statistics</common:Name>
+            </structure:Category>
+            <structure:Category id="INDUSTRY">
+              <common:Name xml:lang="en">Estadística Estructural de Empresas: Sector Industrial</common:Name>
+              <common:Name xml:lang="es">Estadística Estructural de Empresas: Sector Industrial</common:Name>
+            </structure:Category>
+            <structure:Category id="SERVICES">
+              <common:Name xml:lang="en">Services</common:Name>
+              <common:Name xml:lang="es">Servicios</common:Name>
+              <structure:Category id="IASS">
+                <common:Name xml:lang="es">Indicadores de Actividad del Sector Servicios</common:Name>
+              </structure:Category>
+            </structure:Category>
+            <structure:Category id="COMMERCE">
+              <common:Name xml:lang="en">Structural Business Statistics: Commerce</common:Name>
+              <common:Name xml:lang="es">Estadística Estructural de Empresas: Comercio</common:Name>
+            </structure:Category>
+          </structure:Category>
+          <structure:Category id="GOV_FINANCE_PUBLIC_SECTOR">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Government finance, fiscal and public sector statistics - all statistics related to the government sector, including debt and deficit, revenue and expenditure, accounts of the government sector, central government, tax rates and revenues, tax and benefit systems, financing of state pension and other state social security schemes, public sector employment.
+Excludes 
+- government expenditure in specific areas, like health (1.4 - Health), education (1.3 - Education), research and development (2.9 - Science, technology and innovation), etc.</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.5</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Government finance, fiscal and public sector statistics</common:Name>
+          </structure:Category>
+          <structure:Category id="INTERN_TRADE_BOP">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">International trade and balance of payments - deals with statistics on all cross-border transactions recorded in the balance of payments, includes topics like trade in goods and services, external positions and debt, foreign direct investment, foreign affiliated trade, tariffs, market access, foreign aid, development assistance, resource flows to developing countries.
+Excludes: 
+- trade in specific commodities/services mentioned in 2.4.1 to 2.4.5 (Agriculture, forestry, fisheries; Energy; Mining, manufacturing, construction; Transport; Tourism)
+- multinational companies and activities of foreign affiliates (3.3.4 - Globalisation)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.6</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">International trade and balance of payments</common:Name>
+          </structure:Category>
+          <structure:Category id="PRICES">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Prices - covers any statistical activity dealing with prices, including Purchasing Power Parities (PPPs) and international comparisons of GDP, covers topics like Consumer Price Indices (CPI), inflation, Producer Price Indices (PPI), price indexes for specific products and services (e.g. Information and Communication Technology products). 
+Excludes 
+- interest rates (2.4.6 - Banking, insurance, financial statistics)
+- wages (2.8 - Labour cost)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.7</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Prices</common:Name>
+          </structure:Category>
+          <structure:Category id="LABOUR_COST">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Labour cost - statistics activities on labour cost, earning and wages, both for structural and short-term statistics. 
+Excludes
+- wages as part of total income of private households (1.5 - Income and consumption)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.8</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Labour cost</common:Name>
+          </structure:Category>
+          <structure:Category id="SCIENCE_TECHNO_INNO">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Science, technology and innovation - includes Research and Development (R&amp;D), innovation, patents, human resources (in science, technology and innovation), high tech industries and knowledge based services, biotechnology, financing of R&amp;D and innovation. 
+Excludes: 
+- information and communication technologies (ICTs) (3.3.3 - Information society)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">2.9</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Science, technology and innovation</common:Name>
+          </structure:Category>
+        </structure:Category>
+        <structure:Category id="ENVIRONMENT_MULTIDOMAIN_STAT">
+          <common:Annotations>
+            <common:Annotation>
+              <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+              <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+              <common:AnnotationText xml:lang="en">3</common:AnnotationText>
+            </common:Annotation>
+          </common:Annotations>
+          <common:Name xml:lang="en">Environment and multi-domain statistics</common:Name>
+          <structure:Category id="ENVIRONMENT">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Environment - includes topics like climate, climate change, biodiversity, environment and health, natural resources, soil, water, air, landscape, waste, environmental expenditure, expenditure for the protection of the environment, environmental accounts, agri-environmental indicators, environmental pressure, environmental impact of industry, transport, energy etc., environmental monitoring, material flow analysis, environmental decoupling indicators, pollution, ecosystems, land use and cover, environmental protection, nationally protected areas.
+Excludes
+- environment as part of sustainable development (3.3.6 - Sustainable development)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">3.1</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Environment</common:Name>
+          </structure:Category>
+          <structure:Category id="REGIONAL_STAT">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Regional and small area statistics - activities dealing with regional statistics and statistics referring to sub-national areas or areas based on administrative units, urban and rural statistics, rural development, regional accounts, regional typologies, and regional disparities.</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">3.2</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Regional and small area statistics</common:Name>
+          </structure:Category>
+          <structure:Category id="MULTIDOMAIN_STAT_INDIC">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Multi-domain statistics and indicators - deals with conceptual or data work based on a specific thematic approach to outputs that cut across several economic, social or environmental subject areas; the two-digit-level of the classification covers activities dealing with such type of issues that are not explicitly mentioned at the three-digit level.
+Excludes: 
+- multi-domain statistics based on a regional approach (3.2 - Regional and small area statistics)
+- yearbook type of compendia or similar products by international organisations not following a specific thematic approach (3.4 - Yearbooks and similar compendia)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">3.3</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Multi-domain statistics and indicators</common:Name>
+            <structure:Category id="LIVING_CONDITIONS">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Living conditions, poverty and cross-cutting social issues - includes work on multidimensional methods to measure poverty, living conditions in the broad sense, social inclusion/exclusion, social indicators, and social situation.
+Excludes:
+- purely monetary approach to poverty (1.5 - Income and consumption)</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">3.3.1</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Living conditions, poverty, and cross-cutting social issues</common:Name>
+            </structure:Category>
+            <structure:Category id="GENDER_SPECIAL_POP_GROUPS">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Gender and special population groups - their living conditions and role in the society: comparisons men/women and situation of special population groups like children, youth, women, elderly, disabled, minority groups, etc.</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">3.3.2</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Gender and special population groups</common:Name>
+            </structure:Category>
+            <structure:Category id="INFORMATION_SOC">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Information society - statistics allowing to assess the use and impact of information and communication technologies on society, includes access and use of ICTs (including Internet), ICT expenditure and investment, ICT infrastructure, telecommunication networks, electronic communications, e-government, electronic commerce, e-learning, broadband penetration, ICT services, communication tariffs, network infrastructure, revenues, expenses and investment of operators, Internet indicators, trade in telecommunications equipment.</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">3.3.3</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Information society</common:Name>
+            </structure:Category>
+            <structure:Category id="GLOBALISATION">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Globalisation - deals with measuring the economic activities of multinational companies, as well as with attempts to measure globalisation through a variety of components from other subject areas.</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">3.3.4</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Globalisation</common:Name>
+            </structure:Category>
+            <structure:Category id="MILLENIUM_GOALS">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Indicators related to the Millennium Development Goals - work on sets of indicators to monitor the achievement of the Millennium Development Goals agreed upon at the UN Millennium Summit.</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">3.3.5</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Indicators related to the Millennium Development Goals</common:Name>
+            </structure:Category>
+            <structure:Category id="SUSTAINABLE_DEV">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Sustainable development - work on indicators and frameworks to monitor the economic, social and environmental dimensions of sustainable development.</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">3.3.6</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Sustainable development</common:Name>
+            </structure:Category>
+            <structure:Category id="ENTREPRENEURSHIP">
+              <common:Annotations>
+                <common:Annotation>
+                  <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                  <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">Entrepreneurship - the measurement of the determinants, performance and impact of entrepreneurial activities of people and organisations.</common:AnnotationText>
+                </common:Annotation>
+                <common:Annotation>
+                  <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                  <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                  <common:AnnotationText xml:lang="en">3.3.7</common:AnnotationText>
+                </common:Annotation>
+              </common:Annotations>
+              <common:Name xml:lang="en">Entrepreneurship</common:Name>
+            </structure:Category>
+          </structure:Category>
+          <structure:Category id="YEARBOOKS_COMPENDIA">
+            <common:Annotations>
+              <common:Annotation>
+                <common:AnnotationTitle>EXPLANATORY NOTE</common:AnnotationTitle>
+                <common:AnnotationType>EXPLANATORY NOTE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">Yearbooks and similar compendia - multi-domain statistical publications, databases and other data products without specific thematic or issue-oriented focus.
+Excludes:
+- Multi-domain statistical products based on specific thematic approaches, like sustainable development, MDGs etc. (under 3.3.1 to 3.3.5 - Living conditions, poverty and cross-cutting social issues; Gender and special population groups; Informations society; Globalisation; Indicators related to the Millennium Development Goals)</common:AnnotationText>
+              </common:Annotation>
+              <common:Annotation>
+                <common:AnnotationTitle>OFFICIAL CODE</common:AnnotationTitle>
+                <common:AnnotationType>OFFICIAL CODE</common:AnnotationType>
+                <common:AnnotationText xml:lang="en">3.4</common:AnnotationText>
+              </common:Annotation>
+            </common:Annotations>
+            <common:Name xml:lang="en">Yearbooks and similar compendia</common:Name>
+          </structure:Category>
+        </structure:Category>
+      </structure:CategoryScheme>
+    </structure:CategorySchemes>
+  </message:Structures>
+</message:Structure>

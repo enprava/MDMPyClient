@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:Structure xmlns:mes="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:str="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <mes:Header>
+    <mes:ID>REGISTRY_RESPONSE</mes:ID>
+    <mes:Test>false</mes:Test>
+    <mes:Prepared>2022-09-19T11:12:51.879Z</mes:Prepared>
+    <mes:Sender id="ESTAT"/>
+    <mes:Receiver id="unknown"/>
+  </mes:Header>
+  <mes:Structures>
+    <str:Concepts>
+      <str:ConceptScheme id="CS_DEMOGRAPHY" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ESTAT:CS_DEMOGRAPHY(1.2)" agencyID="ESTAT" version="1.2" isExternalReference="false" isFinal="false">
+        <com:Name xml:lang="en">Concept Scheme for Demography Domain</com:Name>
+        <str:Concept id="FREQ" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).FREQ">
+          <com:Name xml:lang="en">Frequency</com:Name>
+        </str:Concept>
+        <str:Concept id="GEO" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).GEO">
+          <com:Name xml:lang="en">Geographical area</com:Name>
+        </str:Concept>
+        <str:Concept id="AGE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGE">
+          <com:Name xml:lang="en">Age</com:Name>
+        </str:Concept>
+        <str:Concept id="AGI" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGI">
+          <com:Name xml:lang="en">Age at death of the infant</com:Name>
+        </str:Concept>
+        <str:Concept id="AGB" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGB">
+          <com:Name xml:lang="en">Age of the bride or similar categories</com:Name>
+        </str:Concept>
+        <str:Concept id="AGF" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGF">
+          <com:Name xml:lang="en">Age of the father</com:Name>
+        </str:Concept>
+        <str:Concept id="AGG" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGG">
+          <com:Name xml:lang="en">Age of the groom or similar categories</com:Name>
+        </str:Concept>
+        <str:Concept id="AGL" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGL">
+          <com:Name xml:lang="en">Age for life table</com:Name>
+        </str:Concept>
+        <str:Concept id="AGM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGM">
+          <com:Name xml:lang="en">Age of the mother</com:Name>
+        </str:Concept>
+        <str:Concept id="AGS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).AGS">
+          <com:Name xml:lang="en">Age of first-time marrying person</com:Name>
+        </str:Concept>
+        <str:Concept id="CUS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CUS">
+          <com:Name xml:lang="en">Consensual union status</com:Name>
+        </str:Concept>
+        <str:Concept id="COB" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).COB">
+          <com:Name xml:lang="en">Country of birth</com:Name>
+        </str:Concept>
+        <str:Concept id="CBM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CBM">
+          <com:Name xml:lang="en">Country of birth of the man or similar categories</com:Name>
+        </str:Concept>
+        <str:Concept id="CBW" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CBW">
+          <com:Name xml:lang="en">Country of birth of the woman or similar categories</com:Name>
+        </str:Concept>
+        <str:Concept id="COC" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).COC">
+          <com:Name xml:lang="en">(Country of) citizenship</com:Name>
+        </str:Concept>
+        <str:Concept id="CCM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CCM">
+          <com:Name xml:lang="en">(Country of) citizenship of the man or similar categories</com:Name>
+        </str:Concept>
+        <str:Concept id="CCW" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CCW">
+          <com:Name xml:lang="en">(Country of) citizenship of the woman or similar categories</com:Name>
+        </str:Concept>
+        <str:Concept id="CNE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CNE">
+          <com:Name xml:lang="en">Country of next usual residence</com:Name>
+        </str:Concept>
+        <str:Concept id="CPR" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CPR">
+          <com:Name xml:lang="en">Country of previous usual residence</com:Name>
+        </str:Concept>
+        <str:Concept id="CST" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CST">
+          <com:Name xml:lang="en">Circularity status</com:Name>
+        </str:Concept>
+        <str:Concept id="DEB" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).DEB">
+          <com:Name xml:lang="en">Demographic balance - DEMOBAL (list)</com:Name>
+        </str:Concept>
+        <str:Concept id="DRU" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).DRU">
+          <com:Name xml:lang="en">Degree of urbanization – DEGURBA</com:Name>
+        </str:Concept>
+        <str:Concept id="DCH" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).DCH">
+          <com:Name xml:lang="en">Dependent children</com:Name>
+        </str:Concept>
+        <str:Concept id="DGE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).DGE">
+          <com:Name xml:lang="en">Duration of gestation</com:Name>
+        </str:Concept>
+        <str:Concept id="DMA" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).DMA">
+          <com:Name xml:lang="en">Duration of the marriage</com:Name>
+        </str:Concept>
+        <str:Concept id="EDU" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).EDU">
+          <com:Name xml:lang="en">Educational attainment (ISCED 2011)</com:Name>
+        </str:Concept>
+        <str:Concept id="EDF" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).EDF">
+          <com:Name xml:lang="en">Educational attainment (ISCED 2011) of the father</com:Name>
+        </str:Concept>
+        <str:Concept id="EDM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).EDM">
+          <com:Name xml:lang="en">Educational attainment (ISCED 2011) of the mother</com:Name>
+        </str:Concept>
+        <str:Concept id="ESM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).ESM">
+          <com:Name xml:lang="en">Employment status of the mother</com:Name>
+        </str:Concept>
+        <str:Concept id="LMS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).LMS">
+          <com:Name xml:lang="en">Legal marital status</com:Name>
+        </str:Concept>
+        <str:Concept id="LMM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).LMM">
+          <com:Name xml:lang="en">Legal marital status of the mother</com:Name>
+        </str:Concept>
+        <str:Concept id="LUS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).LUS">
+          <com:Name xml:lang="en">Legal union status</com:Name>
+        </str:Concept>
+        <str:Concept id="LBO" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).LBO">
+          <com:Name xml:lang="en">Live birth order (biological)</com:Name>
+        </str:Concept>
+        <str:Concept id="LFT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).LFT">
+          <com:Name xml:lang="en">Life table (list)</com:Name>
+        </str:Concept>
+        <str:Concept id="MIC" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).MIC">
+          <com:Name xml:lang="en">Migration circularity</com:Name>
+        </str:Concept>
+        <str:Concept id="MOC" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).MOC">
+          <com:Name xml:lang="en">Month of occurrence</com:Name>
+        </str:Concept>
+        <str:Concept id="MST" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).MST">
+          <com:Name xml:lang="en">Migration status</com:Name>
+        </str:Concept>
+        <str:Concept id="NOW" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).NOW">
+          <com:Name xml:lang="en">Latest monthly events - NOWCAST (list)</com:Name>
+        </str:Concept>
+        <str:Concept id="PAR" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).PAR">
+          <com:Name xml:lang="en">Parity</com:Name>
+        </str:Concept>
+        <str:Concept id="PLU" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).PLU">
+          <com:Name xml:lang="en">Plurality</com:Name>
+        </str:Concept>
+        <str:Concept id="LMB" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).LMB">
+          <com:Name xml:lang="en">Previous legal marital status of the bride</com:Name>
+        </str:Concept>
+        <str:Concept id="LMG" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).LMG">
+          <com:Name xml:lang="en">Previous legal marital status of the groom</com:Name>
+        </str:Concept>
+        <str:Concept id="PUT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).PUT">
+          <com:Name xml:lang="en">Purpose of travel</com:Name>
+        </str:Concept>
+        <str:Concept id="RDE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).RDE">
+          <com:Name xml:lang="en">Region of destination</com:Name>
+        </str:Concept>
+        <str:Concept id="ROR" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).ROR">
+          <com:Name xml:lang="en">Region of origin</com:Name>
+        </str:Concept>
+        <str:Concept id="RUR" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).RUR">
+          <com:Name xml:lang="en">Rural or urban area</com:Name>
+        </str:Concept>
+        <str:Concept id="SEX" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).SEX">
+          <com:Name xml:lang="en">Sex</com:Name>
+        </str:Concept>
+        <str:Concept id="ARE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).ARE">
+          <com:Name xml:lang="en">Surface area</com:Name>
+        </str:Concept>
+        <str:Concept id="WAB" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).WAB">
+          <com:Name xml:lang="en">Weight at birth</com:Name>
+        </str:Concept>
+        <str:Concept id="YOB" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).YOB">
+          <com:Name xml:lang="en">Year of birth</com:Name>
+        </str:Concept>
+        <str:Concept id="YBM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).YBM">
+          <com:Name xml:lang="en">Year of birth of the mother</com:Name>
+        </str:Concept>
+        <str:Concept id="YBS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).YBS">
+          <com:Name xml:lang="en">Year of birth of first-time marrying persons</com:Name>
+        </str:Concept>
+        <str:Concept id="YMA" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).YMA">
+          <com:Name xml:lang="en">Year of marriage or similar categories</com:Name>
+        </str:Concept>
+        <str:Concept id="TIME_PERIOD" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).TIME_PERIOD">
+          <com:Name xml:lang="en">Reference period</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_VALUE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).OBS_VALUE">
+          <com:Name xml:lang="en">Primary measure</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_STATUS1" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).OBS_STATUS1">
+          <com:Name xml:lang="en">Observation status 1</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_STATUS2" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).OBS_STATUS2">
+          <com:Name xml:lang="en">Observation status 2</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_STATUS3" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).OBS_STATUS3">
+          <com:Name xml:lang="en">Observation status 3</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_STATUS4" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).OBS_STATUS4">
+          <com:Name xml:lang="en">Observation status 4</com:Name>
+        </str:Concept>
+        <str:Concept id="COMMENT_OBS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).COMMENT_OBS">
+          <com:Name xml:lang="en">Observation comment</com:Name>
+        </str:Concept>
+        <str:Concept id="DECIMALS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).DECIMALS">
+          <com:Name xml:lang="en">Number of decimals</com:Name>
+        </str:Concept>
+        <str:Concept id="CONF_STATUS" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).CONF_STATUS">
+          <com:Name xml:lang="en">Confidentiality Status</com:Name>
+        </str:Concept>
+        <str:Concept id="UNIT" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).UNIT">
+          <com:Name xml:lang="en">Unit</com:Name>
+        </str:Concept>
+        <str:Concept id="OBS_PRE_BREAK_VALUE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ESTAT:CS_DEMOGRAPHY(1.2).OBS_PRE_BREAK_VALUE">
+          <com:Name xml:lang="en">Pre-break observation value</com:Name>
+        </str:Concept>
+      </str:ConceptScheme>
+    </str:Concepts>
+  </mes:Structures>
+</mes:Structure>

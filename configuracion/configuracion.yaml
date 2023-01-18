@@ -1,0 +1,17 @@
+url_base: http://localhost/sdmx_172/ws/NODE_API/
+api_ckan: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjY1OTg5MDIsImp0aSI6IjhVeW1VLXk0NnpfWTJySFItRk5Ra1FZd3pfRlVabnFSRTV2c19uNk5vZWNZUXF6SFBINjlaZEJYeGRtUHlZeHZNQ295eWc4eW8zRTdyRm9RIn0.Q6p41sB3XZ4TuSwQ-a9O5XahwVKlYdAg-YYfTH1QV68
+nodeId: 'ESC01'
+languages:
+  - en
+  - es
+extractor_path: /home/prada/PycharmProjects/IECA-extractor/
+translate: False
+cache: configuracion/traducciones.yaml
+msd:
+  id: MSD_IECA
+  agency: ESC01
+  version: '1.0'
+direccion_API_SDMX: http://localhost
+metadata_api: http://localhost/sdmx_172/ws/METADATA_API
+directorio_metadatos_html: metadatos_html
+url_ckan: http://localhost:5000/

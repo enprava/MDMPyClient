@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF753</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T10:31:08.4352173+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Concepts>
+      <structure:ConceptScheme id="CS_ECO_ACCOUNTS" agencyID="ESC01" version="1.0" isFinal="true">
+        <common:Name xml:lang="es">Eco_accounts</common:Name>
+        <structure:Concept id="ICMA_TIPOVENTAS">
+          <common:Name xml:lang="es">Tipo de ventas</common:Name>
+        </structure:Concept>
+        <structure:Concept id="IVGS_SERIEIVGS">
+          <common:Name xml:lang="es">Tipo de Serie</common:Name>
+        </structure:Concept>
+        <structure:Concept id="TIPINDOCUPAC">
+          <common:Name xml:lang="es">Tipo de √≠ndice de ocupaci√≥n</common:Name>
+        </structure:Concept>
+      </structure:ConceptScheme>
+    </structure:Concepts>
+  </message:Structures>
+</message:Structure>

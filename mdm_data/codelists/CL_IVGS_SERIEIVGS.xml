@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+  <message:Header>
+    <message:ID>IDREF747</message:ID>
+    <message:Test>false</message:Test>
+    <message:Prepared>2022-12-01T10:31:08.2870372+01:00</message:Prepared>
+    <message:Sender id="Unknown" />
+    <message:Receiver id="Unknown" />
+  </message:Header>
+  <message:Structures>
+    <structure:Codelists>
+      <structure:Codelist id="CL_IVGS_SERIEIVGS" agencyID="ESC01" version="1.0" isFinal="true">
+        <common:Name xml:lang="es">Tipo de Serie</common:Name>
+        <structure:Code id="27795">
+          <common:Name xml:lang="es">Serie original</common:Name>
+          <common:Description xml:lang="es">(01) Serie original</common:Description>
+        </structure:Code>
+        <structure:Code id="277796">
+          <common:Name xml:lang="es">Serie corregida de efectos estacionales y de calendario</common:Name>
+          <common:Description xml:lang="es">(02) Serie corregida de efectos estacionales y de calendario</common:Description>
+        </structure:Code>
+        <structure:Code id="277797">
+          <common:Name xml:lang="es">Serie corregida de efecto calendario</common:Name>
+          <common:Description xml:lang="es">(03) Serie corregida de efecto calendario</common:Description>
+        </structure:Code>
+        <structure:Code id="_Z">
+          <common:Name xml:lang="es">No aplica</common:Name>
+          <common:Description xml:lang="es">No aplica</common:Description>
+        </structure:Code>
+      </structure:Codelist>
+    </structure:Codelists>
+  </message:Structures>
+</message:Structure>
