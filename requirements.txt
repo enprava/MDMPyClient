@@ -1,7 +1,7 @@
 setuptools
 requests
 pyyaml
-pandas==1.4.4
+pandas
 ckanapi
 bs4
 selenium
