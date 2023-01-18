@@ -16,14 +16,14 @@ def read(filename):
 
 setup(
     name="MDMPyClient",
-    version="0.0.0",
+    version="1.0.0",
     url="https://github.com/enprava/MDMPyClient",
     license='MIT',
 
     author="enprava",
     author_email="epradavazquez@gmail.com",
 
-    description="Cliente para la NODE_API",
+    description="Cliente para el Metadatamanager",
     long_description_content_type="text/markdown",
     long_description=read("README.md"),
 
