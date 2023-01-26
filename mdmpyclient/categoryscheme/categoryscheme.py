@@ -144,7 +144,7 @@ class CategoryScheme:
     def set_permissions(self, agencies=None):
         if not agencies:
             agencies = ["BE2", "BIS", "ECB", "ESC01", "ESTAT", "FAO", "IAEG-SDGs", "ILO", "IMF", "IT1", "OECD", "TN1",
-                        "UNICEF", "UNSD", "WB"]
+                        "UNICEF", "UNSD", "WB", "SDMX", "IECA"]
         token = self.session.headers['Authorization'][7:]
         categories = []
         try:

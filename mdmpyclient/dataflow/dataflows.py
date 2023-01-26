@@ -86,7 +86,7 @@ class Dataflows:
 
         if self.configuracion['translate']:
             self.logger.info('Traduciendo nombre y descripción del dataflow con id (code) %s', code)
-            info_translated = [self.traslate(names), self.translate(des) if des else None]
+            info_translated = [self.translate(names), self.translate(des) if des else None]
 
         else:
             info_translated = [names, des]

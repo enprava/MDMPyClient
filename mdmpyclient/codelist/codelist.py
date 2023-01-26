@@ -215,6 +215,7 @@ class Codelist:
         languages = copy.deepcopy(self.configuracion['languages'])
 
         codes = self.__translate(self.codes)
+        codes = codes.drop_duplicates('id', keep='last')  # TODO
         columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                    "isDefault": -1}
         n_translations = len(codes)
@@ -224,7 +225,6 @@ class Codelist:
                 codes_to_upload = codes[['id', 'parent', f'name_{language}', f'des_{language}']].copy(deep=True)
                 codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
                 csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
-
                 response = self.__upload_csv(csv, columns, lang=language)
                 self.__import_csv(response)
         self.codes = codes
@@ -266,7 +266,7 @@ class Codelist:
             translation = self.translator_cache[value][target_language]
         else:
             self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
-            translation = str(self.translator.translate_text(value, target_lang=target_language))
+            translation = str(self.translator.translate_text(value, target_lang=target_language).text).replace('\n', '')
             if 'EN-GB' in target_language:
                 target_language = 'en'
             self.translator_cache[value] = {}

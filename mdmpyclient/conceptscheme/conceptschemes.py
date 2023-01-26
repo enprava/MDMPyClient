@@ -135,7 +135,7 @@ class ConceptSchemes:
             translation = self.translator_cache[value][target_language]
         else:
             self.logger.info('Realizando petición a deepl')
-            translation = str(self.translator.translate_text(value, target_lang=target_language))
+            translation = str(self.translator.translate_text(value, target_lang=target_language).text).replace('\n', '')
             self.translator_cache[value] = {}
             if 'EN-GB' in target_language:
                 target_language = 'en'
