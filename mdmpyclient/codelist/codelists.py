@@ -143,19 +143,22 @@ class Codelists:
         return result
 
     def __get_translate(self, value, target_language):
-        if value in self.translator_cache:
+        self.logger.info('Traduciendo el término %s al %s', value, target_language)
+        if 'EN-GB' in target_language:
+            target_language = 'en'
+        if value in self.translator_cache and target_language in self.translator_cache[value]:
             self.logger.info('Valor encontrado en la caché de traducciones')
-            if 'EN-GB' in target_language:
-                target_language = 'en'
             translation = self.translator_cache[value][target_language]
         else:
-            self.logger.info('Realizando petición a deepl')
+            if 'en' in target_language:
+                target_language = 'EN-GB'
+            self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
             translation = str(self.translator.translate_text(value, target_lang=target_language))
-            self.translator_cache[value] = {}
             if 'EN-GB' in target_language:
                 target_language = 'en'
+            self.translator_cache[value] = {}
             self.translator_cache[value][target_language] = translation
-        self.logger.info('Se ha traducido el término %s como %s', value, translation)
+        self.logger.info('Traducido el término %s como %s', value, translation)
         return translation
 
     def delete_all(self, agency):
