@@ -259,14 +259,16 @@ class Codelist:
 
     def __get_translate(self, value, target_language):
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
-        if value in self.translator_cache:
-            if 'EN-GB' in target_language:
-                target_language = 'en'
+        if 'EN-GB' in target_language:
+            target_language = 'en'
+        if value in self.translator_cache and target_language in self.translator_cache[value]:
             self.logger.info('Valor encontrado en la caché de traducciones')
             translation = self.translator_cache[value][target_language]
         else:
+            if 'en' in target_language:
+                target_language = 'EN-GB'
             self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
-            translation = str(self.translator.translate_text(value, target_lang=target_language).text).replace('\n', '')
+            translation = str(self.translator.translate_text(value, target_lang=target_language))
             if 'EN-GB' in target_language:
                 target_language = 'en'
             self.translator_cache[value] = {}
