@@ -198,8 +198,6 @@ class Codelist:
                 json=json)
             response.raise_for_status()
         except Exception as e:
-            # print(json)
-            print(response.text)
             raise e
         self.logger.info('Códigos importados correctamente')
         ## Utilizar decoradores correctamente para los getters y setters sería clave.
@@ -261,17 +259,21 @@ class Codelist:
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
         if 'EN-GB' in target_language:
             target_language = 'en'
-        if value in self.translator_cache and target_language in self.translator_cache[value]:
-            self.logger.info('Valor encontrado en la caché de traducciones')
-            translation = self.translator_cache[value][target_language]
-        else:
-            if 'en' in target_language:
-                target_language = 'EN-GB'
-            self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
-            translation = str(self.translator.translate_text(value, target_lang=target_language))
-            if 'EN-GB' in target_language:
-                target_language = 'en'
-            self.translator_cache[value] = {}
-            self.translator_cache[value][target_language] = translation
-        self.logger.info('Traducido el término %s como %s', value, translation)
-        return translation
+        try:
+            if value in self.translator_cache and target_language in self.translator_cache[value]:
+                self.logger.info('Valor encontrado en la caché de traducciones')
+                translation = self.translator_cache[value][target_language]
+            else:
+                if 'en' in target_language:
+                    target_language = 'EN-GB'
+                self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
+                translation = str(self.translator.translate_text(value, target_lang=target_language))
+                if 'EN-GB' in target_language:
+                    target_language = 'en'
+                self.translator_cache[value] = {}
+                self.translator_cache[value][target_language] = translation
+            self.logger.info('Traducido el término %s como %s', value, translation)
+        except TypeError:
+            if value == 'España':
+                translation = 'Spain'
+        return translation.replace("\n", ' ')

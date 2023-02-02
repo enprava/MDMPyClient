@@ -89,7 +89,6 @@ class ConceptScheme:
                         column.append(None)
         return pandas.DataFrame(data=concepts, dtype='string')
 
-
     def get_sdmx(self, directory):
         self.logger.info('Obteniendo esquema conceptual con id %s en formato sdmx', self.id)
         try:
@@ -251,7 +250,8 @@ class ConceptScheme:
             self.translator_cache[value] = {}
             self.translator_cache[value][target_language] = translation
         self.logger.info('Traducido el término %s como %s', value, translation)
-        return translation
+        return translation.replace('\n', ' ')
+
     def init_concepts(self):
         self.concepts = self.get(True)
 
