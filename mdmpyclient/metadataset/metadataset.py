@@ -92,19 +92,21 @@ class Metadataset:
         report_id = self.id[self.id.find('_') + 1:]
         with open(f'{self.configuracion["directorio_sistema_informacion"]}descripciones.yaml', 'r',
                   encoding='utf-8') as file, \
-                open(f'{self.configuracion["directorio_metadatos_html"]}/REPORT_{report_id}', 'r',
+                open(f'{self.configuracion["directorio_metadatos_html"]}/REPORT_{report_id}.html', 'r',
                      encoding='utf-8') as report:
             info = yaml.safe_load(file)
             html = BeautifulSoup(report, 'html.parser')
+            file.close()
+            report.close()
         if report_id not in info:
             info[report_id] = {}
             descripcion = html.find(attrs={"id": "R12-r2"}).text
-            tags = html.find(attrs={"id": "R15-r2"}).findAll('strong')
             info[report_id]['descripcion'] = descripcion
-            info[report_id][tags] = tags
-            with open(f'{self.configuracion["directorio_sistema_informacion"]}descripciones.yaml', 'r',
-                      encoding='utf-8') as file: \
-                    yaml.dump(info, file)
+            info[report_id]['tags'] = []
+            with open(f'{self.configuracion["directorio_sistema_informacion"]}descripciones.yaml', 'w',
+                      encoding='utf-8') as file:
+                yaml.dump(info, file)
+                file.close()
 
     def download_all_reports(self):
         self.reports.apply(lambda x: self.download_report(x.code), axis=1)
