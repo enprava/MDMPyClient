@@ -27,7 +27,7 @@ class CategorySchemes:
 
        """
 
-    def __init__(self, session, configuracion, translator, translator_cache, init_data=False):
+    def __init__(self, session, configuracion, translator, translator_cache, init_data=True):
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
 
         self.session = session
