@@ -27,8 +27,6 @@ class Resource:
         try: #TEMPORAL, QUITAR PARA SUBIR A PRODUCCION
             with open(path, 'r', encoding='utf=8') as o_upload:
                 to_upload = o_upload
-                if res_format in 'html':
-                    print(to_upload)
                 self.ckan.action.resource_create(
                     package_id=dataset_id,
                     format=res_format,

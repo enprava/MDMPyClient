@@ -44,7 +44,7 @@ class Dataflow:
         self.cube_id = cube_id
         self.names = names
         self.des = des
-        # self.data = self.get() if init_data else None
+        self.data = self.get() if init_data else None
 
     def get_sdmx_struval(self, directory):
         self.logger.info('Obteniendo dataflow con id %s en formato sdmx', self.code)
