@@ -155,10 +155,16 @@ class MDM:
         self.put_all_sdmx(path)
 
     def put_all_sdmx(self, directory):
+        """
 
+              Args:
+                  directory: (:class:`String`) Sube todos los artefactos que se encuentran en el directorio
+
+              Returns: None
+
+              """
         for filename in os.scandir(directory):
             path = os.path.join(directory, filename.name)
-            imported_items = []
             importData = False
             with open(path, 'rb') as file:
                 body = {'file': ('test.xml', file, 'application/xml', {})}
@@ -174,7 +180,7 @@ class MDM:
                     response.raise_for_status()
                 except Exception as e:
                     raise e
-                self.logger.info('Reporte subido correctamente a la API, realizando importacion')
+                self.logger.info('Artefacto subido correctamente a la API, realizando importacion')
 
                 request_post_body = {"hashImport": response_body["hashImport"], "importedItem": []}
                 for importedItem in imported_items:
@@ -190,3 +196,9 @@ class MDM:
                         response.raise_for_status()
                     except Exception as e:
                         raise e
+
+    def synchronizeAuthDB(self):
+        try:
+            self.session.post(f'{self.configuracion["url_base"]}SynchronizeAuthDB').raise_for_status()
+        except Exception as e:
+            raise e
