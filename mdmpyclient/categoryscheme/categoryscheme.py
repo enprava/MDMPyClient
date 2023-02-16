@@ -142,6 +142,14 @@ class CategoryScheme:
         self.logger.info('Se han importado las categorías correctamente')
 
     def set_permissions(self, agencies=None):
+        """
+
+        Args:
+            agencies: (:class: `List`): Agencias a las que dar permiso
+
+        Returns:
+
+        """
         if not agencies:
             agencies = ["BE2", "BIS", "ECB", "ESC01", "ESTAT", "FAO", "IAEG-SDGs", "ILO", "IMF", "IT1", "OECD", "TN1",
                         "UNICEF", "UNSD", "WB", "SDMX", "IECA"]
