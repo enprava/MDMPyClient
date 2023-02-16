@@ -1,4 +1,5 @@
 import copy
+import json
 import logging
 import sys
 import subprocess
@@ -87,6 +88,50 @@ class Metadataset:
         with subprocess.Popen(f"mv $HOME/Downloads/{report_id}.html {self.configuracion['directorio_metadatos_html']}",
                               shell=True):
             driver.close()
+
+    def get_report(self):
+        actividad_consulta = self.id[self.id.find('_') + 1:]
+        actividad = actividad_consulta[:actividad_consulta.rfind('_')]
+        json_name = 'REPORT_' + actividad_consulta + '.json'
+        with open(f'{self.configuracion["directorio_reportes_metadatos"]}/{actividad}/{json_name}', 'r',
+                  encoding='utf-8') as json_file, open(self.configuracion['plantilla_reportes'], 'r',
+                                                       encoding='utf-8') as template_file:
+            reporte = json.load(json_file)
+            template = BeautifulSoup(template_file, 'html.parser')
+            json_file.close()
+            template_file.close()
+        return self.__get_report(actividad_consulta,reporte, template)
+
+    def __get_report(self, actividad_consulta, reporte, template):
+        reporte = reporte['data']['metadataSets'][0]['reports'][0]['attributeSet']['reportedAttributes']
+        # ID del reporte
+        template.find(attrs={'id': 'introtable'}).next.next.next.string = f'REPORT_{actividad_consulta}'
+        # Referencia al dataflow
+        template.find(attrs={'id': 'span-DATAFLOW'}).string = f'DF_{actividad_consulta}'
+        # Recorremos todos los puntos R...
+        rindex = 1
+        i = 0
+        j = 0
+        while True:
+            try:
+                aux = reporte[i]['attributeSet']['reportedAttributes']
+                while True:
+                    try:
+                        template.find(attrs={'id': f'R{rindex}-r2'}).string = aux[j]['texts']['es']
+                        rindex += 1
+                        j += 1
+                    except IndexError:
+                        j = 0
+                        i += 1
+                        break
+            except IndexError:
+                break
+
+        # Escribimos en fichero
+        with open(f'{self.configuracion["directorio_metadatos_html"]}/REPORT_{actividad_consulta}.html', 'w',
+                  encoding='utf-8') as reporte_file:
+            reporte_file.write(str(template))
+            reporte_file.close()
 
     def extract_info_html(self):
         report_id = self.id[self.id.find('_') + 1:]
