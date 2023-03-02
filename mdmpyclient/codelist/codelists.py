@@ -70,6 +70,14 @@ class Codelists:
         return codelists
 
     def get_all_sdmx(self, directory):
+        """
+
+        Args:
+            directory: (:class:`String`) Directorio donde se van a guardar todas las codelist en formato sdmx
+
+        Returns: None
+
+        """
         self.logger.info('Obteniendo todos los dataflows en formato sdmx')
         for cl in self.codelist_list:
             cl.get_sdmx(directory)
@@ -127,6 +135,14 @@ class Codelists:
         self.data[codelist.agency_id][codelist.id][codelist.version] = codelist
 
     def translate(self, data):
+        """
+
+        Args:
+            data: (:class:`Dictionary`) Diccionario de claves idiomas en cadenas de caracteres y de valores cadenas de caracteres.
+
+        Returns:
+
+        """
         result = copy.deepcopy(data)
         languages = copy.deepcopy(self.configuracion['languages'])
         to_translate_langs = list(set(languages) - set(result.keys()))
