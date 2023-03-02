@@ -85,9 +85,13 @@ class Metadataset:
         driver.implicitly_wait(10)
         driver.find_element(By.ID, 'download-report-button').click()
         driver.implicitly_wait(1)
-        with subprocess.Popen(f"mv $HOME/Downloads/{report_id}.html {self.configuracion['directorio_metadatos_html']}",
+
+        with subprocess.Popen(f"MOVE /Y C:\\Users\\index\\Downloads\\" + report_id+".html C:\\IndexaEduardo\\Main_sdmx\\main_sdmx\\sistema_informacion\\metadatos_html",
                               shell=True):
             driver.close()
+        # with subprocess.Popen(f"mv $HOME/Downloads/{report_id}.html {self.configuracion['directorio_metadatos_html']}",
+        #                       shell=True):
+        #     driver.close()
 
     def get_report(self):
         actividad_consulta = self.id[self.id.find('_') + 1:]

@@ -94,13 +94,13 @@ class DSDs:
                                                init_data)
         return dsd
 
-    def put(self, agency, dsd_id, version, names, des, dimensions):
+    def put(self, agency, dsd_id, version, names, des, dimensions,validFrom,validTo):
         try:
             dsd = self.data[agency][dsd_id][version]
             self.logger.info('El DSD con id %s ya se encuentra en la API', dsd.id)
         except Exception:
             self.logger.info('Creando DSD con ID %s', dsd_id)
-            self._put(agency, dsd_id, version, names, des, dimensions)
+            self._put(agency, dsd_id, version, names, des, dimensions,validFrom,validTo)
 
             if agency not in self.data:
                 self.data[agency] = {}
@@ -111,11 +111,11 @@ class DSDs:
             dsd = self.data[agency][dsd_id][version]
         return dsd
 
-    def _put(self, agency, dsd_id, version, names, des, dimensions):
+    def _put(self, agency, dsd_id, version, names, des, dimensions,validFrom,validTo):
         format_dimensions = self.format_dimensions(dimensions)
         json = {"meta": {},
                 "data": {"dataStructures": [{"id": dsd_id, "version": version, "agencyID": agency, "names":
-                    names, "description": des, "isFinal": "true", "dataStructureComponents": {
+                    names, "validFrom": validFrom, "validTo":validTo,"description": des, "isFinal": "true", "dataStructureComponents": {
                     "measureList": {"id": "MeasureDescriptor", "primaryMeasure":
                         {"id": "OBS_VALUE", "conceptIdentity":
                             "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=" + \
@@ -154,6 +154,7 @@ class DSDs:
                                                       "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
                                                       "assignmentStatus": "Conditional"}]}}}]}}
         try:
+            print("Json a postear -> ",json)
             response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:
