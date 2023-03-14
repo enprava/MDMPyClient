@@ -80,6 +80,14 @@ class CategoryScheme:
         return pandas.DataFrame(data=categories, dtype='string')
 
     def get_sdmx(self, directory):
+        """
+
+        Args:
+            directory: Obtiene el esquema de categorías en formato sdmx.
+
+        Returns: None
+
+        """
         self.logger.info('Obteniendo esquema de categoría con id %s en formato sdmx', self.id)
         try:
 
@@ -94,11 +102,18 @@ class CategoryScheme:
             file.write(response.text)
             file.close()
 
-
-
-
-
     def add_category(self, category_id, parent, name, des):
+        """
+
+        Args:
+            category_id: Id de la categoría que se va a añadir.
+            parent: Parent de la categoría que se va a añadir.
+            name: Nombre de la categoría que se va a añadir.
+            des: Descripción de la categoría que se va a añadir.
+
+        Returns: None
+
+        """
         if category_id.upper() not in self.categories_to_upload.Id.values:
             self.categories_to_upload.loc[len(self.categories_to_upload)] = [category_id.upper(), parent, name, des]
 
@@ -122,6 +137,16 @@ class CategoryScheme:
             self.logger.info('El esquema de categorías con id %s está actualizado', self.id)
 
     def create_cube_category(self, cube_id, parent, names):
+        """
+
+        Args:
+            cube_id: Id de la de categoría que se va a crear
+            parent: Parent de la categoría que se va a crear
+            names: Nombre de la categoría que se va a crear
+
+        Returns: None
+
+        """
         if cube_id not in self.categories.id.values:
             json = {"catCode": cube_id, "parCode": parent, "ord": None, "labels": names}
             try:
@@ -131,6 +156,11 @@ class CategoryScheme:
                 raise e
 
     def import_dcs(self):
+        """
+
+            Establece el esquema de categoría como predeterminado en el gestor de cubos
+
+        """
         self.logger.info(
             'Se van a importar todas las categorías del esquema con id %s a las categorías de los cubos(DCS)', self.id)
         try:
@@ -142,9 +172,17 @@ class CategoryScheme:
         self.logger.info('Se han importado las categorías correctamente')
 
     def set_permissions(self, agencies=None):
+        """
+
+        Args:
+            agencies: (:class: `List`): Agencias a las que dar permiso
+
+        Returns:
+
+        """
         if not agencies:
             agencies = ["BE2", "BIS", "ECB", "ESC01", "ESTAT", "FAO", "IAEG-SDGs", "ILO", "IMF", "IT1", "OECD", "TN1",
-                        "UNICEF", "UNSD", "WB"]
+                        "UNICEF", "UNSD", "WB", "SDMX", "IECA"]
         token = self.session.headers['Authorization'][7:]
         categories = []
         try:
@@ -190,6 +228,14 @@ class CategoryScheme:
         self.logger.info('Permisos establecidos correctamnte')
 
     def get_category_hierarchy(self, category):
+        """
+
+        Args:
+            category: (:class:`String`): Id de la categoría que se quiere encontrar
+
+        Returns: Jerarquía de categorías
+
+        """
         self.logger.info('Obteniendo jerarquía de la categoría %s', category)
         hierarchy = self._get_category_hierarchy(category, category)
         self.logger.info('La jerarquía obtenida es %s', hierarchy)
@@ -275,6 +321,11 @@ class CategoryScheme:
         return dcs
 
     def translate(self):
+        """
+
+            Traduce el esquema de categorías.
+
+        """
         languages = copy.deepcopy(self.configuracion['languages'])
         self.logger.info('Iniciando proceso de traducción para el esquema de categorías con id %s', self.id)
         categories = self.__translate(self.categories)

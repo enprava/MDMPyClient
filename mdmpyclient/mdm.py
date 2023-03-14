@@ -58,7 +58,7 @@ class MDM:
         with open(self.configuracion['cache'], 'r', encoding='utf-8') as cache_file:
             self.translator_cache = yaml.safe_load(cache_file)
 
-        self.session = self.authenticate()
+        self.login()
         self.initialize(init_data)
 
     def initialize(self, init_data):
@@ -68,7 +68,7 @@ class MDM:
                                               init_data)
 
         self.category_schemes = CategorySchemes(self.session, self.configuracion, self.translator,
-                                                self.translator_cache, init_data)
+                                                self.translator_cache)
 
         self.dsds = DSDs(self.session, self.configuracion)
 
@@ -76,13 +76,16 @@ class MDM:
 
         self.mappings = Mappings(self.session, self.configuracion)
 
-        self.dataflows = Dataflows(self.session, self.configuracion, self.translator, self.translator_cache,init_data)
+        self.dataflows = Dataflows(self.session, self.configuracion, self.translator, self.translator_cache, init_data)
 
         self.msds = MSDs(self.session, self.configuracion)
 
         self.metadataflows = Metadataflows(self.session, self.configuracion)
 
         self.metadatasets = Metadatasets(self.session, self.configuracion, init_data)
+
+    def login(self):
+        self.session = self.authenticate()
 
     def authenticate(self):
         headers = {'nodeId': self.configuracion['nodeId'], 'language': self.configuracion['languages'][0],
@@ -136,8 +139,7 @@ class MDM:
         self.codelists.delete_all(agency)
         self.initialize(True)
 
-
-    def put(self,directory):
+    def put(self, directory):
 
         path = os.path.join(directory, "origin")
         self.put_all_sdmx(path)
@@ -152,13 +154,17 @@ class MDM:
         path = os.path.join(directory, "dataflows")
         self.put_all_sdmx(path)
 
-
-
     def put_all_sdmx(self, directory):
+        """
 
+              Args:
+                  directory: (:class:`String`) Sube todos los artefactos que se encuentran en el directorio
+
+              Returns: None
+
+              """
         for filename in os.scandir(directory):
             path = os.path.join(directory, filename.name)
-            imported_items = []
             importData = False
             with open(path, 'rb') as file:
                 body = {'file': ('test.xml', file, 'application/xml', {})}
@@ -174,9 +180,9 @@ class MDM:
                     response.raise_for_status()
                 except Exception as e:
                     raise e
-                self.logger.info('Reporte subido correctamente a la API, realizando importacion')
+                self.logger.info('Artefacto subido correctamente a la API, realizando importacion')
 
-                request_post_body = {"hashImport": response_body["hashImport"] , "importedItem" : []}
+                request_post_body = {"hashImport": response_body["hashImport"], "importedItem": []}
                 for importedItem in imported_items:
 
                     if importedItem["isOk"]:
@@ -191,7 +197,8 @@ class MDM:
                     except Exception as e:
                         raise e
 
-
-
-
-
+    def synchronizeAuthDB(self):
+        try:
+            self.session.post(f'{self.configuracion["url_base"]}SynchronizeAuthDB').raise_for_status()
+        except Exception as e:
+            raise e

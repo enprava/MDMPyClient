@@ -68,30 +68,6 @@ class Cube:
                          'codes': codes})
         return components
 
-    # def get(self):
-    #     data = {}
-    #    request_data = {'FilterTable': [], 'PageNum': 1, 'PageSize': 2147483647, 'SortByDesc': False, 'SortCols': None}
-    #     self.logger.info('Solicitando información del cubo con id %s', self.cube_id)
-    #     try:
-    #         response = self.session.post(
-    #             f'{self.configuracion["url_base"]}getTablePreview/Dataset_{self.cube_id}_ViewCurrentData',
-    #             json=request_data)
-    #         response_data = response.json()
-    #     except KeyError:
-    #         self.logger.error('Ha ocurrido un error mientras se cargaban los datos del cubo con id: %s', self.cube_id)
-    #         self.logger.error(response.text)
-    #         return data
-    #     except Exception as e:
-    #         raise e
-    #
-    #     for column in response_data['Columns']:
-    #         data[column] = []
-    #
-    #     for row in response_data['Data']:
-    #         for measure, item in row.items():
-    #             data[measure].append(item)
-    #     return pandas.DataFrame(data=data, dtype='string')
-
     def init_data(self):
         self.components = self.get()
 

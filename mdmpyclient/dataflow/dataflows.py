@@ -74,7 +74,7 @@ class Dataflows:
         return data
 
     # comentario-tox: partir la funcion en dos
-    def put(self, code, agency, version, names, des, columns, cube_id, dsd, category_scheme, category):
+    def put(self, code, agency, version, names, des, columns, cube_id, dsd, category_scheme, category, validFrom, validTo):
 
         self.logger.info('Creando dataflow con id %s', code)
         try:
@@ -86,7 +86,7 @@ class Dataflows:
 
         if self.configuracion['translate']:
             self.logger.info('Traduciendo nombre y descripción del dataflow con id (code) %s', code)
-            info_translated = [self.traslate(names), self.translate(des) if des else None]
+            info_translated = [self.translate(names), self.translate(des) if des else None]
 
         else:
             info_translated = [names, des]
@@ -96,11 +96,17 @@ class Dataflows:
         json = {
             "ddbDF": {"ID": code, "Agency": agency, "Version": version, "labels": info_translated[0], "IDCube": cube_id,
                       "DataflowColumns": columns,
-                      "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}}, "msdbDF": {"meta": {}, "data": {
+                      "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}},
+
+            "msdbDF": {"meta": {}, "data": {
                 "dataflows": [
                     {"id": code, "version": version, "agencyID": agency, "isFinal": True, "names": info_translated[0],
                      "structure": "urn:sdmx:org.sdmx.infomodel.datastructure.Data" + \
-                                  f"Structure={dsd.agency_id}:{dsd.id}({dsd.version})"}]}},
+                                  f"Structure={dsd.agency_id}:{dsd.id}({dsd.version})",
+                     "validFrom": validFrom,
+                     "validTo": validTo
+
+                     }]}},
             "msdbCat": {"meta": {}, "data": {"categorisations": [
                 {"id": f"CAT_{code}_{cube_id}", "version": version, "agencyID": agency, "names": {"en": f"CAT_{code}"},
                  "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{code}({version})",
@@ -124,6 +130,7 @@ class Dataflows:
         if des_translated:
             json['msdbDF']['data']['dataflows'][0]['descriptions'] = des_translated
         try:
+            print("json a postear -> ",json)
             response = self.session.post(f'{self.configuracion["url_base"]}createDDBDataflow', json=json)
             response.raise_for_status()
         except Exception as e:

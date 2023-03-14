@@ -14,10 +14,11 @@ class Datasets:
         self.datasets = ckan.call_action('package_list')
         self.logger.info('Se han obtenido todos los datasets')
 
-    def create(self, ds_id, title, org_id, ds_license='License not specified'):
+    def create(self, ds_id, title, org_id, group_id, notes, extras, tags, ds_license=None):
         self.logger.info('Creando dataset con id %s', ds_id)
         self.ckan.call_action('package_create', {'name': ds_id, 'private': False, 'title': title, 'owner_org': org_id,
-                                                 'license_id': self.licenses[ds_license]})
+                                                 'license_id': self.licenses[ds_license], 'groups': [{'id': group_id}],
+                                                 'notes': notes, 'extras': extras, 'tags': tags})
         self.datasets.append(ds_id)
         self.logger.info('Dataset creado correctamente')
 
@@ -35,4 +36,5 @@ class Datasets:
         for ds_license in response:
             licenses[ds_license['title']] = ds_license['id']
         self.logger.info('Licencias extraidas correctamente')
+        licenses[None] = 'notspecified'
         return licenses

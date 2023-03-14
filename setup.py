@@ -6,7 +6,6 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-
 def read(filename):
     filename = os.path.join(os.path.dirname(__file__), filename)
     text_type = type(u"")
@@ -16,7 +15,7 @@ def read(filename):
 
 setup(
     name="MDMPyClient",
-    version="1.0.0",
+    version="1.0.1",
     url="https://github.com/enprava/MDMPyClient",
     license='MIT',
 
@@ -32,7 +31,8 @@ setup(
         "": ["configuracion/*.yaml"],
     },
 
-    install_requires=[],
+    install_requires=['requests==2.28.2', 'PyYAML==6.0', 'pandas==1.4.4', 'ckanapi==4.7', 'beautifulsoup4==4.11.1',
+                      'selenium==4.4.0', 'deepl==1.9.0', 'ftfy==6.1.1'],
 
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

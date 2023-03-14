@@ -57,10 +57,6 @@ class Codelist:
             codes[f'des_{language}'] = []
         if init_data:
             try:
-                # response = self.session.post(f'{self.configuracion["url_base"]}NOSQL/codelist/',
-                #                              json={"id": self.id, "agencyId": self.agency_id, "version": self.version,
-                #                                    "lang": "es", "pageNum": 1, "pageSize": 2147483647,
-                #                                    "rebuildDb": False})
                 response = self.session.get(
                     f'{self.configuracion["url_base"]}codelist/{self.id}/{self.agency_id}/{self.version}/1/2147483647')
                 response_data = response.json()['data']['codelists'][0]['codes']
@@ -107,6 +103,14 @@ class Codelist:
             self.logger.info('La codelist no ha sido eliminada debido a un error en el servidor')
 
     def get_sdmx(self, directory):
+        """
+
+        Args:
+            directory: (:class:`String`) Directorio en el que se escribira el fichero con la codelist en formato sdmx
+
+        Returns: None
+
+        """
         self.logger.info('Obteniendo codelist con id %s en formato sdmx', self.id)
         try:
             response = self.session.get(
@@ -121,6 +125,17 @@ class Codelist:
             file.close()
 
     def add_code(self, code_id, parent, name, des):
+        """
+
+        Args:
+            code_id: Id del código que queremos añadir
+            parent: Parent del código que queremos añadir
+            name: Nombre del código que queremos añadir
+            des: Descricpión del código que queremos añadir
+
+        Returns: None
+
+        """
         if code_id.upper() not in self.codes.id.values:
             if name:
                 name = fix_encoding(name)
@@ -128,12 +143,15 @@ class Codelist:
                 des = fix_encoding(des)
             self.codes_to_upload.loc[len(self.codes_to_upload)] = [code_id.upper(), parent, name, des]
 
-    # def add_codes(self, codes):
-    #     codes.apply(
-    #         lambda codigos: self.add_code(codigos['ID'], codigos['PARENTCODE'], codigos['NAME'],
-    #                                       codigos['DESCRIPTION']), axis=1)
-    #
     def add_codes(self, codes):
+        """
+
+        Args:
+            codes: (:class:`pandas.Dataframe`) Códigos a traducir
+
+        Returns: None
+
+        """
         try:  # SOLUCION TEMPORAL QUE HABRA QUE CAMBIAR
             codes.columns = ['Id', 'Name', 'Description', 'ParentCode', 'ORDER']
         except:
@@ -198,8 +216,6 @@ class Codelist:
                 json=json)
             response.raise_for_status()
         except Exception as e:
-            # print(json)
-            print(response.text)
             raise e
         self.logger.info('Códigos importados correctamente')
         ## Utilizar decoradores correctamente para los getters y setters sería clave.
@@ -212,9 +228,16 @@ class Codelist:
         return f'{self.agency_id} {self.id} {self.version}'
 
     def translate(self):
+        """
+        Hace uso de la variable 'languages' definida en el fichero de configuración
+
+        Returns: (:class:`pandas.Dataframe`) Con los códigos traducidos
+
+        """
         languages = copy.deepcopy(self.configuracion['languages'])
 
         codes = self.__translate(self.codes)
+        codes = codes.drop_duplicates('id', keep='last')  # TODO
         columns = {"id": 0, "name": 2, "description": 3, "parent": 1, "order": -1, "fullName": -1,
                    "isDefault": -1}
         n_translations = len(codes)
@@ -224,7 +247,6 @@ class Codelist:
                 codes_to_upload = codes[['id', 'parent', f'name_{language}', f'des_{language}']].copy(deep=True)
                 codes_to_upload.columns = ['Id', 'Parent', 'Name', 'Description']
                 csv = codes_to_upload.to_csv(sep=';', index=False).encode(encoding='utf-8')
-
                 response = self.__upload_csv(csv, columns, lang=language)
                 self.__import_csv(response)
         self.codes = codes
@@ -261,17 +283,21 @@ class Codelist:
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
         if 'EN-GB' in target_language:
             target_language = 'en'
-        if value in self.translator_cache and target_language in self.translator_cache[value]:
-            self.logger.info('Valor encontrado en la caché de traducciones')
-            translation = self.translator_cache[value][target_language]
-        else:
-            if 'en' in target_language:
-                target_language = 'EN-GB'
-            self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
-            translation = str(self.translator.translate_text(value, target_lang=target_language))
-            if 'EN-GB' in target_language:
-                target_language = 'en'
-            self.translator_cache[value] = {}
-            self.translator_cache[value][target_language] = translation
-        self.logger.info('Traducido el término %s como %s', value, translation)
-        return translation
+        try:
+            if value in self.translator_cache and target_language in self.translator_cache[value]:
+                self.logger.info('Valor encontrado en la caché de traducciones')
+                translation = self.translator_cache[value][target_language]
+            else:
+                if 'en' in target_language:
+                    target_language = 'EN-GB'
+                self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
+                translation = str(self.translator.translate_text(value, target_lang=target_language))
+                if 'EN-GB' in target_language:
+                    target_language = 'en'
+                self.translator_cache[value] = {}
+                self.translator_cache[value][target_language] = translation
+            self.logger.info('Traducido el término %s como %s', value, translation)
+        except TypeError:
+            if value == 'España':
+                translation = 'Spain'
+        return translation.replace("\n", ' ')

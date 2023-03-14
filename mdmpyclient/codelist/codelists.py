@@ -1,7 +1,7 @@
 import copy
 import logging
 import sys
-#import os
+# import os
 import yaml
 from ftfy import fix_encoding
 
@@ -63,13 +63,21 @@ class Codelists:
                 codelists[agency][codelist_id] = {}
 
             cl = Codelist(self.session, self.configuracion, self.translator,
-                                                               self.translator_cache, codelist_id, agency,
-                                                               version, names, des, init_data=init_data)
+                          self.translator_cache, codelist_id, agency,
+                          version, names, des, init_data=init_data)
             codelists[agency][codelist_id][version] = cl
             self.codelist_list.append(cl)
         return codelists
 
     def get_all_sdmx(self, directory):
+        """
+
+        Args:
+            directory: (:class:`String`) Directorio donde se van a guardar todas las codelist en formato sdmx
+
+        Returns: None
+
+        """
         self.logger.info('Obteniendo todos los dataflows en formato sdmx')
         for cl in self.codelist_list:
             cl.get_sdmx(directory)
@@ -127,6 +135,14 @@ class Codelists:
         self.data[codelist.agency_id][codelist.id][codelist.version] = codelist
 
     def translate(self, data):
+        """
+
+        Args:
+            data: (:class:`Dictionary`) Diccionario de claves idiomas en cadenas de caracteres y de valores cadenas de caracteres.
+
+        Returns:
+
+        """
         result = copy.deepcopy(data)
         languages = copy.deepcopy(self.configuracion['languages'])
         to_translate_langs = list(set(languages) - set(result.keys()))
@@ -146,26 +162,31 @@ class Codelists:
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
         if 'EN-GB' in target_language:
             target_language = 'en'
-        if value in self.translator_cache and target_language in self.translator_cache[value]:
-            self.logger.info('Valor encontrado en la caché de traducciones')
-            translation = self.translator_cache[value][target_language]
-        else:
-            if 'en' in target_language:
-                target_language = 'EN-GB'
-            self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
-            translation = str(self.translator.translate_text(value, target_lang=target_language))
-            if 'EN-GB' in target_language:
-                target_language = 'en'
-            self.translator_cache[value] = {}
-            self.translator_cache[value][target_language] = translation
-        self.logger.info('Traducido el término %s como %s', value, translation)
+
+        try:
+            if value in self.translator_cache and target_language in self.translator_cache[value]:
+                self.logger.info('Valor encontrado en la caché de traducciones')
+                translation = self.translator_cache[value][target_language]
+            else:
+                if 'en' in target_language:
+                    target_language = 'EN-GB'
+                self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
+                translation = str(self.translator.translate_text(value, target_lang=target_language))
+                if 'EN-GB' in target_language:
+                    target_language = 'en'
+                self.translator_cache[value] = {}
+                self.translator_cache[value][target_language] = translation
+            self.logger.info('Traducido el término %s como %s', value, translation)
+        except:
+            translation = 'Error de traducción automática. Póngase en contacto con el administrador.'
+
         return translation
 
     def delete_all(self, agency):
         try:  # Miramos que no este vacio self.data
             for codelist_id, dict_codelist in self.data[agency].items():
                 for codelist in dict_codelist.values():
-                    if codelist_id in ('OBS_STATUS','CL_SEXO'):
+                    if codelist_id in ('OBS_STATUS', 'CL_SEXO'):
                         continue
                     codelist.delete()
         except KeyError:
