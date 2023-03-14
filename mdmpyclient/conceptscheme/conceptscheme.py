@@ -235,6 +235,7 @@ class ConceptScheme:
     def __get_translate(self, value, target_language):
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
+
         if 'EN-GB' in target_language:
             target_language = 'en'
         if value in self.translator_cache and target_language in self.translator_cache[value]:

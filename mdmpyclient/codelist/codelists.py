@@ -162,6 +162,7 @@ class Codelists:
         self.logger.info('Traduciendo el término %s al %s', value, target_language)
         if 'EN-GB' in target_language:
             target_language = 'en'
+
         try:
             if value in self.translator_cache and target_language in self.translator_cache[value]:
                 self.logger.info('Valor encontrado en la caché de traducciones')
@@ -178,6 +179,7 @@ class Codelists:
             self.logger.info('Traducido el término %s como %s', value, translation)
         except:
             translation = 'Error de traducción automática. Póngase en contacto con el administrador.'
+
         return translation
 
     def delete_all(self, agency):
