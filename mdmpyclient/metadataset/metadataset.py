@@ -11,7 +11,7 @@ import yaml
 from bs4 import BeautifulSoup
 
 from selenium.webdriver.common.by import By
-from seleniumwire import webdriver
+from selenium import webdriver
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
