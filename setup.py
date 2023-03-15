@@ -15,7 +15,7 @@ def read(filename):
 
 setup(
     name="MDMPyClient",
-    version="1.0.1",
+    version="1.0.2",
     url="https://github.com/enprava/MDMPyClient",
     license='MIT',
 
