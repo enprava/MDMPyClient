@@ -1,10 +1,10 @@
 from ckanapi import RemoteCKAN
 
-from mdmpyclient.ckan.dataset import Datasets
-from mdmpyclient.ckan.groups import Groups
-from mdmpyclient.ckan.organizations import Organizations
-from mdmpyclient.ckan.resource import Resource
-from mdmpyclient.ckan.tags import Tags
+from dataset import Datasets
+from groups import Groups
+from organizations import Organizations
+from resource import Resource
+from tags import Tags
 
 
 class Ckan:

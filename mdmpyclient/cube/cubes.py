@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from mdmpyclient.cube.cube import Cube
+from cube import Cube
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)

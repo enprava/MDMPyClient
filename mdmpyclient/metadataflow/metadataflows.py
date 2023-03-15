@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from mdmpyclient.metadataflow.metadataflow import Metadataflow
+from metadataflow import Metadataflow
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)

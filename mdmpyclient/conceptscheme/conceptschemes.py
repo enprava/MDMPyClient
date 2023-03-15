@@ -4,7 +4,7 @@ import sys
 #import os
 import yaml
 
-from mdmpyclient.conceptscheme.conceptscheme import ConceptScheme
+from conceptscheme import ConceptScheme
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
