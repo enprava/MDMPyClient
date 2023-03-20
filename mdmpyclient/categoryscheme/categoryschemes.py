@@ -5,7 +5,7 @@ import os
 import copy
 import requests
 
-from mdmpyclient.categoryscheme import CategoryScheme
+from mdmpyclient.categoryscheme.categoryscheme import CategoryScheme
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
