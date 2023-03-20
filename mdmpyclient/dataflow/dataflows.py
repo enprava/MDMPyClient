@@ -3,7 +3,7 @@ import sys
 import copy
 import yaml
 
-from dataflow import Dataflow
+from mdmpyclient.dataflow.dataflow import Dataflow
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)

@@ -4,7 +4,7 @@ import os
 import requests
 import copy
 
-from dsd import DSD
+from mdmpyclient.dsd.dsd import DSD
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
