@@ -32,20 +32,14 @@ class Groups:
         self.logger.info('Creando grupo con id %s', group_id)
         if pd.isna(name):
             name = group_id
-        if not pd.isna(parent):
-            self.ckan.call_action('group_create', {'name': group_id.lower(), 'title': name.lower(),
-                                                   "groups":
-                                                       [{
-                                                           "name": parent.lower()
-                                                       }]
-                                                   })
-        else:
-            self.ckan.call_action('group_create', {'name': group_id.lower(), 'title': name.lower(),
-                                                   "groups":
-                                                       [{
-                                                           "name": "child-group"
-                                                       }]
-                                                   })
+
+        self.ckan.call_action('group_create', {'id': group_id.lower(), 'name': name, 'title': name.lower(),
+                                               "groups":
+                                                   [{
+                                                       "name": parent.lower() if not pd.isna(parent) else "child-group"
+                                                   }]
+                                               })
+
         self.logger.info('grupo creado correctamente')
 
     def create_groups(self, groups):
