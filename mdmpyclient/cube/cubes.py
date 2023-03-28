@@ -8,7 +8,6 @@ logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class Cubes:
-
     """ Clase que representa el conjunto de cubes del M&D Manager.
 
        Args:
@@ -55,11 +54,11 @@ class Cubes:
             names = cube['labels']
 
             cubes[cube_code] = Cube(self.session, self.configuracion, cube_id, cube_code, cat_id, dsd_code, names,
-                                  init_data)
+                                    init_data)
 
         return cubes
 
-    def put(self, cube_id, cube_cat_id, dsd_id, descripcion, dimensiones):
+    def put(self, cube_id, cube_cat_id, dsd_id, descripcion, dimensiones, is_alphanumeric=False):
         self.logger.info('Se ha solicitado crear el cubo de la consulta con id %s', cube_id)
         if cube_id in self.data:
             self.logger.info('El cubo ya se encuentra en la API. Con  %s', cube_id)
@@ -93,7 +92,7 @@ class Cubes:
                 }],
                 "Measures": [{
                     "Code": "OBS_VALUE",
-                    "IsAlphanumeric": False
+                    "IsAlphanumeric": is_alphanumeric
                 }]}
 
         for dimension in dimensiones:
