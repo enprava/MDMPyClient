@@ -71,7 +71,7 @@ class Dataflow:
             response.raise_for_status()
         except Exception as e:
             raise e
-        path = os.path.join(directory, self.code + '.xml')
+        path = os.path.join(directory,self.code.split("_")[1], self.code + '.xml')
         with open(path, 'w', encoding='utf-8') as file:
             file.write(response.text)
             file.close()

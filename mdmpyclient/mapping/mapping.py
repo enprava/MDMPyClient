@@ -59,7 +59,7 @@ class Mapping:
             components.append({'id_comp': comp_id, 'column': column, 'column_mapped': column_mapped, 'type': comp_type})
         return components
 
-    def load_cube(self, data):
+    def load_cube(self, data,dsd_name = "None", df_name = "None"):
         # if self.cube_is_loaded():
         self.logger.info('Cargando datos en el cubo con id %s', self.cube_id)
         csv = data.to_csv(sep=';', index=False).encode(encoding='utf-8')
@@ -74,6 +74,7 @@ class Mapping:
             response = self.session.post(f'{self.configuracion["url_base"]}uploadFileOnServer/{self.cube_id}',
                                          data=body, headers=upload_headers)
             response.raise_for_status()
+
         except Exception as e:
             raise e
 
@@ -88,8 +89,22 @@ class Mapping:
                 f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/'
                 f'{self.cube_id}/{self.id}?filePath='+path+'&checkFiltAttributes=true')
             response_info = response.json()
+            print("        ** ** ** ** ** ** ** ** ** * ")
+            print("       *                          * ")
+            print("      *    Validation Report     *")
+            print("     *                          *")
+            print("    ** ** ** ** ** ** ** ** ** *")
+            print("===========================================================================")
+            print("El cubo vinculado con el dataflow", df_name ," relacionado con el DSD",dsd_name,
+                  "se ha logrado importar con una cantidad de", len(response_info["WrongLines"]), "lineas erroneas")
+            print("-")
+            print("Se puede observar la repuesta del servidor:")
+            response_errors = {'WarnDictionary':response_info['WarnDictionary'],'WrongLines':response_info['WrongLines']}
+            print(response_errors)
+            print("===========================================================================")
             response.raise_for_status()
         except Exception as e:
+            print("el dato ", data)
             print(response.text)
             raise e
         if response_info['WarnDictionary']:
