@@ -92,26 +92,51 @@ class Dataflows:
             info_translated = [names, des]
 
         hierarchy = category_scheme.get_category_hierarchy(category)
+        json = None
+        if validFrom is None:
 
-        json = {
-            "ddbDF": {"ID": code, "Agency": agency, "Version": version, "labels": info_translated[0], "IDCube": cube_id,
-                      "DataflowColumns": columns,
-                      "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}},
+            json = {
+                "ddbDF": {"ID": code, "Agency": agency, "Version": version, "labels": info_translated[0],
+                          "IDCube": cube_id,
+                          "DataflowColumns": columns,
+                          "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}},
 
-            "msdbDF": {"meta": {}, "data": {
-                "dataflows": [
-                    {"id": code, "version": version, "agencyID": agency, "isFinal": True, "names": info_translated[0],
-                     "structure": "urn:sdmx:org.sdmx.infomodel.datastructure.Data" + \
-                                  f"Structure={dsd.agency_id}:{dsd.id}({dsd.version})",
-                     "validFrom": validFrom,
-                     "validTo": validTo
+                "msdbDF": {"meta": {}, "data": {
+                    "dataflows": [
+                        {"id": code, "version": version, "agencyID": agency, "isFinal": True,
+                         "names": info_translated[0],
+                         "structure": "urn:sdmx:org.sdmx.infomodel.datastructure.Data" + \
+                                      f"Structure={dsd.agency_id}:{dsd.id}({dsd.version})",
 
-                     }]}},
-            "msdbCat": {"meta": {}, "data": {"categorisations": [
-                {"id": f"CAT_{code}_{cube_id}", "version": version, "agencyID": agency, "names": {"en": f"CAT_{code}"},
-                 "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{code}({version})",
-                 "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}" + \
-                           f":{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
+
+                         }]}},
+                "msdbCat": {"meta": {}, "data": {"categorisations": [
+                    {"id": f"CAT_{code}_{cube_id}", "version": version, "agencyID": agency,
+                     "names": {"en": f"CAT_{code}"},
+                     "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{code}({version})",
+                     "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}" + \
+                               f":{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
+        else:
+
+            json = {
+                "ddbDF": {"ID": code, "Agency": agency, "Version": version, "labels": info_translated[0], "IDCube": cube_id,
+                          "DataflowColumns": columns,
+                          "filter": {"FiltersGroupAnd": {}, "FiltersGroupOr": {}}},
+
+                "msdbDF": {"meta": {}, "data": {
+                    "dataflows": [
+                        {"id": code, "version": version, "agencyID": agency, "isFinal": True, "names": info_translated[0],
+                         "structure": "urn:sdmx:org.sdmx.infomodel.datastructure.Data" + \
+                                      f"Structure={dsd.agency_id}:{dsd.id}({dsd.version})",
+                         "validFrom": validFrom,
+                         "validTo": validTo
+
+                         }]}},
+                "msdbCat": {"meta": {}, "data": {"categorisations": [
+                    {"id": f"CAT_{code}_{cube_id}", "version": version, "agencyID": agency, "names": {"en": f"CAT_{code}"},
+                     "source": f"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow={agency}:{code}({version})",
+                     "target": f"urn:sdmx:org.sdmx.infomodel.categoryscheme.Category={category_scheme.agency_id}" + \
+                               f":{category_scheme.id}({category_scheme.version}).{hierarchy}"}]}}}
 
         dataflow_id = self.translate_json(info_translated[1], json)
 
@@ -166,6 +191,9 @@ class Dataflows:
             if 'en' in target_language:
                 target_language = 'EN-GB'
             self.logger.info('Realizando petición a deepl para traducir el valor %s al %s', value, target_language)
+            # #correción para los dataflow sin nombre
+            # if not value:
+            #     return "Sin nombre"
             translation = str(self.translator.translate_text(value, target_lang=target_language))
             if 'EN-GB' in target_language:
                 target_language = 'en'

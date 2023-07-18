@@ -1,6 +1,9 @@
 import logging
 import sys
 import requests
+import sys
+from contextlib import redirect_stdout
+import os
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -62,6 +65,7 @@ class Mapping:
     def load_cube(self, data,dsd_name = "None", df_name = "None"):
         # if self.cube_is_loaded():
         self.logger.info('Cargando datos en el cubo con id %s', self.cube_id)
+
         csv = data.to_csv(sep=';', index=False).encode(encoding='utf-8')
         files = {'file': (
             'hehe.csv', csv, 'application/vnd.ms-excel', {})}
@@ -88,30 +92,34 @@ class Mapping:
             response = self.session.get(
                 f'{self.configuracion["url_base"]}importCSVData/%3B/true/SeriesAndData/'
                 f'{self.cube_id}/{self.id}?filePath='+path+'&checkFiltAttributes=true')
+            archivo_validation_report = open(os.path.join("entrega", "validation_report", df_name+".txt"),'w')
+            # os.makedirs(archivo_validation_report, exist_ok=True)
             response_info = response.json()
-            print("        ** ** ** ** ** ** ** ** ** * ")
-            print("       *                          * ")
-            print("      *    Validation Report     *")
-            print("     *                          *")
-            print("    ** ** ** ** ** ** ** ** ** *")
-            print("===========================================================================")
-            print("El cubo vinculado con el dataflow", df_name ," relacionado con el DSD",dsd_name,
-                  "se ha logrado importar con una cantidad de", len(response_info["WrongLines"]), "lineas erroneas")
-            print("-")
-            print("Se puede observar la repuesta del servidor:")
-            response_errors = {'WarnDictionary':response_info['WarnDictionary'],'WrongLines':response_info['WrongLines']}
-            print(response_errors)
-            print("===========================================================================")
+            
+            if response_info['WarnDictionary']:
+                self.logger.error('Error al cargar los datos en el cubo con id %s', self.cube_id)
+                self.logger.error('%s', response_info)
+            else:
+                self.logger.info('Datos volcados con exito')
+            with redirect_stdout(archivo_validation_report):
+                print("        ** ** ** ** ** ** ** ** ** * ")
+                print("       *                          * ")
+                print("      *    Validation Report     *")
+                print("     *                          *")
+                print("    ** ** ** ** ** ** ** ** ** *")
+                print("===========================================================================")
+                print("El cubo vinculado con el dataflow", df_name ," relacionado con el DSD",dsd_name,
+                      "se ha logrado importar con una cantidad de", len(response_info["WrongLines"]), "lineas erroneas")
+                print("-")
+                print("Se puede observar la repuesta del servidor:")
+                response_errors = {'WarnDictionary':response_info['WarnDictionary'],'WrongLines':response_info['WrongLines']}
+                print(response_errors)
+                print("===========================================================================")
+            archivo_validation_report.close()
             response.raise_for_status()
         except Exception as e:
-            print("el dato ", data)
-            print(response.text)
             raise e
-        if response_info['WarnDictionary']:
-            self.logger.error('Error al cargar los datos en el cubo con id %s', self.cube_id)
-            self.logger.error('%s', response_info)
-        else:
-            self.logger.info('Datos volcados con exito')
+
         # else:
         #     self.logger.info('El cubo con id %s ya se encontraba cargado', self.cube_id)
 

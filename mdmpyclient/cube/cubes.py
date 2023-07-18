@@ -58,43 +58,73 @@ class Cubes:
 
         return cubes
 
-    def put(self, cube_id, cube_cat_id, dsd_id, descripcion, dimensiones, is_alphanumeric=False):
+    def put(self, cube_id, cube_cat_id, dsd_id, descripcion, dimensiones, is_alphanumeric=False,has_time_period=True):
         self.logger.info('Se ha solicitado crear el cubo de la consulta con id %s', cube_id)
         if cube_id in self.data:
             self.logger.info('El cubo ya se encuentra en la API. Con  %s', cube_id)
             return self.data[cube_id].id
         self.logger.info('Realizando petición para crear el cubo')
-        json = {"Code": cube_id, "labels": {"es": descripcion},
-                "IDCat": int(cube_cat_id), "DSDCode": dsd_id + "+ESC01+1.0", "Attributes": [{
-                "IsTid": False,
-                "Code": "OBS_STATUS",
-                "IsMandatory": False,
-                "AttachmentLevel": "Observation",
-                "CodelistCode": "CL_OBS_STATUS+ESTAT+2.2",
-                "refDim": [
 
-                ]
-            }], "Dimensions": [
-                {
-                    "IsTimeSeriesDim": False,
-                    "Code": "INDICATOR",
-                    "CodelistCode": "CL_UNIT+ESC01+1.0"
-                },
-                {
-                    "IsTimeSeriesDim": False,
-                    "Code": "FREQ",
-                    "CodelistCode": None
-                },
-                {
-                    "IsTimeSeriesDim": True,
-                    "Code": "TIME_PERIOD",
-                    "CodelistCode": None
-                }],
-                "Measures": [{
-                    "Code": "OBS_VALUE",
-                    "IsAlphanumeric": is_alphanumeric
-                }]}
+        json = None
+        #modificar para casos particulares
+        has_time_period = True
+        if has_time_period:
+            json = {"Code": cube_id, "labels": {"es": descripcion},
+                    "IDCat": int(cube_cat_id), "DSDCode": dsd_id + "+ESC01+1.0", "Attributes": [{
+                    "IsTid": False,
+                    "Code": "OBS_STATUS",
+                    "IsMandatory": False,
+                    "AttachmentLevel": "Observation",
+                    "CodelistCode": "CL_OBS_STATUS+ESTAT+2.2",
+                    "refDim": [
 
+                    ]
+                }], "Dimensions": [
+                    {
+                        "IsTimeSeriesDim": False,
+                        "Code": "INDICATOR",
+                        "CodelistCode": "CL_UNIT+ESC01+1.0"
+                    },
+                    {
+                        "IsTimeSeriesDim": False,
+                        "Code": "FREQ",
+                        "CodelistCode": None
+                    },
+                    {
+                        "IsTimeSeriesDim": True,
+                        "Code": "TIME_PERIOD",
+                        "CodelistCode": None
+                    }],
+                    "Measures": [{
+                        "Code": "OBS_VALUE",
+                        "IsAlphanumeric": is_alphanumeric
+                    }]}
+        else:
+            json = {"Code": cube_id, "labels": {"es": descripcion},
+                    "IDCat": int(cube_cat_id), "DSDCode": dsd_id + "+ESC01+1.0", "Attributes": [{
+                    "IsTid": False,
+                    "Code": "OBS_STATUS",
+                    "IsMandatory": False,
+                    "AttachmentLevel": "Observation",
+                    "CodelistCode": "CL_OBS_STATUS+ESTAT+2.2",
+                    "refDim": [
+
+                    ]
+                }], "Dimensions": [
+                    {
+                        "IsTimeSeriesDim": False,
+                        "Code": "INDICATOR",
+                        "CodelistCode": "CL_UNIT+ESC01+1.0"
+                    },
+                    {
+                        "IsTimeSeriesDim": False,
+                        "Code": "FREQ",
+                        "CodelistCode": None
+                    }],
+                    "Measures": [{
+                        "Code": "OBS_VALUE",
+                        "IsAlphanumeric": is_alphanumeric
+                    }]}
         for dimension in dimensiones:
             codelist = dimensiones[dimension]['codelist']
             json['Dimensions'].append({"Code": dimensiones[dimension]['nombre_dimension'],

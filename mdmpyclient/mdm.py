@@ -96,8 +96,9 @@ class MDM:
         self.logger.info('Solicitando acceso a la NODE_API.')
 
         try:
+            #password': 'TTN0YWRAdG9z'
             response = session.post(f'{self.configuracion["url_base"]}api/Security/Authenticate/',
-                                    json={'username': 'admin'})
+                                    json={'username': 'admin', 'password': ''})
             session.headers['Authorization'] = f'bearer {response.json()["token"]}'
         except KeyError:
             self.logger.error('El usuario o la contraseña no existe')

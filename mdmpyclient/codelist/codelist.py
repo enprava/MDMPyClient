@@ -160,6 +160,7 @@ class Codelist:
         codigos = codes[~codes['Id'].isin(self.codes['id'])]
         self.codes_to_upload = pandas.concat([self.codes_to_upload, codigos], ignore_index=True)
 
+
     def put(self, lang='es'):
         to_upload = len(self.codes_to_upload)
         if to_upload:
