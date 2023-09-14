@@ -95,7 +95,7 @@ class Mapping:
             archivo_validation_report = open(os.path.join("entrega", "validation_report", df_name+".txt"),'w')
             # os.makedirs(archivo_validation_report, exist_ok=True)
             response_info = response.json()
-            
+
             if response_info['WarnDictionary']:
                 self.logger.error('Error al cargar los datos en el cubo con id %s', self.cube_id)
                 self.logger.error('%s', response_info)
