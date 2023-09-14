@@ -32,8 +32,8 @@ class Groups:
         self.logger.info('Creando grupo con id %s', group_id)
         if pd.isna(name):
             name = group_id
-
-        self.ckan.call_action('group_create', {'id': group_id.lower(), 'name': name, 'title': name.lower(),
+        
+        self.ckan.call_action('group_create', {'id': group_id.lower(), 'name': group_id.lower(), 'title': name.lower(),
                                                "groups":
                                                    [{
                                                        "name": parent.lower() if not pd.isna(parent) else "child-group"
@@ -45,3 +45,4 @@ class Groups:
     def create_groups(self, groups):
         self.logger.info('Creando esquemas de categoría como grupos')
         groups.apply(lambda x: self.create_group(x.id, x.name_es, x.parent), axis=1)
+        self.groups = self.get_groups()
