@@ -204,8 +204,9 @@ class DSDs:
                                                               "enumeration": "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=estat:CL_OBS_STATUS(2.2)"},
                                                           "attributeRelationship": {"primaryMeasure": "OBS_VALUE"},
                                                           "assignmentStatus": "Conditional"}]}}}]}}
-        try:
 
+
+        try:
             response = self.session.post(f'{self.configuracion["url_base"]}createArtefacts', json=json)
             response.raise_for_status()
         except Exception as e:
@@ -220,18 +221,19 @@ class DSDs:
             dimension = {}
             concept_scheme = values['concept_scheme']
             codelist = values['codelist']
-            dimension['id'] = values['nombre_dimension']
+            dimension['id'] = concept_scheme["id_concepto"]
             dimension['position'] = i
             i += 1
             dimension['type'] = 'Dimension'
             dimension[
                 'conceptIdentity'] = f'urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept={concept_scheme["agency"]}' \
                                      f':{concept_scheme["id"]}({concept_scheme["version"]})' \
-                                     f'.{concept_scheme["concepto"]}'
+                                     f'.{concept_scheme["id_concepto"]}'
             dimension['localRepresentation'] = {
                 'enumeration': f'urn:sdmx:org.sdmx.infomodel.codelist.Codelist={codelist["agency"]}'
                                f':{codelist["id"]}({codelist["version"]})'}
             result.append(dimension)
+            print("Imprimimos el resultado", result)
         return result
 
     def delete_all(self, agency):

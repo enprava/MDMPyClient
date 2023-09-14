@@ -59,7 +59,7 @@ class Mappings:
         #     self.logger.info('El Mapping ya se encuentra en la API. Con  %s', cube_id)
         #     return self.data[cube_id].id
         components = []
-        for col, dim in columns.items():
+        for dim, col in columns.items():
             dim = 'TIME_PERIOD' if 'TEMPORAL' in col else dim
             dim_type = 'Dimension'
             if 'OBS_STATUS' in dim:
@@ -68,8 +68,10 @@ class Mappings:
                 dim_type = 'TimeDimension'
             if 'OBS_VALUE' in dim:
                 dim_type = 'Measure'
-
-            components.append({'ColumnName': col, 'CubeComponentCode': dim, 'CubeComponentType': dim_type})
+            if dim == 'TIME_PERIOD':
+                components.append({'ColumnName': col, 'CubeComponentCode': dim, 'CubeComponentType': dim_type})
+            else:
+                components.append({'ColumnName': dim, 'CubeComponentCode': dim, 'CubeComponentType': dim_type})
         json = {'Components': components,
                 'CSVDelimiter': None, 'CSVSeparator': ";", 'Description': None, 'HasHeader': True,
                 'HasSpecialTimePeriod': False, 'IDCube': cube_id, 'Name': name, 'Tid': None,

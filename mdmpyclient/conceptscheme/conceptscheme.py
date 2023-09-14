@@ -106,7 +106,7 @@ class ConceptScheme:
     def add_concept(self, concept_id, parent, names, des):
         if concept_id.upper() not in self.concepts.id.values:
             if names:
-                names = fix_encoding(names)
+                names = names
             if des:
                 des = fix_encoding(des)
             self.concepts_to_upload.loc[len(self.concepts_to_upload)] = [concept_id.upper(), parent, names, des]
