@@ -2,37 +2,56 @@ from io import BytesIO
 import logging
 import sys
 
-fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
+fmt = "[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s"
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
 
 
 class Resource:
     def __init__(self, ckan):
-        self.logger = logging.getLogger(f'{self.__class__.__name__}')
+        self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.ckan = ckan
 
     def create(self, data, name, res_format, dataset_id):
-        self.logger.info('Creando recurso con nombre %s para el dataset con id %s', name, dataset_id)
-        to_upload = BytesIO(bytes(data.to_csv(index=False), 'utf-8'))
-        to_upload.name = f'{name}.{res_format}'
+        self.logger.info(
+            "Creando recurso con nombre %s para el dataset con id %s", name, dataset_id
+        )
+        to_upload = BytesIO(bytes(data.to_csv(index=False), "utf-8"))
+        to_upload.name = f"{name}.{res_format}"
         self.ckan.action.resource_create(
-            package_id=dataset_id,
-            format=res_format,
-            name=name,
-            upload=to_upload)
-        self.logger.info('Recurso creado satisfactoriamente')
+            package_id=dataset_id, format=res_format, name=name, upload=to_upload
+        )
+        self.logger.info("Recurso creado satisfactoriamente")
+
+    def create_linked(self, url, name, dataset_id):
+        self.logger.info(
+            "Creando recurso con nombre %s para el dataset con id %s", name, dataset_id
+        )
+        self.ckan.action.resource_create(package_id=dataset_id, name=name, url=url, format='html')
+        self.logger.info("Recurso creado satisfactoriamente")
 
     def create_from_file(self, path, name, res_format, dataset_id):
-        self.logger.info('Creando recurso con nombre %s para el dataset con id %s', name, dataset_id)
-        try: #TEMPORAL, QUITAR PARA SUBIR A PRODUCCION
-            with open(path, 'r', encoding='utf=8') as o_upload:
+        self.logger.info(
+            "Creando recurso con nombre %s para el dataset con id %s", name, dataset_id
+        )
+        try:  # TEMPORAL, QUITAR PARA SUBIR A PRODUCCION
+            with open(path, "r", encoding="utf=8") as o_upload:
                 to_upload = o_upload
                 self.ckan.action.resource_create(
                     package_id=dataset_id,
                     format=res_format,
                     name=name,
-                    upload=to_upload)
-            self.logger.info('Recurso creado satisfactoriamente')
+                    upload=to_upload,
+                )
+            self.logger.info("Recurso creado satisfactoriamente")
 
         except Exception as e:
             pass
+
+    def get(self, id_dataset):
+        return self.ckan.call_action("package_show", {"id": id_dataset})
+
+    def get_resource_id(self,id_dataset, format):
+        dataset = self.get(id_dataset)
+        for resource in dataset['resources']:
+            if resource['format'] == format:
+                return resource['id']
