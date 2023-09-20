@@ -65,6 +65,12 @@ class DSDs:
                     response.raise_for_status()
                 except Exception as e:
                     raise e
+    def get_all_json(self, directory):
+        self.logger.info('Obteniendo fichero en formato json de todos los DSDs')
+        for agency in self.data.values():
+            for dsd_id in agency.values():
+                for version in dsd_id.values():
+                    version.get_json(directory)
 
     def get(self, init_data):
         dsd = {}

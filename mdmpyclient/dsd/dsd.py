@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import json
 
 fmt = '[%(asctime)-15s] [%(levelname)s] %(name)s: %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO, stream=sys.stdout)
@@ -52,6 +53,22 @@ class DSD:
         with open(path, 'w', encoding='utf-8') as file:
             file.write(response.text)
             file.close()
+
+    def get_json(self, directory):
+        self.logger.info('Obteniendo DSD con id %s en formato json', self.id)
+        try:
+            response = self.session.get(
+            f'{self.configuracion["url_base"]}downloadMetadati/dsd/{self.id}/{self.agency_id}/'
+            f'{self.version}/jsondata/true/false/es')
+            response.raise_for_status()
+        except Exception as e:
+            raise e
+        path = os.path.join(directory, self.id + '.json')
+        with open(path, 'w', encoding='utf-8') as file:
+            dsd_json = json.loads(response.text)
+            json.dump(dsd_json, file, ensure_ascii=False, indent=4)
+            file.close()
+
 
     def get(self):
         data = {}
